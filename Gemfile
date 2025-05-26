@@ -75,5 +75,11 @@ group :test do
 end
 
 
+# Manually added gems
+gem "pundit"
+gem "ostruct"
+
+
 # Sets up cloudinary
 gem "cloudinary"
+
