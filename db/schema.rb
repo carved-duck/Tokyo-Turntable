@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_26_071527) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_26_083351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,49 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_26_071527) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "attendances", force: :cascade do |t|
+    t.bigint "gig_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "attended"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gig_id"], name: "index_attendances_on_gig_id"
+    t.index ["user_id"], name: "index_attendances_on_user_id"
+  end
+
+  create_table "bands", force: :cascade do |t|
+    t.string "name"
+    t.string "genre"
+    t.string "hometown"
+    t.string "website_link"
+    t.string "email"
+    t.string "spotify_link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "band_id", null: false
+    t.bigint "gig_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["band_id"], name: "index_bookings_on_band_id"
+    t.index ["gig_id"], name: "index_bookings_on_gig_id"
+  end
+
+  create_table "gigs", force: :cascade do |t|
+    t.date "date"
+    t.bigint "venue_id", null: false
+    t.string "open_time"
+    t.string "start_time"
+    t.string "price"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_gigs_on_user_id"
+    t.index ["venue_id"], name: "index_gigs_on_venue_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -50,10 +93,37 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_26_071527) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "username"
+    t.string "address"
+    t.bigint "band_id", null: false
+    t.string "spotify_link"
+    t.string "discogs_link"
+    t.string "past_shows"
+    t.index ["band_id"], name: "index_users_on_band_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "venues", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.string "website"
+    t.string "email"
+    t.string "neighborhood"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "details"
+    t.float "latitude"
+    t.float "longitude"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "attendances", "gigs"
+  add_foreign_key "attendances", "users"
+  add_foreign_key "bookings", "bands"
+  add_foreign_key "bookings", "gigs"
+  add_foreign_key "gigs", "users"
+  add_foreign_key "gigs", "venues"
+  add_foreign_key "users", "bands"
 end
