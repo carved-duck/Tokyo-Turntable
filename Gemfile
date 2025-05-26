@@ -73,3 +73,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+
+# Sets up cloudinary
+gem "cloudinary"
