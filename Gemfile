@@ -73,3 +73,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# Manually added gems
+gem "pundit"
+gem "ostruct"
