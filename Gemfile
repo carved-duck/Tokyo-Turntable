@@ -74,6 +74,12 @@ group :test do
   gem "selenium-webdriver"
 end
 
+
 # Manually added gems
 gem "pundit"
 gem "ostruct"
+
+
+# Sets up cloudinary
+gem "cloudinary"
+
