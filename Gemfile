@@ -83,3 +83,5 @@ gem "ostruct"
 # Sets up cloudinary
 gem "cloudinary"
 
+# Sets up faker
+gem "faker"
