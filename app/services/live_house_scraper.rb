@@ -1,5 +1,5 @@
 class LiveHouseScraper
-  require 'open-uri'
+  #require 'open-uri'
   require 'nokogiri'
   require 'json'
 
@@ -7,7 +7,9 @@ class LiveHouseScraper
     # Getting gigs just from the first page
     gigs_url = "https://www.tokyogigguide.com/en/gigs"
 
-    page_html_file = URI.parse(gigs_url).read
+    puts "starting scrape"
+    # page_html_file = URI.parse(gigs_url).read
+    page_html_file = File.open("./db/data/gigRawData1.html").read
     page_html_doc = Nokogiri::HTML.parse(page_html_file)
 
     gigs = page_html_doc.search('.eventlist li').map do |gig_card|
@@ -26,6 +28,7 @@ class LiveHouseScraper
       end
       gig_data
     end
+    puts "saving scrape"
 
     # saving to a json file
     filepath = "./db/data/gigs.json"
