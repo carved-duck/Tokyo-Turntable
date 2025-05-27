@@ -1,6 +1,6 @@
 class Gig < ApplicationRecord
   belongs_to :venue
-  belongs_to :user
+  belongs_to :user, optional: true
   has_many :attendances
   has_many :bookings
   has_many :bands, through: :bookings
@@ -11,6 +11,4 @@ class Gig < ApplicationRecord
   validates :open_time, presence: true
   validates :start_time, presence: true
   validates :price, presence: true
-
-
 end
