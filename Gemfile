@@ -83,5 +83,7 @@ gem "ostruct"
 # Sets up cloudinary
 gem "cloudinary"
 
+
 # custom gems
 gem "geocoder"
+gem "faker"

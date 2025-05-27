@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :attendances
+  belongs_to :band, optional: true
 
   has_one_attached :photo
 end

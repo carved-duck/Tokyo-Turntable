@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_26_083351) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_27_055026) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,7 +45,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_26_083351) do
   create_table "attendances", force: :cascade do |t|
     t.bigint "gig_id", null: false
     t.bigint "user_id", null: false
-    t.boolean "attended"
+    t.boolean "attended", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["gig_id"], name: "index_attendances_on_gig_id"
@@ -95,7 +95,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_26_083351) do
     t.datetime "updated_at", null: false
     t.string "username"
     t.string "address"
-    t.bigint "band_id", null: false
+    t.bigint "band_id"
     t.string "spotify_link"
     t.string "discogs_link"
     t.string "past_shows"
