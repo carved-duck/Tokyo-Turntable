@@ -1,7 +1,41 @@
 // Specific CSS for your home-page
-h1 {
-  width: 100px;
-  color: rgb(203, 30, 30);
-  display: flex;
-  justify-content: space-between;
+
+#home-page {
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  .bg-red {
+    background-color: #3D0000;
+    position: relative;
+    height: 30vh;
+    margin-bottom: 4rem;
+
+    h1 {
+      position: absolute;
+      color: #F0DFDF;
+      left: 50%;
+      bottom: -1.6em;
+      line-height: 1.5;
+      font-size: 3rem;
+      transform: translateX(-50%);
+    }
+  }
+
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+
+  // h5 {
+  //   color: #F0DFDF;
+  //   text-align: center;
+  // }
+  
+// h1 {
+//   width: 100px;
+//   color: rgb(203, 30, 30);
+//   display: flex;
+//   justify-content: space-between;
+// >>>>>>> master
 }

@@ -1,4 +1,18 @@
+
+<div id="home-page">
+  <%# long rectangle %>
+  <%= render 'shared/rectangle_box', title: "Find Your Next Show With..."%>
+  <div>
+  <%# login button %>
+    <div class="bg-red">
+      <h4 class="text-end py-4 me-2 pe-2" style="color: #F0DFDF;">Login</h4>
+      <%# home page title %>
+      <h1>Tokyo <br> Turntable</h1>
+    </div>
+    <%# map image %>
+    <%= image_tag "red-map.png", alt: "map", width: 200 %>
+  </div>
+
 <div class="container">
-  <h1>Tokyo Turntable</h1>
   <%= render "venues/location" %>
 </div>
