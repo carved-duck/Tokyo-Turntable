@@ -7,6 +7,7 @@ class GigsController < ApplicationController
 
   def show
     @gig = Gig.find(params[:id])
+    authorize @gig
   end
 
   def edit
