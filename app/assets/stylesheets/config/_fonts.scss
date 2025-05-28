@@ -7,8 +7,21 @@
 
 
 // Define fonts for body and headers
-$body-font: "Identidad", "Helvetica", "sans-serif";
+$body-font: "Montserrat", "Helvetica", "sans-serif";
 $headers-font: "IBM Plex Mono", "Helvetica", "sans-serif";
+
+// Base font usage
+body {
+  font-family: $body-font;
+}
+
+h2, h3, h4, h5, h6 {
+  font-family: $body-font;
+}
+
+h1 {
+  font-family: $headers-font;
+}
 
 // To use a font file (.woff) uncomment following lines
 // @font-face {
