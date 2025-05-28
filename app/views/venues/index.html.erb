@@ -6,7 +6,7 @@
     <template id="venue-sheet-<%= venue.id %>">
       <h2><%= venue.name %></h2>
       <p><%= venue.address %></p>
-      <p><%= truncate(venue.details, length: 100) %></p>
+      <p><%#= truncate(venue.details, length: 100) %></p>
       <%= link_to "View page", venue_path(venue), class: "btn btn-sm btn-primary" %>
     </template>
   <% end %>
