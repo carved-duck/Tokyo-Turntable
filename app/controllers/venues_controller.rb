@@ -16,5 +16,4 @@ class VenuesController < ApplicationController
     @venue = Venue.find(params[:id])
     authorize @venue
   end
-
 end
