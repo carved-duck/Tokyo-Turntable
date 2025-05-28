@@ -1,14 +1,19 @@
 // Import Google fonts
-// @import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Work+Sans:400,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
-@import url('https://fonts.cdnfonts.com/css/identidad?styles=164274');
-
-
-
+// @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 // Define fonts for body and headers
-$body-font: "Identidad", "Helvetica", "sans-serif";
+$body-font: "Montserrat", "Helvetica", "sans-serif";
 $headers-font: "IBM Plex Mono", "Helvetica", "sans-serif";
+
+// Base font usage
+body {
+  font-family: $body-font;
+}
+
+h1, h3, h4, h5, h6 {
+  font-family: $headers-font;
+}
 
 // To use a font file (.woff) uncomment following lines
 // @font-face {
