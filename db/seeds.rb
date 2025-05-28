@@ -46,6 +46,9 @@ users = [
   )
 
 ]
+
+LiveHouseImporter.new.import_gigs_from_json
+
 # Create Users
 # users = 10.times.map do
 #   User.create!(
@@ -59,59 +62,59 @@ users = [
 # end
 
 # Create Bands
-genres = ['Rock', 'Indie', 'Jazz', 'Hip-Hop', 'Electronic']
-bands = 10.times.map do
-  Band.create!(
-    name: Faker::Music.band,
-    genre: genres.sample,
-    hometown: Faker::Address.city,
-    email: Faker::Internet.email,
-    spotify_link: "https://open.spotify.com/artist/#{SecureRandom.hex(10)}"
-  )
-end
+# genres = ['Rock', 'Indie', 'Jazz', 'Hip-Hop', 'Electronic']
+# bands = 10.times.map do
+#   Band.create!(
+#     name: Faker::Music.band,
+#     genre: genres.sample,
+#     hometown: Faker::Address.city,
+#     email: Faker::Internet.email,
+#     spotify_link: "https://open.spotify.com/artist/#{SecureRandom.hex(10)}"
+#   )
+# end
 
-# Create Venues
-neighborhoods = ['Shibuya', 'Shinjuku', 'Shimokitazawa', 'Koenji', 'Ikebukuro']
-venues = 5.times.map do
-  Venue.create!(
-    name: "#{Faker::Restaurant.name} Livehouse",
-    address: "Tokyo, #{Faker::Address.street_address}",
-    neighborhood: neighborhoods.sample,
-    website: Faker::Internet.url,
-    email: Faker::Internet.email,
-    details: Faker::Lorem.sentence
-  )
-end
+# # Create Venues
+# neighborhoods = ['Shibuya', 'Shinjuku', 'Shimokitazawa', 'Koenji', 'Ikebukuro']
+# venues = 5.times.map do
+#   Venue.create!(
+#     name: "#{Faker::Restaurant.name} Livehouse",
+#     address: "Tokyo, #{Faker::Address.street_address}",
+#     neighborhood: neighborhoods.sample,
+#     website: Faker::Internet.url,
+#     email: Faker::Internet.email,
+#     details: Faker::Lorem.sentence
+#   )
+# end
 
 
 
-# Create Gigs
-gigs = 10.times.map do
-  date = Faker::Date.forward(days: 30)
-  open_time = Time.parse("18:00")
-  start_time = Time.parse("19:00")
-  Gig.create!(
-    date: date,
-    open_time: open_time,
-    start_time: start_time,
-    price: rand(1000..3000),
-    venue: venues.sample,
-    user: users.sample
-  )
-end
+# # Create Gigs
+# gigs = 10.times.map do
+#   date = Faker::Date.forward(days: 30)
+#   open_time = Time.parse("18:00")
+#   start_time = Time.parse("19:00")
+#   Gig.create!(
+#     date: date,
+#     open_time: open_time,
+#     start_time: start_time,
+#     price: rand(1000..3000),
+#     venue: venues.sample,
+#     user: users.sample
+#   )
+# end
 
-# Create Bookings (Bands playing at Gigs)
-gigs.each do |gig|
-  bands.sample(3).each do |band|
-    Booking.create!(gig: gig, band: band)
-  end
-end
+# # Create Bookings (Bands playing at Gigs)
+# gigs.each do |gig|
+#   bands.sample(3).each do |band|
+#     Booking.create!(gig: gig, band: band)
+#   end
+# end
 
-# Create Attendances (Users attending Gigs)
-gigs.each do |gig|
-  users.sample(4).each do |user|
-    Attendance.create!(gig: gig, user: user)
-  end
-end
+# # Create Attendances (Users attending Gigs)
+# gigs.each do |gig|
+#   users.sample(4).each do |user|
+#     Attendance.create!(gig: gig, user: user)
+#   end
+# end
 
-puts "Seeded #{User.count} users, #{Band.count} bands, #{Venue.count} venues, #{Gig.count} gigs, #{Booking.count} bookings, and #{Attendance.count} attendances."
+# puts "Seeded #{User.count} users, #{Band.count} bands, #{Venue.count} venues, #{Gig.count} gigs, #{Booking.count} bookings, and #{Attendance.count} attendances."
