@@ -1,5 +1,4 @@
-# app/services/live_house_importer.rb
-class LiveHouseImporter
+class GigImporter
   require 'json'
 
   def import_gigs_from_json()

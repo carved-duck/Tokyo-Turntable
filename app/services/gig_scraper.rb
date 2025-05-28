@@ -1,4 +1,4 @@
-class LiveHouseScraper
+class GigScraper
   #require 'open-uri'
   require 'nokogiri'
   require 'json'
