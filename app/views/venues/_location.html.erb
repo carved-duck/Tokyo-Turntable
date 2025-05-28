@@ -1,0 +1,22 @@
+<div class="container py-4">
+  <%= simple_form_for :search, url: venues_path, method: :get, html: { class: "row gx-2 gy-2 align-items-end" } do |f| %>
+    <%= f.input :location,
+              label: "Near",
+              placeholder: "ex) Tokyo, JP",
+              input_html: { value: params[:location] },
+              wrapper_html: { class: "col-sm-6 ctext-white border-light" } %>
+    <%= f.input :radius,
+              label: "Radius (km)",
+              input_html: { value: params[:radius] || 10, min: 1 },
+              wrapper_html: { class: "col-sm-4 text-white border-light" } %>
+    <%= f.input :genre,
+              label: "Genre",
+              collection: ["All"] + (@available_genres || Band.distinct.pluck(:genre)),
+              selected: params[:genre],
+              include_blank: false,
+              wrapper_html: { class: "col-sm-6 text-white border-light" } %>
+    <div class="col-auto">
+      <%= f.button :submit, "Search", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

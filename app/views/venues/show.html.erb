@@ -1,0 +1,27 @@
+<div class="venue-show container m-2">
+  <div class="venue-header">
+    <div class="header-header-text">
+      <h1><%= @venue.name %></h1>
+      <p class="neighborhood"><%= @venue.neighborhood %>, Tokyo </p>
+    </div>
+    <div class="header-header-img">
+      <%= image_tag ("venue_image.jpg"), class: "venue-img"; %>
+    </div>
+  </div>
+  <div class="venue-body">
+    <h2 class="body-header">Upcoming</h2>
+    <ul>
+      <li>
+        <p class="gig-date"><%= Gig.all.sample.date %></p>
+        <p class="gig-bands"> <%= Band.all.sample.name %></p>
+        <p class="gig-time">Doors: <%= Gig.all.sample.open_time %> / Start: <%= Gig.all.sample.start_time %></p>
+        <p class="gig-price">Price: ¥<%= Gig.all.sample.price %> </p>
+      </li>
+    </ul>
+  </div>
+  <div class="venue-details">
+    <p> <strong>address:</strong> <%= @venue.address %> </p>
+    <p> <strong>website:</strong> <%= @venue.website %> </p>
+    <p> <strong>email:</strong> <%= @venue.email %> </p>
+  </div>
+</div>

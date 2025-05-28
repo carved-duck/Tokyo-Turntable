@@ -87,3 +87,4 @@ gem "cloudinary"
 # custom gems
 gem "geocoder"
 gem "faker"
+gem "ferrum"

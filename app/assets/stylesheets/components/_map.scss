@@ -5,4 +5,13 @@
 .mapboxgl-popup-content {
   text-align: center;
   font-family: "Open Sans", sans-serif;
+  background: red;
+}
+
+.mapboxgl-canvas {
+  border-radius: 4%;
+}
+
+.mapboxgl-canvas-container {
+  border-radius: 4%;
 }

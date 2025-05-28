@@ -1,0 +1,33 @@
+.tokyo-navbar {
+  height: 80px;
+  width: 100%;
+  color: black;
+  background-color: rgb(243, 6, 6);
+  opacity: 0.7;
+  border-radius: 1%;
+  border-top: 1px solid white;
+  margin-top: 24px;
+  margin-bottom: 16px;
+
+}
+
+.navbar-flex {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+
+}
+
+.navbar-item {
+  font-size: 24px;
+  line-height: 1;
+  vertical-align: middle;
+  color: rgb(92, 25, 25);
+}
+
+#logo {
+  font-size: 40px;
+  color: rgb(28, 26, 26);
+}

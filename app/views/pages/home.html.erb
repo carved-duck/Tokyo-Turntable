@@ -1,3 +1,4 @@
+
 <div id="home-page">
   <%# long rectangle %>
   <%= render 'shared/rectangle_box', title: "Find Your Next Show With..."%>
@@ -11,4 +12,7 @@
     <%# map image %>
     <%= image_tag "red-map.png", alt: "map", width: 200 %>
   </div>
+
+<div class="container">
+  <%= render "venues/location" %>
 </div>

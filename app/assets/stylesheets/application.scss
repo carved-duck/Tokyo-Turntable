@@ -13,7 +13,18 @@
 @import "pages/index";
 
 body {
+
   background-color: black;
   height: 100vh;
   height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+  
+  
+}
+
+.content {
+  flex-grow: 1;
+
 }

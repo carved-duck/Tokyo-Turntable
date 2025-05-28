@@ -1,18 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
 import mapboxgl from 'mapbox-gl'
+import { Offcanvas } from "bootstrap"
 
 export default class extends Controller {
-  static values = {
-    apiKey: String,
-    markers: Array
-  }
+  static values = { apiKey: String, markers: Array }
 
   connect() {
     mapboxgl.accessToken = this.apiKeyValue
 
     this.map = new mapboxgl.Map({
       container: this.element,
-      style: "mapbox://styles/mapbox/streets-v10"
+      style: "mapbox://styles/mapbox/navigation-night-v1"
     });
     this.#addMarkersToMap();
     this.#fitMapToMarkers();
@@ -20,7 +18,7 @@ export default class extends Controller {
 
   #addMarkersToMap() {
     this.markersValue.forEach((marker) => {
-      const popup = new mapboxgl.Popup().setHTML(marker.info_window_html);
+      // const popup = new mapboxgl.Popup().setHTML(marker.info_window_html);
 
       // Create a HTML element for your custom marker
       const customMarker = document.createElement("div");
@@ -29,8 +27,14 @@ export default class extends Controller {
       // Pass the element as an argument to the new marker
       new mapboxgl.Marker(customMarker)
         .setLngLat([marker.lng, marker.lat])
-        .setPopup(popup)
+        // .setPopup(popup)
         .addTo(this.map);
+      customMarker.addEventListener("click", () => {
+        const tpl = document.getElementById(`venue-sheet-${marker.id}`);
+        document.getElementById("venueDetailsContent").innerHTML = tpl.innerHTML;
+        const sheetEl = document.getElementById("venueDetailsSheet");
+        new Offcanvas(sheetEl).show();
+      });
     });
   }
 

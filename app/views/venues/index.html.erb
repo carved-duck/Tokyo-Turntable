@@ -1,7 +1,42 @@
+  <%= render "venue_sheet" %>
 <div class="container">
   <h1>venues</h1>
+  <!-- This is hidden template for the venue's sheet panel (canvas) -->
+  <% @venues.each do |venue| %>
+    <template id="venue-sheet-<%= venue.id %>">
+      <h2><%= venue.name %></h2>
+      <p><%= venue.address %></p>
+      <p><%= truncate(venue.details, length: 100) %></p>
+      <%= link_to "View page", venue_path(venue), class: "btn btn-sm btn-primary" %>
+    </template>
+  <% end %>
+  <!-- mapbox container -->
   <div style="width: 100%; height: 600px;"
-  data-controller="map"
-  data-map-markers-value="<%= @markers.to_json %>"
-  data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"></div>
+    data-controller="map"
+    data-map-markers-value="<%= @markers.to_json %>"
+    data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+  </div>
+  <!-- cards but might get rid of -->
+  <div class="row row-cols-1 row-cols-sm-2 g-3">
+    <% @venues.each do |venue| %>
+      <div class="col">
+        <div class="card h-100">
+          <% if venue.photo.attached? %>
+            <%= cl_image_tag venue.photo.key, class: "card-img-top", style: "object-fit:cover; height:150px", alt: venue.name %>
+          <% else %>
+            <%= image_tag "https://via.placeholder.com/300x150?text=No+Image", class: "card-img-top", style: "object-fit:cover; height:150px" %>
+          <% end %>
+          <div class="card-body p-2 d-flex flex-column">
+            <p class="card-title mb-1">
+              <%= link_to venue.name, venue_path(venue), class: "stretched-link text-decoration-none" %>
+            </p>
+            <p class="card-text text-muted small mb-2"><%= venue.address %></p>
+            <span class="mt-auto">
+              <%= link_to "View", venue_path(venue), class: "btn btn-sm btn-primary w-100" %>
+            </span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
