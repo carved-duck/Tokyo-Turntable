@@ -12,6 +12,7 @@ class VenuesController < ApplicationController
       }
     end
   end
+
   def show
     @venue = Venue.find(params[:id])
     authorize @venue

@@ -1,0 +1,55 @@
+.venue-show {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.venue-header {
+  margin-top: 16px;
+  display: flex;
+  gap: 40px;
+  justify-content: space-around;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $dark-red;
+}
+
+.venue-header-text {
+  flex-grow: 1;
+}
+
+.venue-img {
+  width: 120px;
+  margin-top: 8px;
+  border-radius: 16%;
+}
+
+
+p {
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+
+.venue-body {
+
+}
+
+li {
+  list-style: none;
+}
+
+.body-header {
+  color: white;
+}
+
+.venue-details {
+  border-top: 1px solid $dark-red;
+  padding-top: 12px;
+}
+
+strong {
+  font-weight: bold;
+  color: $dark-red;
+}
