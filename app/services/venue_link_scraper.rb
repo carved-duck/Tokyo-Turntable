@@ -42,7 +42,9 @@ class VenueLinkScraper
 
       puts "  Found #{list_items.count} list items with the revised selector."
 
-      venue_links = []
+
+      venue_links_json = File.open("./db/data/venue_links.json")
+      venue_links = JSON.parse(venue_links_json)["venue_detail_urls"] || []
       list_items.each do |venue_card|
         # Within each list item, find the anchor tag for the venue link.
         # The link is inside a div with classes `jem-event-info-small` and `jem-event-venue`.
@@ -65,7 +67,7 @@ class VenueLinkScraper
       filepath = Rails.root.join("db", "data", "venue_links.json")
       FileUtils.mkdir_p(File.dirname(filepath))
       File.open(filepath, "wb") do |file|
-        file.write(JSON.pretty_generate({ venue_detail_urls: venue_links }))
+        file.write(JSON.pretty_generate({ venue_detail_urls: venue_links.uniq }))
       end
       puts "Saved all venue links to: #{filepath}"
 

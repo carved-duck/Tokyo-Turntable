@@ -11,7 +11,7 @@ class VenueScraper
 
   # Set this constant to true to scrape only the first link,
   # or false to scrape all links.
-  SCRAPE_FIRST_LINK_ONLY = true
+  SCRAPE_FIRST_LINK_ONLY = false
 
   def venue_scraper
     filepath = "./db/data/venue_links.json"
@@ -65,7 +65,6 @@ class VenueScraper
           sleep(3)
 
           # --- MODIFICATION: Save browser.body to a file for inspection ---
-          # This was missing in your "current code" but is crucial for debugging selectors.
           debug_html_filename = "./tmp/debug_html/#{URI.parse(venue_link).host.gsub('.', '_')}_#{URI.parse(venue_link).path.gsub(/\W/, '_')}_#{Time.now.to_i}.html"
           File.open(debug_html_filename, "wb") do |file|
             file.write(browser.body)
@@ -80,21 +79,38 @@ class VenueScraper
           # Call the dedicated method to scrape details from the current page
           venue_data = scrape_venue_details(page_html_doc, venue_link)
 
-          if venue_data
+          if venue_data && venue_data[:name] && venue_data[:name] != "Not Available"
             all_scraped_venues_data << venue_data
             puts "  Successfully scraped data for: #{venue_data[:name]}."
-            # Here you would typically integrate with your Rails models:
-            # venue = Venue.find_or_create_by!(name: venue_data[:name]) do |v|
-            #   v.website = venue_data[:website]
-            #   v.address = venue_data[:address]
-            #   v.email = venue_data[:email]
-            #   v.neighborhood = venue_data[:neighborhood]
-            #   v.details = venue_data[:details]
-            #   v.photo = venue_data[:photo]
-            # end
-            # puts "  Venue '#{venue.name}' (ID: #{venue.id}) #{venue.new_record? ? 'CREATED' : 'UPDATED'}."
+
+            # --- Database Population Logic (Uncomment and ensure your Rails environment is loaded) ---
+            # To run this in a Rails environment, you would typically execute it within a Rake task
+            # or a custom script where your Rails models are accessible.
+            # Example:
+            #   `rails runner 'VenueScraper.new.venue_scraper'`
+
+            # Make sure your Venue model has these attributes and validations are met.
+            # `find_or_create_by!` will raise an error if validation fails, which is good for debugging.
+            begin
+              venue = Venue.find_or_create_by!(name: venue_data[:name]) do |v|
+                v.website = venue_data[:website]
+                v.address = venue_data[:address]
+                v.email = venue_data[:email]
+                v.neighborhood = venue_data[:neighborhood]
+                v.details = venue_data[:details]
+                # v.photo = venue_data[:photo] commenting out for now, link causing problems during create due to being a link
+                # Add any other attributes you want to save
+              end
+              puts "  Venue '#{venue.name}' (ID: #{venue.id}) #{venue.new_record? ? 'CREATED' : 'UPDATED'} in database."
+            rescue ActiveRecord::RecordInvalid => e
+              puts "  ERROR: Could not save/update venue '#{venue_data[:name]}' due to validation errors: #{e.message}"
+            rescue StandardError => e
+              puts "  ERROR: An unexpected error occurred during database operation for '#{venue_data[:name]}': #{e.message}"
+            end
+            # --- END Database Population Logic ---
+
           else
-            puts "  WARNING: Could not scrape data for #{venue_link}."
+            puts "  WARNING: Could not scrape data for #{venue_link} (or name was not available/empty). Skipping."
           end
 
         rescue Ferrum::TimeoutError
@@ -114,15 +130,15 @@ class VenueScraper
     end
 
     # Save all scraped data to a JSON file
-    output_filepath = "./db/data/scraped_venues_details.json"
-    begin
-      File.open(output_filepath, "wb") do |file|
-        file.write(JSON.pretty_generate({ venues: all_scraped_venues_data }))
-      end
-      puts "\n--- Successfully saved all scraped venue details to #{output_filepath} ---"
-    rescue StandardError => e
-      puts "ERROR: Failed to save scraped data to JSON file: #{e.message}"
-    end
+    # output_filepath = "./db/data/scraped_venues_details.json"
+    # begin
+    #   File.open(output_filepath, "wb") do |file|
+    #     file.write(JSON.pretty_generate({ venues: all_scraped_venues_data }))
+    #   end
+    #   puts "\n--- Successfully saved all scraped venue details to #{output_filepath} ---"
+    # rescue StandardError => e
+    #   puts "ERROR: Failed to save scraped data to JSON file: #{e.message}"
+    # end
   end
 
   # This method extracts specific details from a single venue detail page HTML
@@ -210,5 +226,20 @@ class VenueScraper
     puts "    Photo: #{venue_data[:photo]}"
 
     venue_data
+  end
+
+  def generate_venues
+    json = File.open("./db/data/scraped_venues_details.json").read
+    parsed_data = JSON.parse(json)
+    parsed_data["venues"].each do |venue_attr|
+      img_link = venue_attr.delete("photo")
+      venue = Venue.new(venue_attr)
+      if img_link.start_with?("http")
+        file = URI.parse(img_link).open
+        venue.photo.attach(io: file, filename: "nes.png", content_type: "image/png")
+      end
+      venue.save
+      puts "#{venue.name} created"
+    end
   end
 end
