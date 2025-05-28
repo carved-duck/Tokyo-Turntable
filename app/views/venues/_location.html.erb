@@ -1,0 +1,28 @@
+<div class="container py-4">
+  <%= form_with url: venues_path, method: :get, local: true, class: "row gx-2 gy-2 align-items-end" do |f| %>
+    <div class="col-sm-6 col-md-4">
+      <%= f.label :location, "Near", class: "form-label" %>
+      <%= f.text_field :location,
+            value: params[:location],
+            placeholder: "ex) Tokyo, JP",
+            class: "form-control" %>
+    </div>
+    <div class="col-sm-4 col-md-2">
+      <%= f.label :radius, "Radius (km)", class: "form-label" %>
+      <%= f.number_field :radius,
+            value: params[:radius] || 10,
+            min: 1,
+            class: "form-control" %>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <%= f.label :genre, "Genre", class: "form-label" %>
+      <%= f.select :genre,
+            ["All"] + ( @available_genres || Band.distinct.pluck(:genre) ),
+            selected: params[:genre],
+            class: "form-select" %>
+    </div>
+    <div class="col-auto">
+      <%= f.submit "Search", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
