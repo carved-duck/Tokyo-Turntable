@@ -1,4 +1,4 @@
-class LiveHouseScraper
+class GigScraper
   #require 'open-uri'
   require 'nokogiri'
   require 'json'
@@ -30,10 +30,15 @@ class LiveHouseScraper
     end
     puts "saving scrape"
 
+    old_data = File.open("./db/data/gigs.json")
+    old_gigs = JSON.parse(old_data)["data"] || []
+
+    gigs += old_gigs
+
     # saving to a json file
     filepath = "./db/data/gigs.json"
     File.open(filepath, "wb") do |file|
-      file.write(JSON.generate({data: gigs}))
+      file.write(JSON.generate({data: gigs.uniq}))
     end
   end
 end

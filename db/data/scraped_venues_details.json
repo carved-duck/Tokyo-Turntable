@@ -1,0 +1,454 @@
+{
+  "venues": [
+    {
+      "name": "#chord_",
+      "website": "https://www.hashchord.com/",
+      "address": "東京都世田谷区池尻3-4-2 SSビル池尻B1",
+      "email": "Not Listed",
+      "neighborhood": "Ikejiri-Ohashi",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/chord_1122057284.jpg"
+    },
+    {
+      "name": "0 Zero",
+      "website": "http://aoyama-zero.com/",
+      "address": "東京都渋谷区渋谷2-9-13 AiiA ANNEX Bid. B1F",
+      "email": "Not Listed",
+      "neighborhood": "Aoyama",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/logo_top_1427600497.png"
+    },
+    {
+      "name": "1000 Club",
+      "website": "https://1000club.jp/",
+      "address": "神奈川県横浜市西区南幸2-1-5",
+      "email": "Not Listed",
+      "neighborhood": "Yokohama",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/1000_1603504348.jpg"
+    },
+    {
+      "name": "1000 Springs Tokyo",
+      "website": "https://www.facebook.com/1000SpringsTokyo/",
+      "address": "東京都新宿区四谷４丁目３−１",
+      "email": "Not Listed",
+      "neighborhood": "Yotsuya",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/1000springs_601583300.jpg"
+    },
+    {
+      "name": "20000 Den-atsu (二万電圧)",
+      "website": "http://www.den-atsu.com/",
+      "address": "東京都杉並区高円寺南1-7-23",
+      "email": "Not Listed",
+      "neighborhood": "Higashi-Koenji",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/20000volt_1286205556.jpg"
+    },
+    {
+      "name": "21st Century",
+      "website": "http://www10.plala.or.jp/music21/index.htm",
+      "address": "東京都新宿区西新宿7-13-5",
+      "email": "Not Listed",
+      "neighborhood": "Shinjuku",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/logo-ok_1432839518.png"
+    },
+    {
+      "name": "32016",
+      "website": "https://www.facebook.com/32016-231685776862889",
+      "address": "世田谷区三軒茶屋2-14-12 三元ビル5F",
+      "email": "Not Listed",
+      "neighborhood": "Sangenjaya",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/263167_231686246862842_3391986_n_385224938.jpg"
+    },
+    {
+      "name": "3331 Arts Chiyoda",
+      "website": "http://www.3331.jp/en/",
+      "address": "東京都千代田区外神田6丁目11-14",
+      "email": "Not Listed",
+      "neighborhood": "Suehirocho",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/3331_894127541.jpg"
+    },
+    {
+      "name": "440 (Four Forty)",
+      "website": "http://440.tokyo/",
+      "address": "東京都世田谷区代沢5-29-15 SYビル",
+      "email": "Not Listed",
+      "neighborhood": "Shimokitazawa",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/440_1219771899.jpg"
+    },
+    {
+      "name": "63",
+      "website": "http://jmsu.web.fc2.com/63/",
+      "address": "横浜市中区相生町5-95 トラストワンビルB1F",
+      "email": "Not Listed",
+      "neighborhood": "Yokohama",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/img_9848_175512689.jpg"
+    },
+    {
+      "name": "73",
+      "website": "http://www.seven-three.com/",
+      "address": "東京都港区西麻布2-12-5 ミスティ西麻布4・5F",
+      "email": "Not Listed",
+      "neighborhood": "Nishi Azabu",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/image_1428625999.jpg"
+    },
+    {
+      "name": "7th Avenue",
+      "website": "http://www2.big.or.jp/~7th/index.html",
+      "address": "横浜市中区山下町252 グランベルヨコハマビルB1",
+      "email": "Not Listed",
+      "neighborhood": "Yokohama",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/7th_1237635545.gif"
+    },
+    {
+      "name": "7th Floor",
+      "website": "http://7th-floor.net/",
+      "address": "渋谷区円山町2－3 O-WESTビル7F",
+      "email": "Not Listed",
+      "neighborhood": "Shibuya",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/7thfloor_1219772390.gif"
+    },
+    {
+      "name": "810 OUTFIT café",
+      "website": "http://810.chikura.org/",
+      "address": "東京都武蔵野市境南町2-8-6-103",
+      "email": "Not Listed",
+      "neighborhood": "Musashi Sakai",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/810outfit-logo_396545311.jpg"
+    },
+    {
+      "name": "8bit cafe",
+      "website": "http://8bitcafe.net/",
+      "address": "東京都新宿区新宿3丁目8-9 Qビル5F",
+      "email": "Not Listed",
+      "neighborhood": "Shinjuku",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/8bitcafe_1292147924.jpg"
+    },
+    {
+      "name": "A-Life",
+      "website": "http://www.e-alife.net",
+      "address": "東京都港区西麻布 1-7-2",
+      "email": "Not Listed",
+      "neighborhood": "Roppongi",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/alife_logo_44319573.png"
+    },
+    {
+      "name": "AA Company",
+      "website": "http://aacompanytachikawa.wixsite.com/aacompany",
+      "address": "東京都立川市柴崎町3-10-4コーラル立川ビルB1F",
+      "email": "Not Listed",
+      "neighborhood": "Tachikawa",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/16508424_10155024805868833_1039215595620652708_n_985401254.jpg"
+    },
+    {
+      "name": "Absolute Blue",
+      "website": "http://absol.blue/",
+      "address": "東京都豊島区西池袋1-15-6 豊島会館B2F",
+      "email": "Not Listed",
+      "neighborhood": "Ikebukuro",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/absolute_blue_rose_1428402146.jpg"
+    },
+    {
+      "name": "ACB Hall",
+      "website": "http://www.acb-hall.jp",
+      "address": "東京都新宿区歌舞伎町2-36-3アシベ会館B2",
+      "email": "Not Listed",
+      "neighborhood": "Shinjuku",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/acb_1215100198.jpg"
+    },
+    {
+      "name": "ACID 2",
+      "website": "http://www.acid.jp/",
+      "address": "東京都杉並区南4-29-9　第三穴吹きビル地下１階",
+      "email": "Not Listed",
+      "neighborhood": "Koenji",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/acid2_833438212.jpg"
+    },
+    {
+      "name": "Adirondack Cafe",
+      "website": "https://adirondackcafejp.com",
+      "address": "東京都千代田区神田神保町一丁目２－９　４F",
+      "email": "Not Listed",
+      "neighborhood": "Jimbocho",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/adirondack-cafe_232932030.png"
+    },
+    {
+      "name": "ADM Live Garage",
+      "website": "http://www.adm-rock.com",
+      "address": "東京都豊島区東池袋1-22-1GSハイムB1F",
+      "email": "Not Listed",
+      "neighborhood": "Ikebukuro",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/adm_1218424508.gif"
+    },
+    {
+      "name": "AG22",
+      "website": "http://ag22live.web.fc2.com/",
+      "address": "杉並区高円寺南4-26-15 富士ビル5F",
+      "email": "Not Listed",
+      "neighborhood": "Koenji",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/imag0036_1_1186307480.jpg"
+    },
+    {
+      "name": "AgeHa",
+      "website": "http://www.ageha.com",
+      "address": "東京都江東区新木場2-2-10",
+      "email": "Not Listed",
+      "neighborhood": "Shin-Kiba",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/ageha_1218424778.jpg"
+    },
+    {
+      "name": "Agnès B Galerie Rue du Jour",
+      "website": "https://www.facebook.com/agnesb.ginza/",
+      "address": "東京都中央区銀座 3-7-1",
+      "email": "Not Listed",
+      "neighborhood": "Ginza",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/agnes-b-vector-366_1266874044.png"
+    },
+    {
+      "name": "Air",
+      "website": "http://www.air-tokyo.com",
+      "address": "東京都渋谷区猿楽町2-11 氷川ビル B1, B2",
+      "email": "Not Listed",
+      "neighborhood": "Daikanyama",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/air_1218424938.jpg"
+    },
+    {
+      "name": "Airegin",
+      "website": "http://goo.gl/gtr9U9",
+      "address": "横浜市中区住吉町5-60",
+      "email": "Not Listed",
+      "neighborhood": "Yokohama",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/airegin_1276526082.gif"
+    },
+    {
+      "name": "Aja",
+      "website": "http://aja-bar.jp/",
+      "address": "中野区中央2-21-5 金子ビルB1",
+      "email": "Not Listed",
+      "neighborhood": "Nakano-sakaue",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/aja_sign_415376421.jpg"
+    },
+    {
+      "name": "AKABANE ReNY alpha",
+      "website": "https://ruido.org/akabane_reny/",
+      "address": "Not Available",
+      "email": "Not Listed",
+      "neighborhood": "Akabane",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/reny_1917006345.png"
+    },
+    {
+      "name": "Akahige",
+      "website": "http://akahige3.wixsite.com/akahige",
+      "address": "東京都世田谷区太子堂3-25-6",
+      "email": "Not Listed",
+      "neighborhood": "Sangenjaya",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/akahige_1438940395.jpg"
+    },
+    {
+      "name": "Akasaka Blitz",
+      "website": "http://www.tbs.co.jp/blitz",
+      "address": "港区赤坂5-3-2 赤坂サカス内",
+      "email": "Not Listed",
+      "neighborhood": "Akasaka",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/blitz_1218426950.jpg"
+    },
+    {
+      "name": "Aketa No Mise",
+      "website": "http://www.aketa.org/mise.html",
+      "address": "東京都杉並区西荻北3-21-13吉野ビルBF",
+      "email": "Not Listed",
+      "neighborhood": "Nishi-Ogikubo",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/aketa_1277376300.gif"
+    },
+    {
+      "name": "Akihabara Marz Dress Hall",
+      "website": "http://www.dress-tokyo.com/",
+      "address": "東京都千代田区神田佐久間町1-21 山傳京楽ビルB1F",
+      "email": "Not Listed",
+      "neighborhood": "Akihabara",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/marz_1384737356.png"
+    },
+    {
+      "name": "Alfie",
+      "website": "https://alfie.tokyo/",
+      "address": "〒106-0032 東京都港区六本木６丁目２−３５ ハマ六本木ビル 5F",
+      "email": "Not Listed",
+      "neighborhood": "Roppongi",
+      "details": "No Description",
+      "photo": "No Photo Available"
+    },
+    {
+      "name": "Alive",
+      "website": "http://sound.jp/alive",
+      "address": "千葉県柏市あけぼの2-1-29 オーキッドコート2A",
+      "email": "Not Listed",
+      "neighborhood": "Kashiwa",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/alive_logo2_1255933734.jpg"
+    },
+    {
+      "name": "All in Fun",
+      "website": "http://allinfun.jp/index.php",
+      "address": "東京都豊島区南大塚3-51-8 今井商事ビル1階",
+      "email": "Not Listed",
+      "neighborhood": "Otsuka",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/all_in_fun_2022633622.jpg"
+    },
+    {
+      "name": "Alleyhall",
+      "website": "http://alleyhall.music.coocan.jp/hall/",
+      "address": "世田谷区北沢2-24-8アレイビル3階",
+      "email": "Not Listed",
+      "neighborhood": "Shimokitazawa",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/alleyhall_289016341.jpg"
+    },
+    {
+      "name": "Alternative Cafe",
+      "website": "https://altcafe.exblog.jp",
+      "address": "中野区新井1-3-3",
+      "email": "Not Listed",
+      "neighborhood": "Nakano",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/alternative_cafe_1765299181.jpg"
+    },
+    {
+      "name": "altoto",
+      "website": "http://homepage2.nifty.com/altoto/page028.html",
+      "address": "Not Available",
+      "email": "Not Listed",
+      "neighborhood": "Shimokitazawa",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/altoto_1422195116.jpg"
+    },
+    {
+      "name": "AMP cafe",
+      "website": "http://www.koenji-high.com/ampcafe",
+      "address": "東京都杉並区高円寺南4-30-1",
+      "email": "Not Listed",
+      "neighborhood": "Koenji",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/amp_1244630634.jpg"
+    },
+    {
+      "name": "Amrita Shokudo",
+      "website": "http://cafeamrita.jp",
+      "address": "東京都武蔵野市吉祥寺本町2-17-12",
+      "email": "Not Listed",
+      "neighborhood": "Kichijoji",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/amrita_1273544031.jpg"
+    },
+    {
+      "name": "ANAGRA",
+      "website": "http://www.anagra-tokyo.com/",
+      "address": "東京都千代田区平河町1-8-9 地下一階",
+      "email": "Not Listed",
+      "neighborhood": "Hanzomon",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/fb_img_1531842626440_946793167.jpg"
+    },
+    {
+      "name": "ANCE",
+      "website": "http://www.ance.jp",
+      "address": "東京都渋谷区代々木1-45-4 代々木山陽ビルB2",
+      "email": "Not Listed",
+      "neighborhood": "Yoyogi",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/ance_icon-s_1288719414.gif"
+    },
+    {
+      "name": "Anga",
+      "website": "http://www.anga-hp.com",
+      "address": "千葉市中央区富士見 2-16-4-B1F",
+      "email": "Not Listed",
+      "neighborhood": "Chiba",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/anga_1222154483.gif"
+    },
+    {
+      "name": "Another Dimension",
+      "website": "https://iflyer.tv/AnotherDimension/",
+      "address": "東京都渋谷区宇田川町11-6 渋谷宇田川Kkビル8階",
+      "email": "Not Listed",
+      "neighborhood": "Shibuya",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/20230507_164411_973179636.jpg"
+    },
+    {
+      "name": "anoxia",
+      "website": "https://anoxia2018.hatenablog.com/",
+      "address": "東京都豊島区上池袋４丁目２０−１",
+      "email": "Not Listed",
+      "neighborhood": "Ikebukuro",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/anoxia_1796020503.jpg"
+    },
+    {
+      "name": "Antiknock",
+      "website": "http://www.antiknock.net",
+      "address": "東京都新宿区新宿4-3-15　レイフラットビルB1F",
+      "email": "Not Listed",
+      "neighborhood": "Shinjuku",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/antiknock_1218425079.jpg"
+    },
+    {
+      "name": "Aoyama Hachi",
+      "website": "http://aoyama-hachi.net/",
+      "address": "東京都渋谷区渋谷4-5-9 青山ビルディング 2F-4F",
+      "email": "Not Listed",
+      "neighborhood": "Shibuya",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/hachi_1271826768.jpg"
+    },
+    {
+      "name": "Aoyama Moonromantic (Tsukimirukimiomou)",
+      "website": "http://www.moonromantic.com",
+      "address": "東京都港区南青山4-9-1シンプル青山ビルB1F",
+      "email": "Not Listed",
+      "neighborhood": "Gaienmae",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/moonromantic_1218425731.jpg"
+    },
+    {
+      "name": "Apia 40",
+      "website": "http://www.apia-net.com",
+      "address": "東京都目黒区碑文谷5-6-9サンワホームズB1",
+      "email": "Not Listed",
+      "neighborhood": "Gakugei-daigaku",
+      "details": "No Description",
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/apia_1235748498.jpg"
+    }
+  ]
+}
