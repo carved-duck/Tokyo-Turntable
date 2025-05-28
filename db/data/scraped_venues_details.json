@@ -2,12 +2,12 @@
   "venues": [
     {
       "name": "#chord_",
-      "website": "Not Listed",
+      "website": "https://www.hashchord.com/",
       "address": "東京都世田谷区池尻3-4-2 SSビル池尻B1",
       "email": "Not Listed",
-      "neighborhood": "Not Available",
+      "neighborhood": "Ikejiri-Ohashi",
       "details": "No Description",
-      "photo": "No Photo Available"
+      "photo": "https://www.tokyogigguide.com/images/jem/venues/small/chord_1122057284.jpg"
     }
   ]
 }

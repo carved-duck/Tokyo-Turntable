@@ -135,15 +135,16 @@ class VenueScraper
     venue_data[:name] ||= "Not Available"
 
 
-    # 3. website (venue a href)
-    website_element = html_doc.at_css('dd.jem-website a')
-    if website_element
-      venue_data[:website] = website_element['href']
-    elsif html_doc.at_css('.jem-detail-item:contains("Website") a')
-      # Fallback for "Website" text label
-      venue_data[:website] = html_doc.at_css('.jem-detail-item:contains("Website") a')['href']
+   # 3. website (venue a href)
+    # Target the 'a' tag within the dd element with class "venue"
+    website_element = html_doc.at_css('dd.venue a')
+
+    if website_element && website_element['href']
+      venue_data[:website] = website_element['href'].strip
+    else
+      venue_data[:website] = "Not Listed"
     end
-    venue_data[:website] ||= "Not Listed"
+    puts "    Website: #{venue_data[:website]}"
 
 
     # 4. address (address Japanese - exactly as written, from custom1 class)
@@ -164,25 +165,49 @@ class VenueScraper
     venue_data[:email] = "Not Listed"
 
 
-    # 6. neighborhood (venue city - using addressLocality)
-    neighborhood_element = html_doc.at_css('dd.jem-address span[itemprop="addressLocality"]')
-    venue_data[:neighborhood] = neighborhood_element.text.strip if neighborhood_element
-    venue_data[:neighborhood] ||= "Not Available"
+# 6. neighborhood (venue city - using venue_city class)
+    # Target the dd element with class "venue_city" and itemprop "addressLocality"
+    neighborhood_element = html_doc.at_css('dd.venue_city[itemprop="addressLocality"]')
 
-
-    # 7. details (description)
-    details_element = html_doc.at_css('div.jem-introtext')
-    venue_data[:details] = details_element.text.strip if details_element
-    venue_data[:details] ||= "No Description"
-
-
-    # 8. photo (flyer image link)
-    photo_element = html_doc.at_css('div.jem-image img.jem-photo')
-    if photo_element && photo_element['src']
-      # Construct full URL for relative image paths
-      venue_data[:photo] = URI.join(BASE_URL, photo_element['src']).to_s
+    if neighborhood_element
+      venue_data[:neighborhood] = neighborhood_element.text.strip
+    else
+      venue_data[:neighborhood] = "Not Available"
     end
-    venue_data[:photo] ||= "No Photo Available"
+    puts "    Neighborhood: #{venue_data[:neighborhood]}"
+
+
+     # 7. details (description/content from div.jem-introtext)
+    details_output = "No Description" # Default value if no details are found
+
+    details_container = html_doc.at_css('div.jem-introtext')
+
+    if details_container
+      # Get all the raw visible text content directly from the container.
+      # This will include text from links (like "https://www.google.com/maps?ll=35.650035,139.682908&z=14&t=m&hl=ja&gl=US&mapclient=embed&cid=190028919735767761")
+      # and concatenate text from multiple paragraphs.
+      # It will remove leading/trailing whitespace.
+      extracted_text = details_container.text.strip
+
+      # Assign the extracted text, or "No Description" if the extracted text is empty
+      venue_data[:details] = extracted_text.empty? ? "No Description" : extracted_text
+    else
+      # If the main details container (div.jem-introtext) is not found
+      venue_data[:details] = "No Description"
+    end
+    puts "    Details: #{venue_data[:details]}"
+
+    # 8. photo (image source link)
+    # Target the <img> tag within the <a> tag that has classes "flyermodal flyerimage"
+    photo_element = html_doc.at_css('a.flyermodal.flyerimage img')
+
+    if photo_element && photo_element['src']
+      # Extract the 'src' attribute directly
+      venue_data[:photo] = photo_element['src'].strip
+    else
+      venue_data[:photo] = "No Photo Available"
+    end
+    puts "    Photo: #{venue_data[:photo]}"
 
     venue_data
   end
