@@ -233,7 +233,8 @@ class VenueScraper
     parsed_data = JSON.parse(json)
     parsed_data["venues"].each do |venue_attr|
       img_link = venue_attr.delete("photo")
-      venue = Venue.new(venue_attr)
+      venue = Venue.find_by(name: venue_attr["name"])
+      venue = Venue.new(venue_attr) unless venue
       if img_link.start_with?("http")
         file = URI.parse(img_link).open
         venue.photo.attach(io: file, filename: "nes.png", content_type: "image/png")
