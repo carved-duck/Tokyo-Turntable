@@ -9,14 +9,11 @@
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
   </head>
-
-
- 
-
   <body>
-  
     <%= render "shared/flashes" %>
-    <div class="content">
+    <div class="content ms-5">
+      <div class="bg-red">
+      </div>
       <%= yield %>
     </div>
     <%= render "shared/tokyo_navbar" %>
