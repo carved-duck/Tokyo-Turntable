@@ -2,3 +2,14 @@
 @import "home";
 @import "venues_show";
 @import "gigs_show";
+
+
+.bg-red {
+  height: 25vh;
+  z-index: -1;
+  position: absolute;
+  background: $very-dark-red;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
