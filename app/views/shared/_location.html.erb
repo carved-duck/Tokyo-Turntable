@@ -1,9 +1,8 @@
 <div class="container py-4">
   <%= simple_form_for :search, url: venues_path, method: :get, html: { class: "row" } do |f| %>
     <%= f.input :address,
-              label: "Where are you?",
-              placeholder: "ex) Shibuya, Tokyo",
-              input_html: { value: params[:address] },
+              label: "Near",
+              input_html: { value: params.dig(:search, :address) || "Shinjuku" },
               wrapper_html: { class: "col-sm-6 text-white border-light" } %>
     <%= f.input :genre,
             label: "What type of music?",
