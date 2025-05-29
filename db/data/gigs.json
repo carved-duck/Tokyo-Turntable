@@ -126,6 +126,16 @@
       "door_price": "3,000JPY"
     },
     {
+      "name": "バラナンブ Baranambu, WETBLACK, Green Tripe",
+      "date": "May 29",
+      "open_time": "07.30",
+      "live_house": "Wall",
+      "area": "Shinjuku",
+      "category": "Doom, Metal, Psychedelic, Rock",
+      "adv_price": "2,400 yen",
+      "door_price": "2,400 yen"
+    },
+    {
       "name": "Satsuki",
       "date": "May 29",
       "open_time": "18.00",
@@ -494,6 +504,16 @@
       "area": "Koenji",
       "category": "Indie-Rock",
       "door_price": "1,500円"
+    },
+    {
+      "name": "standalone404(Mitsuhisa Sakaguchi, Toru Kasai, Masatsugu Hattori),  Kyoko Tsutsui, MAI MAO, O’bo, Masahiro Tobita",
+      "date": "May 31",
+      "open_time": "18.30",
+      "live_house": "Soup",
+      "area": "Ochiai",
+      "category": "Acoustic, Avant garde, Electronic, Experimental, Free Jazz, Improvised, Instrumental, Jazz, Noise",
+      "adv_price": "2500yen",
+      "door_price": "2500yen"
     },
     {
       "name": "Weasel Walter (drums) + Teté Leguía (bass) + Martín Escalante (sax) Trio",
@@ -1006,6 +1026,16 @@
       "area": "Sendagi",
       "category": "Art, Avant garde, Electronic, Experimental, WTF?",
       "door_price": "bar charge ¥500 + 1 Drink + Pay what you want for musicians"
+    },
+    {
+      "name": "Yuichi Ushioda/Kazuya Matsumoto/Fumi Endo/Satsuki Tsuchiya",
+      "date": "Jun 09",
+      "open_time": "19.30",
+      "live_house": "Nanahari",
+      "area": "Hatchobori",
+      "category": "Ambient",
+      "adv_price": "￥2800 (U25￥2000)",
+      "door_price": "￥3300"
     },
     {
       "name": "musbime, Timmy, mare, 青春群像録",
@@ -1575,6 +1605,16 @@
       "area": "Koenji",
       "category": "Acoustic, Alternative, Electro, Indie-Pop, World",
       "door_price": "￥1,500 + 1 Drink"
+    },
+    {
+      "name": "Tatsuhisa Yamamoto/Kouta Yamauchi/Satsuki Tsuchiya",
+      "date": "Jun 20",
+      "open_time": "19.30",
+      "live_house": "Nanahari",
+      "area": "Hatchobori",
+      "category": "Avant garde",
+      "adv_price": "￥2800 (U25￥2000)",
+      "door_price": "￥3300"
     },
     {
       "name": "Sunday Student, Nuit, 梨炭酸 (pear soda), 昨夜のレイトショー",
@@ -2601,6 +2641,15 @@
       "door_price": "¥2000 + 1d "
     },
     {
+      "name": "Twilight Force",
+      "date": "Sep 12",
+      "open_time": "18.00",
+      "live_house": "Stream Hall",
+      "area": "Shibuya",
+      "category": "Metal, Rock",
+      "adv_price": "10,000 JPY"
+    },
+    {
       "name": "ARTURO LANZ (Esplendor Geometrico), T. MIKAWA, SLIT THROATS, GOVERNMENT ALPHA, YUKO ARAKI, LIKE WEEDS, PARASITE NURSE",
       "date": "Sep 13",
       "open_time": "16.30",
@@ -2608,6 +2657,24 @@
       "area": "Ochiai",
       "category": "Electronic, Industrial, Noise",
       "door_price": "3,500"
+    },
+    {
+      "name": "Twilight Force",
+      "date": "Sep 13",
+      "open_time": "18.00",
+      "live_house": "Stream Hall",
+      "area": "Shibuya",
+      "category": "Metal, Rock",
+      "adv_price": "10,000 JPY"
+    },
+    {
+      "name": "My Dying Bride",
+      "date": "Sep 19",
+      "open_time": "18.00",
+      "live_house": "DUO Music Exchange",
+      "area": "Shibuya",
+      "category": "Metal, Rock",
+      "adv_price": "10,000 JPY"
     },
     {
       "name": "Bacon, ザ・ガールハント",
