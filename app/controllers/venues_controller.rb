@@ -33,9 +33,16 @@ class VenuesController < ApplicationController
         flash.now[:alert]  += " Couldn’t find location “#{address}”. Showing all."
       end
     end
+    # @filtered_venues = []
 
+    # @venues.each do |venue|
+    #   @filtered_venues << venue if @filtered_venues.count{|v|v.latitude == venue.latitude && v.longitude == venue.longitude} < 1
+    # end
+    #
 
-    @markers = @venues.geocoded.map do |venue|
+    @venues = @venues.select(&:unique_coords)
+
+    @markers = @venues.map do |venue|
       {
         id: venue.id,
         lat: venue.latitude,
