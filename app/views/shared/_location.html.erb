@@ -4,18 +4,27 @@
               label: "Near",
               input_html: { value: params.dig(:search, :address) || "Shinjuku" },
               wrapper_html: { class: "col-sm-6 text-white border-light" } %>
-    <%= f.input :radius,
-              label: "Radius (km)",
-              input_html: { value: params.dig(:search, :radius) || 2, min: 1 },
-              wrapper_html: { class: "col-sm-4 text-white border-light" } %>
     <%= f.input :genre,
-              label: "Genre",
-              collection: ["All"] + (@available_genres || Band.distinct.pluck(:genre)),
-              selected: params.dig(:search, :genre),
-              include_blank: false,
-              wrapper_html: { class: "col-sm-6 text-white border-light" } %>
+            label: "What type of music?",
+            collection: ["All"] + (@available_genres || Band.distinct.pluck(:genre)),
+            selected: params[:genre],
+            include_blank: false,
+            input_html: {
+              multiple: true,
+              class: "tom-select-tags",
+              name: "search[genre][]",
+              placeholder: "Select or add genres"
+             },
+             include_blank: false,
+            wrapper_html: { class: "col-sm-6 text-white border-light" } %>
     <div class="col-auto">
-      <%= f.button :submit, "Search", class: "btn btn-primary" %>
+      <button type="submit" class="btn d-flex">
+        <%# <i class="fa-solid fa-record-vinyl text-white"></i> %>
+        <p class="text-white discover-button" id="find">Find</p>
+      </button>
     </div>
   <% end %>
+  <button class="find-location">
+    Use my location
+  </button>
 </div>
