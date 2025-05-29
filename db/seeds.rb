@@ -47,8 +47,8 @@ users = [
 
 ]
 
+VenueScraper.new.generate_venues
 GigImporter.new.import_gigs_from_json
-
 # Create Users
 # users = 10.times.map do
 #   User.create!(
