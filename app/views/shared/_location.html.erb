@@ -2,17 +2,16 @@
   <%= simple_form_for :search, url: venues_path, method: :get, html: { class: "row" } do |f| %>
     <%= f.input :address,
               label: "Near",
-              placeholder: "ex) Tokyo, JP",
-              input_html: { value: params[:address] },
+              input_html: { value: params.dig(:search, :address) || "Shinjuku" },
               wrapper_html: { class: "col-sm-6 text-white border-light" } %>
     <%= f.input :radius,
               label: "Radius (km)",
-              input_html: { value: params[:radius] || 10, min: 1 },
+              input_html: { value: params.dig(:search, :radius) || 2, min: 1 },
               wrapper_html: { class: "col-sm-4 text-white border-light" } %>
     <%= f.input :genre,
               label: "Genre",
               collection: ["All"] + (@available_genres || Band.distinct.pluck(:genre)),
-              selected: params[:genre],
+              selected: params.dig(:search, :genre),
               include_blank: false,
               wrapper_html: { class: "col-sm-6 text-white border-light" } %>
     <div class="col-auto">

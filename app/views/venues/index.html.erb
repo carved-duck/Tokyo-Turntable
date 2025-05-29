@@ -1,17 +1,16 @@
-  <%= render "venue_sheet" %>
+<%= render "venue_sheet" %>
+<%= render "shared/rectangle_box", title: "Map!" %>
 <div class="container">
-  <h1>venues</h1>
   <!-- This is hidden template for the venue's sheet panel (canvas) -->
   <% @venues.each do |venue| %>
     <template id="venue-sheet-<%= venue.id %>">
       <h2><%= venue.name %></h2>
       <p><%= venue.address %></p>
-      <p><%#= truncate(venue.details, length: 100) %></p>
       <%= link_to "View page", venue_path(venue), class: "btn btn-sm btn-primary" %>
     </template>
   <% end %>
   <!-- mapbox container -->
-  <div style="width: 100%; height: 600px;"
+  <div style="width: 100%; height: 800px;"
     data-controller="map"
     data-map-markers-value="<%= @markers.to_json %>"
     data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
@@ -20,7 +19,7 @@
   <div class="row row-cols-1 row-cols-sm-2 g-3 mt-3">
     <% @venues.each do |venue| %>
       <div class="col">
-        <div class="card h-100">
+        <div class="concert-card">
           <% if venue.photo.attached? %>
             <%= cl_image_tag venue.photo.key, class: "card-img-top", style: "object-fit:cover; height:150px", alt: venue.name %>
           <% else %>
