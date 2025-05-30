@@ -1,5 +1,6 @@
-<%= render 'shared/rectangle_box', title: "Find Your Next Show With..."%>
-<div class="venue-show container m-2">
+<%= render 'shared/rectangle_box', title: " " %>
+<div class="venue-show container">
+  <%# venue header %>
   <div class="venue-header">
     <div class="header-header-text">
       <h1><%= @venue.name %></h1>
@@ -9,20 +10,50 @@
       <%= image_tag ("venue_image.jpg"), class: "venue-img"; %>
     </div>
   </div>
-  <div class="venue-body">
-    <h2 class="body-header">Upcoming</h2>
-    <ul>
-      <li>
-        <p class="gig-date"><%= Gig.all.sample.date %></p>
-        <p class="gig-bands"> <%= Band.all.sample.name %></p>
-        <p class="gig-time">Doors: <%= Gig.all.sample.open_time %> / Start: <%= Gig.all.sample.start_time %></p>
-        <p class="gig-price">Price: ¥<%= Gig.all.sample.price %> </p>
-      </li>
-    </ul>
+  <%# venue details %>
+  <p class="d-inline-flex gap-1 px-3 pt-3">
+    <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    + details
+  </a>
+  </p>
+  <div class="collapse px-3" id="collapseExample">
+    <div class="venue-details">
+      <table style="color: white;">
+        <tr>
+          <td class="label"><div>address:</div></td>
+          <td><div><%= @venue.address %></div></td>
+        </tr>
+        <tr>
+          <td class="label"><div>website:</div></td>
+          <td><div><%= @venue.website %></div></td>
+        </tr>
+        <tr>
+          <td class="label"><div>email:</div></td>
+          <td><div><%= @venue.email %></div></td>
+        </tr>
+      </table>
+    </div>
   </div>
-  <div class="venue-details">
-    <p> <strong>address:</strong> <%= @venue.address %> </p>
-    <p> <strong>website:</strong> <%= @venue.website %> </p>
-    <p> <strong>email:</strong> <%= @venue.email %> </p>
+  <%# upcoming show %>
+  <div class="venue-body p-3">
+    <h4 class="body-header mb-3 mt-3">Upcoming</h4>
+    <table class="gig-table">
+      <tr>
+        <td class="label"><i class="fa-regular fa-calendar icon"></i></td>
+        <td class="gig-text"><%= Gig.all.sample.date.strftime("%Y/%m/%d") %></td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fa-solid fa-microphone icon"></i></td>
+        <td class="gig-text"><%= Band.all.sample.name %></td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fa-regular fa-clock icon"></i></td>
+        <td class="gig-text">OPEN: <%= Gig.all.sample.open_time %> / START: <%= Gig.all.sample.start_time %></td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fa-solid fa-yen-sign icon"></i></td>
+        <td class="gig-text">PRICE: ¥<%= Gig.all.sample.price %></td>
+      </tr>
+    </table>
   </div>
 </div>
