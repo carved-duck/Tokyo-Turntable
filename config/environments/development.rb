@@ -76,6 +76,7 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = false
   # Allow requests by adding the following to your environment configuration
   config.hosts.clear
-      config.hosts << "stale-pugs-vanish.loca.lt"
-    config.hosts << "stale-pugs-vanish.loca.lt"
+  config.hosts << "stale-pugs-vanish.loca.lt"
+  config.hosts << "stale-pugs-vanish.loca.lt"
+  config.hosts << "localhost:3000"
 end
