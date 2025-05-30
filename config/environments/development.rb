@@ -79,4 +79,5 @@ Rails.application.configure do
   config.hosts << "stale-pugs-vanish.loca.lt"
   config.hosts << "stale-pugs-vanish.loca.lt"
   config.hosts << "localhost:3000"
+
 end

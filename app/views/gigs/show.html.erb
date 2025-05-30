@@ -11,6 +11,7 @@
       <%= image_tag ("venue_image.jpg"), class: "gig-img"; %>
     </div>
   </div>
+
   <%# venue details %>
   <p class="d-inline-flex gap-1 px-3 pt-3">
     <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -53,13 +54,32 @@
             <p><%= band.name %></p>
             <p><%= band.website_link %></p>
           </div>
-          <div class="band-info-song">
-            <iframe width="100" height="100" src="https://www.youtube.com/embed/hh-jwdWmgxg?si=QW28YDzS0Dt7cDe_&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          </div>
         </div>
       <% end %>
     </ul>
     </div>
-  </div>
 
+    <div class="gig-actions">
+      <% if user_signed_in? %>
+        <%# Check if the current user has favorited this gig %>
+        <% if current_user.favorited?(@gig) %>
+          <%# If already favorited, show an Unfavorite button %>
+          <%= link_to "Unfavorite", gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
+    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
+    class: "btn btn-outline-danger" %>
+        <% else %>
+          <%# If not favorited, show a Favorite button %>
+          <%= link_to "Favorite", gig_favorites_path(@gig),
+          data: { turbo_method: :post },
+          class: "btn btn-primary" %>
+        <% end %>
+      <% else %>
+        <%# If not signed in, prompt them to log in %>
+        <p><%= link_to "Log in to favorite this gig", new_user_session_path %></p>
+      <% end %>
+    </div>
+    <hr>
+    <%= link_to "Back to Gigs", gigs_path %>
+  </div>
+  </div>
 </div>
