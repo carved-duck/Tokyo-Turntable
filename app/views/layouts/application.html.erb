@@ -16,7 +16,7 @@
   </head>
   <body>
     <%= render "shared/flash" %>
-    <div class="content <%= "ms-5" unless current_page?(controller:"venues", action: "index") %>">
+    <div class="content <%= "ms-5" unless current_page?(venues_path) %>">
       <div class="bg-red">
       </div>
       <%= yield %>
