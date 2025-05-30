@@ -12,7 +12,7 @@
   </div>
   <%# venue details %>
   <p class="d-inline-flex gap-1 px-3 pt-3">
-    <a class="text-white" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     + details
   </a>
   </p>
@@ -36,14 +36,24 @@
   </div>
   <%# upcoming show %>
   <div class="venue-body p-3">
-    <h3 class="body-header mb-3 mt-3">Upcoming</h3>
-    <ul class="ps-0">
-      <li>
-        <i class="fa-regular fa-calendar" style="color: #FFFFFF;"></i><p class="gig-date"><%= Gig.all.sample.date %></p>
-        <i class="fa-solid fa-person" style="color: #FFFFFF;"></i><p class="gig-bands"><%= Band.all.sample.name %></p>
-        <i class="fa-regular fa-clock" style="color: #FFFFFF;"></i><p class="gig-time">Doors: <%= Gig.all.sample.open_time %> / Start: <%= Gig.all.sample.start_time %></p>
-        <i class="fa-solid fa-yen-sign" style="color: #FFFFFF;"></i><p class="gig-price">Price: ¥<%= Gig.all.sample.price %> </p>
-      </li>
-    </ul>
+    <h4 class="body-header mb-3 mt-3">Upcoming</h4>
+    <table class="gig-table">
+      <tr>
+        <td class="label"><i class="fa-regular fa-calendar icon"></i></td>
+        <td class="gig-text"><%= Gig.all.sample.date.strftime("%Y/%m/%d") %></td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fa-solid fa-microphone icon"></i></td>
+        <td class="gig-text"><%= Band.all.sample.name %></td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fa-regular fa-clock icon"></i></td>
+        <td class="gig-text">OPEN: <%= Gig.all.sample.open_time %> / START: <%= Gig.all.sample.start_time %></td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fa-solid fa-yen-sign icon"></i></td>
+        <td class="gig-text">PRICE: ¥<%= Gig.all.sample.price %></td>
+      </tr>
+    </table>
   </div>
 </div>

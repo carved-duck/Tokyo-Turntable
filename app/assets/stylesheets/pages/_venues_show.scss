@@ -36,32 +36,29 @@ p {
 }
 
 
-li {
-  list-style: none;
-}
-
 .body-header {
   color: white;
 }
 
-.venue-body {
-  // border-top: 1px solid $dark-red;
+// .venue-body {
+//   border-top: 1px solid $dark-red;
+// }
+
+
+// ----- venue details -----
+.text-custom {
+  color: rgb(143, 142, 142);
+  font-weight: lighter;
 }
 
 .venue-details {
   padding-top: 12px;
 }
 
-strong {
-  font-weight: bold;
-  color: $dark-red;
-}
-
-// venue details
 .venue-details td {
   font-size: 12px;
   font-weight: normal;
-  font-family: sans-serif;
+  font-family: Comfortaa;
 }
 
 .venue-details .label {
@@ -77,4 +74,42 @@ strong {
 
 .venue-details td div {
   margin-bottom: 12px;
+}
+
+
+//----- upcoming show ------
+.gig-table {
+  width: 100%;
+  color: white;
+  font-size: 1.1rem; /* テーブル全体の文字サイズ */
+  border-spacing: 0 10px; /* 行ごとの余白 */
+}
+
+.label {
+  width: 33px;
+  text-align: center;
+  vertical-align: top;
+  text-align: left;
+  padding-right: 4px;
+}
+
+.icon {
+  font-size: 20px;
+  margin-top: 4px;
+  color: #FFFFFF;
+  vertical-align: top;
+}
+
+.gig-text {
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.gig-table tr {
+  padding-bottom: 12px;   /* 行の下にスペース */
+}
+
+.gig-table td {
+  padding-bottom: 8px;    /* 各セルの下にも余白 */
+  padding-top: 8px;
 }
