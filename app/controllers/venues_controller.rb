@@ -7,7 +7,7 @@ class VenuesController < ApplicationController
     @venues = filter_by_location(@venues)
 
     # de‑dupe exact coordinate duplicates (rounding to 5 decimal places)
-    @venues = @venues.uniq { |v| [v.latitude.round(5), v.longitude.round(5)] }
+    @venues = @venues.uniq { |v| [v.latitude&.round(5), v.longitude&.round(5)] }
 
     @markers = @venues.map { |venue| marker_data_for(venue) }
   end
