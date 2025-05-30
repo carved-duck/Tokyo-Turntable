@@ -10,7 +10,6 @@
       <%= image_tag ("venue_image.jpg"), class: "gig-img"; %>
     </div>
   </div>
-
   <div class="gig-body">
     <h2 class="body-header"><%= @gig.date.strftime("%B %d, %Y") %> </h2>
     <p> Open: <%= @gig.open_time.to_datetime.strftime("%-k:%M") %> </p>
@@ -30,12 +29,31 @@
       <% end %>
       <p class="gig-price">Price: ¥<%= Gig.all.sample.price %> </p>
     </ul>
+    <div class="gig-actions">
+      <% if user_signed_in? %>
+        <%# Check if the current user has favorited this gig %>
+        <% if current_user.favorited?(@gig) %>
+          <%# If already favorited, show an Unfavorite button %>
+          <%= link_to "Unfavorite", gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
+    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
+    class: "btn btn-outline-danger" %>
+        <% else %>
+          <%# If not favorited, show a Favorite button %>
+          <%= link_to "Favorite", gig_favorites_path(@gig),
+          data: { turbo_method: :post },
+          class: "btn btn-primary" %>
+        <% end %>
+      <% else %>
+        <%# If not signed in, prompt them to log in %>
+        <p><%= link_to "Log in to favorite this gig", new_user_session_path %></p>
+      <% end %>
+    </div>
+    <hr>
+    <%= link_to "Back to Gigs", gigs_path %>
   </div>
-
   <div class="venue-details">
     <p> <strong>address:</strong> <%= venue.address %> </p>
     <p> <strong>website:</strong> <%= venue.website %> </p>
     <p> <strong>email:</strong> <%= venue.email %> </p>
   </div>
-
 </div>

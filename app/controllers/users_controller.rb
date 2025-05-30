@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
   def profile
-    @user = current_user # This will typically be the logged-in user
-    authorize @user
-    # Any other logic to prepare data for the profile view
+    @user = current_user
+    # Fetch favorited gigs for the current user
+    @favorited_gigs = @user.favorited_by_type('Gig')
+    # Or, if you want all favorited items regardless of type:
+    # @all_favorited_items = @user.all_favorited
+    authorize @user # If you are using Pundit
   end
-
-
-
 
   # use this as example for profile then delete after.
   #   def dashboard

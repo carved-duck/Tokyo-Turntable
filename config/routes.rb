@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :gigs, only: [ :index, :show, :edit, :update, :destroy ] do
     resources :bookings, only: [ :index, :new, :create, :destroy ]
     resources :attendances, only: [ :create ]
+    resources :favorites, only: [:create, :destroy]
   end
   resources :attendances, only: [ :index, :destroy ]
 
