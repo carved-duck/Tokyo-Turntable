@@ -1,0 +1,20 @@
+.find-location {
+  position: absolute;
+  transform: translate(192px,-247px);
+  width: 88px;
+  height: 41px;
+  border-radius: 24px;
+  background-color: white;
+  color: $black;
+  font-size: 13px;
+  line-height: 15px;
+  opacity: .9;
+  font-style: $body-font
+}
+
+.col-auto {
+  .d-flex {
+    font-size: 2rem;
+    gap: 12px;
+  }
+}

@@ -30,4 +30,6 @@ Rails.application.routes.draw do
     end
     resources :attendances, only: [ :index ]
   end
+
+  resources :genres, only: [:index]
 end
