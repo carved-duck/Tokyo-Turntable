@@ -1,76 +1,103 @@
 <%# app/views/users/profile.html.erb %>
-<%= render 'shared/rectangle_box', title: "copied another page for testing"%>
-<div class="gig-show container m-2">
-  <p> HELLOOOOOOOO</p>
-  <h1 class="text-light"><%= @user.username %>'s Profile</h1>
-  <ul> <%# Main <ul> tag starts here %>
-    <li class="text-light">
-      <h2>Associated Band:</h2>
-      <% if @user.band.present? %>
-        <p><strong>Band Name:</strong> <%= @user.band.name %></p>
-        <p><strong>Genre:</strong> <%= @user.band.genre %></p>
-        <p><strong>Hometown:</strong> <%= @user.band.hometown %></p>
-        <% if @user.band.website_link.present? %>
-          <p><strong>Website:</strong> <a
-href="<%= @user.band.website_link %>" target="_blank"><%=
-@user.band.website_link %></a></p>
-        <% end %>
-        <%# Add other band details here if needed %>
+<%# Profile Title Section (Rendered by _rectangle_box partial) %>
+<div class="text-center mb-4">
+  <%= render 'shared/rectangle_box', title: "#{@user.username.capitalize}'s Profile" %>
+</div>
+<%# Main container for the rest of the profile content %>
+<div class="container my-4 text-light">
+  <%# User Image Placeholder Section (Moved to the top) %>
+  <div class="text-center mb-5">
+    <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center" style="width: 150px; height: 150px; overflow: hidden;">
+      <%# This is the corrected conditional block %>
+      <% if @user.photo.attached? %> <%# <--- CHANGED from profile_picture to photo %>
+        <%= image_tag @user.photo, class: "img-fluid rounded-circle", alt: @user.username %> <%# <--- CHANGED from profile_picture to photo %>
       <% else %>
-        <p>This user is not currently associated with a band.</p>
+        <span class="h1 text-light">👤</span> <%# Fallback placeholder if no image is attached %>
       <% end %>
-    </li>
-    <%# Formatted "My Spotify" link %>
-    <% if @user.spotify_link.present? %>
-      <li class="text-light">
-        <strong>My Spotify:</strong> <a href="<%=
-@user.spotify_link %>" target="_blank"><%= @user.spotify_link
-%></a>
-      </li>
-    <% end %>
-    <%# Formatted "My Discogs" link %>
-    <% if @user.discogs_link.present? %>
-      <li class="text-light">
-        <strong>My Discogs:</strong> <a href="<%=
-@user.discogs_link %>" target="_blank"><%= @user.discogs_link
-%></a>
-      </li>
-    <% end %>
-    <h2>My Favorite Gigs</h2>
-    <% if @favorited_gigs.any? %>
-      <ul> <%# Nested <ul> for favorited gigs starts here %>
-        <% @favorited_gigs.each do |gig| %>
-          <li class="text-light">
-            <%# Display the Gig Date %>
-            <strong>Date:</strong> <%= gig.date.strftime("%B %d, %Y") %>
-            <%# Display the Bands playing this Gig %>
-            <% if gig.bands.any? %>
-              - <strong>Bands:</strong> <%= gig.bands.map(&:name).join(', ') %>
-            <% else %>
-              - No bands booked for this gig.
-            <% end %>
-            <%# Find the specific Favorite record for this user and gig, then get its ID %>
-            <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
-            <%# Only show unfavorite if the favorite_record_id was found (it should be) %>
-            <% if favorite_record_id.present? %>
-              <%= link_to "Unfavorite", gig_favorite_path(gig, favorite_record_id),
-                  data: { turbo_method: :delete, turbo_confirm: "Remove from favorites?" },
-                  class: "btn btn-sm btn-outline-danger" %>
-            <% end %>
+    </div>
+  </div>
+  <%# Band Details Section - now in a Card component %>
+  <div class="card bg-dark text-light mb-4 border-secondary rounded-4">
+    <div class="card-body">
+      <p class="mb-0">
+        <a class="btn btn-outline-light" data-bs-toggle="collapse" href="#bandDetailsCollapse" role="button" aria-expanded="false" aria-controls="bandDetailsCollapse">
+          + My Band Details
+        </a>
+      </p>
+      <div class="collapse mt-3" id="bandDetailsCollapse">
+        <% if @user.band.present? %>
+          <div class="row g-2">
+            <div class="col-md-6">
+              <p class="mb-1"><strong>Band Name:</strong> <%= @user.band.name %></p>
+              <p class="mb-1"><strong>Genre:</strong> <%= @user.band.genre %></p>
+              <p class="mb-1"><strong>Hometown:</strong> <%= @user.band.hometown %></p>
+            </div>
+            <div class="col-md-6">
+              <% if @user.band.website_link.present? %>
+                <p class="mb-1"><strong>Website:</strong> <a href="<%= @user.band.website_link %>" target="_blank" class="text-light text-decoration-none">Website</a></p>
+              <% end %>
+            </div>
+          </div>
+        <% else %>
+          <p>This user is not currently associated with a band.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%# Spotify, Discogs, and Past Shows Section %>
+  <div class="card bg-dark text-light mb-4 border-secondary rounded-4">
+    <div class="card-body">
+      <h3 class="card-title mb-3">Other Details</h3>
+      <ul class="list-unstyled mb-0">
+        <% if @user.spotify_link.present? %>
+          <li class="mb-2">
+            <strong>My Spotify:</strong> <a href="<%= @user.spotify_link %>" target="_blank" class="text-light text-decoration-none">Visit Spotify</a>
+          </li>
+        <% end %>
+        <% if @user.discogs_link.present? %>
+          <li class="mb-2">
+            <strong>My Discogs:</strong> <a href="<%= @user.discogs_link %>" target="_blank" class="text-light text-decoration-none">Visit Discogs</a>
+          </li>
+        <% end %>
+        <% if @user.past_shows.present? %>
+          <li class="mb-2">
+            <strong>Past Shows:</strong> <%= @user.past_shows %>
           </li>
         <% end %>
       </ul>
-      <%# Nested <ul> for favorited gigs ends here %>
-    <% else %>
-      <p class="text-light">You haven't favorited any gigs yet.</p>
-    <% end %>
-    <%# "Past Shows" as text (assuming it's not a direct URL) %>
-    <% if @user.past_shows.present? %>
-      <li class="text-light">
-        <strong>Past Shows:</strong> <%= @user.past_shows %>
-      </li>
-    <% end %> <%# End of @user.past_shows.present? if block %>
-  </ul>
-  <%# Main <ul> tag ends here %>
+    </div>
+  </div>
+  <%# My Favorite Gigs Section %>
+  <h2 class="mb-3">My Favorite Gigs</h2>
+  <% if @favorited_gigs.any? %>
+    <div class="row row-cols-1 g-3">
+      <% @favorited_gigs.each do |gig| %>
+        <div class="col">
+          <div class="card bg-dark text-light border-secondary rounded-4">
+            <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
+              <div>
+                <p class="mb-1"><strong>Date:</strong> <%= gig.date.strftime("%B %d, %Y") %></p>
+                <% if gig.bands.any? %>
+                  <p class="mb-0"><strong>Bands:</strong> <%= gig.bands.map(&:name).join(', ') %></p>
+                <% else %>
+                  <p class="mb-0">No bands booked for this gig.</p>
+                <% end %>
+              </div>
+              <%# Unfavorite Button %>
+              <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
+              <% if favorite_record_id.present? %>
+                <div class="mt-2 mt-md-0">
+                  <%= link_to "Unfavorite", gig_favorite_path(gig, favorite_record_id),
+                      data: { turbo_method: :delete, turbo_confirm: "Remove from favorites?" },
+                      class: "btn btn-sm btn-outline-danger" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-light">You haven't favorited any gigs yet.</p>
+  <% end %>
 </div>
-<%# Main <div class="gig-show container m-2"> ends here %>

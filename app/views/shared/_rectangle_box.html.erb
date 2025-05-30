@@ -1,22 +1,29 @@
 <%# dark red tall rectangle %>
 <div
-class="rectangle-left"
-style="
-background-color: #950101;
-width: 60px;
-height: 280px;
-position: absolute;
-z-index: 99;
-left: 0;
-border-bottom-right-radius: 0.7rem;
-">
+
+  class="rectangle-left"
+  style="
+    background-color: #950101;
+    width: 60px;
+    height: 280px;
+    position: absolute; <%# Keeps it fixed to the left edge %>
+    z-index: 99;
+    left: 0;
+    border-bottom-right-radius: 0.7rem;
+    display: flex;             <%# Makes the div a flex container %>
+    align-items: center;       <%# Centers content along the cross-axis (vertically in standard flow, horizontally here because of writing-mode) %>
+    justify-content: center;   <%# Centers content along the main-axis (horizontally in standard flow, vertically here because of writing-mode) %>
+  "
+>
+
   <%# text inside rectangle %>
   <h5
-    class="mt-3 ms-2"
+    class="m-0" <%# Remove default margins of h5 to ensure clean centering with flexbox %>
     style="
       writing-mode: vertical-rl;
       color: #F0DFDF;
-      font-size: 15px;
+      font-size: 24px;         <%# Made font size bigger (was 15px). Adjust as desired. %>
+      text-align: center;      <%# Helps ensure text characters themselves are centered if they wrap %>
     "
   >
     <%= title || "default text" %>
