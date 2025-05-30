@@ -1,26 +1,29 @@
-<div class="container py-4">
-  <%= simple_form_for :search, url: venues_path, method: :get, html: { class: "row" } do |f| %>
+<div class="container py-4 position-relative">
+  <%= simple_form_for :search, url: venues_path, method: :get, html: { class: "row", id: "location-form-container" } do |f| %>
     <%= f.input :address,
-              label: "Near",
+              label: "Where are you?",
               input_html: { value: params.dig(:search, :address) || "Shinjuku" },
               wrapper_html: { class: "col-sm-6 text-white border-light" } %>
     <%= f.input :genre,
-            label: "What type of music?",
-            collection: ["All"] + (@available_genres || Band.distinct.pluck(:genre)),
-            selected: params[:genre],
-            include_blank: false,
-            input_html: {
-              multiple: true,
-              class: "tom-select-tags",
-              name: "search[genre][]",
-              placeholder: "Select or add genres"
-             },
-             include_blank: false,
-            wrapper_html: { class: "col-sm-6 text-white border-light" } %>
+              label: "Choose a few genres",
+              wrapper_html: { class: "col-sm-6 text-white border-light" },
+              collection: (@available_genres || Band.distinct.pluck(:genre)),
+              input_html: {
+                multiple: true,
+                data: {
+                  controller: "tom-select",
+                  maxItems: 3,
+                  tom_select_option_value: {
+                    create: false,
+                    plugins: ['remove_button'],
+                    openOnFocus: false,
+                    }
+                  }
+              } %>
     <div class="col-auto">
       <button type="submit" class="btn d-flex">
         <%# <i class="fa-solid fa-record-vinyl text-white"></i> %>
-        <p class="text-white discover-button" id="find">Find</p>
+        <p class="text-white discover-button" id="find">Discover</p>
       </button>
     </div>
   <% end %>
