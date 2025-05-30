@@ -7,7 +7,13 @@ export default class extends Controller {
   connect() {
     this.tomSelect = new TomSelect(
       this.element,
-      this.optionsValue
+      {
+        maxItems: 3,
+        create: false,
+        plugins: ['remove_button'],
+        openOnFocus: false,
+        onItemAdd: function() { this.setTextboxValue("") }
+      }
     );
 
     this.tomSelect.onItemAdd = (value, $item) => { this.clearTextbox(); }

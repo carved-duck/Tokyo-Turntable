@@ -2,16 +2,19 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-between;
+
+  h1 {
+    color: white;
+  }
 }
 
 .gig-header {
-  margin-top: 16px;
+  height: 25vh;
+  align-items: end;
   display: flex;
   gap: 40px;
   justify-content: space-around;
-  padding-bottom: 12px;
-  border-bottom: 1px solid $dark-red;
+  padding: 0 12px 12px;
 }
 
 .gig-header-text {
@@ -19,7 +22,7 @@
 }
 
 .gig-img {
-  width: 120px;
+  max-width: 120px;
   margin-top: 8px;
   border-radius: 16%;
 }
@@ -31,23 +34,43 @@ p {
   font-weight: bold;
 }
 
-li {
-  list-style: none;
-}
-
 .body-header {
   color: white;
+}
+
+
+// ----- venue details -----
+.text-custom {
+  color: rgb(143, 142, 142);
+  font-weight: lighter;
 }
 
 .venue-details {
   // border-top: 1px solid $dark-red;
   padding-top: 12px;
+
 }
 
-strong {
-  font-weight: bold;
-  color: $dark-red;
-}
+// .venue-details td {
+//   font-size: 12px;
+//   font-weight: normal;
+//   font-family: Comfortaa;
+// }
+
+// .venue-details .label {
+//   font-weight: bold;
+// }
+
+// .venue-details td.label {
+//   vertical-align: top;
+//   font-weight: bold;
+//   padding-right: 10px;
+//   color: $dark-red;
+// }
+
+// .venue-details td div {
+//   margin-bottom: 12px;
+// }
 
 .band-info {
   width: 100%;
@@ -55,6 +78,6 @@ strong {
   justify-content: space-around;
 }
 
-h4 {
+h4, h5 {
   color: white;
 }

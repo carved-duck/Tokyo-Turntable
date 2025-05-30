@@ -1,12 +1,13 @@
 <%# dark red tall rectangle %>
 <div
+
   class="rectangle-left"
   style="
     background-color: #950101;
     width: 60px;
     height: 280px;
     position: absolute; <%# Keeps it fixed to the left edge %>
-    z-index: 9999;
+    z-index: 99;
     left: 0;
     border-bottom-right-radius: 0.7rem;
     display: flex;             <%# Makes the div a flex container %>
@@ -14,6 +15,7 @@
     justify-content: center;   <%# Centers content along the main-axis (horizontally in standard flow, vertically here because of writing-mode) %>
   "
 >
+
   <%# text inside rectangle %>
   <h5
     class="m-0" <%# Remove default margins of h5 to ensure clean centering with flexbox %>

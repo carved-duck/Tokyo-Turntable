@@ -6,19 +6,12 @@
               wrapper_html: { class: "col-sm-6 text-white border-light" } %>
     <%= f.input :genre,
               label: "Choose a few genres",
-              wrapper_html: { class: "col-sm-6 text-white border-light" },
-              collection: (@available_genres || Band.distinct.pluck(:genre)),
+              collection: ["All"] + Band.distinct.pluck(:genre),
               input_html: {
                 multiple: true,
                 data: {
                   controller: "tom-select",
-                  maxItems: 3,
-                  tom_select_option_value: {
-                    create: false,
-                    plugins: ['remove_button'],
-                    openOnFocus: false,
-                    }
-                  }
+                }
               } %>
     <div class="col-auto">
       <button type="submit" class="btn d-flex">
