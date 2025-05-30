@@ -1,3 +1,4 @@
+# config/routes.rb
 Rails.application.routes.draw do
   devise_for :users
   root to: "pages#home"
@@ -24,6 +25,9 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [ :show ] do
+    collection do
+      get :profile, as: :profile
+    end
     resources :attendances, only: [ :index ]
   end
 

@@ -8,11 +8,22 @@ class VenuePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve
-      scope.all
+      #scope.all
+       puts "--- VenuePolicy::Scope#resolve START ---"
+      puts "User object received by Pundit Scope: #{user.inspect}"
+      resolved_scope = scope.all
+      puts "Resolved scope count from scope.all: #{resolved_scope.count}"
+      puts "Resolved scope class: #{resolved_scope.class}"
+      puts "--- VenuePolicy::Scope#resolve END ---"
+      resolved_scope
     end
   end
 
   def show?
+     puts "--- VenuePolicy#show? START ---"
+    puts "User object received by Pundit Policy: #{user.inspect}"
+    puts "Record object received by Pundit Policy: #{record.inspect}"
+    puts "--- VenuePolicy#show? END ---"
     true
   end
 end

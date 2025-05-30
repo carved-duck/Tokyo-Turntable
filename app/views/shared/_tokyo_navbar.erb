@@ -2,8 +2,27 @@
   <div class="navbar-flex">
     <i class="fa-solid fa-heart navbar-item"></i>
     <i class="fa-solid fa-music navbar-item"></i>
-    <i class="fa-solid fa-record-vinyl navbar-item" id="logo"></i>
-    <i class="fa-solid fa-comment navbar-item"></i>
-    <i class="fa-solid fa-calendar-week navbar-item"></i>
+    <%# The middle button (record-vinyl icon), now linked to the home page %>
+    <%= link_to root_path, class: "navbar-item", id: "logo" do %> <%# Added link_to root_path %>
+      <i class="fa-solid fa-record-vinyl"></i>
+    <% end %>
+    <%# The Messages icon, linked to the user profile page %>
+    <%= link_to profile_users_path, class: "navbar-item" do %>
+      <i class="fa-solid fa-comment"></i>
+    <% end %>
+    <%# Calendar icon (user menu) dropdown %>
+    <div class="navbar-item dropdown">
+      <a class="nav-link" href="#" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa-solid fa-calendar-week"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
+        <% if user_signed_in? %>
+          <%= link_to "My Profile", profile_users_path, class: "dropdown-item" %>
+          <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class: "dropdown-item" %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

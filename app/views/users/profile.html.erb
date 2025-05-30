@@ -1,0 +1,39 @@
+<%= render 'shared/rectangle_box', title: "copied another page for testing"%>
+<div class="gig-show container m-2">
+  <p> HELLOOOOOOOO</p>
+  <h1 class="text-light"><%= @user.username %>'s Profile</h1>
+  <ul>
+    <li class="text-light">
+      <h2>Associated Band:</h2>
+      <% if @user.band.present? %>
+        <p><strong>Band Name:</strong> <%= @user.band.name %></p>
+        <p><strong>Genre:</strong> <%= @user.band.genre %></p>
+        <p><strong>Hometown:</strong> <%= @user.band.hometown %></p>
+        <% if @user.band.website_link.present? %>
+          <p><strong>Website:</strong> <a href="<%= @user.band.website_link %>" target="_blank"><%= @user.band.website_link %></a></p>
+        <% end %>
+        <%# Add other band details here if needed %>
+      <% else %>
+        <p>This user is not currently associated with a band.</p>
+      <% end %>
+    </li>
+    <%# Formatted "My Spotify" link %>
+    <% if @user.spotify_link.present? %>
+      <li class="text-light">
+        <strong>My Spotify:</strong> <a href="<%= @user.spotify_link %>" target="_blank"><%= @user.spotify_link %></a>
+      </li>
+    <% end %>
+    <%# Formatted "My Discogs" link %>
+    <% if @user.discogs_link.present? %>
+      <li class="text-light">
+        <strong>My Discogs:</strong> <a href="<%= @user.discogs_link %>" target="_blank"><%= @user.discogs_link %></a>
+      </li>
+    <% end %>
+    <%# "Past Shows" as text (assuming it's not a direct URL) %>
+    <% if @user.past_shows.present? %>
+      <li class="text-light">
+        <strong>Past Shows:</strong> <%= @user.past_shows %>
+      </li>
+    <% end %>
+  </ul>
+</div>

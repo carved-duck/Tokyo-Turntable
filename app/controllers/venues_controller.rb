@@ -2,8 +2,18 @@ class VenuesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
+    puts "--- VenuesController#index START ---"
+    puts "Is user signed in (Devise check): #{user_signed_in?}"
+    puts "Current user object (Devise): #{current_user.inspect}" if user_signed_in?
+
     @venues = policy_scope(Venue)
 
+
+     # See the generated SQL quer
+
+#     if params[:search][:genre].present? && params[:search][:genre] != "All"
+#       @venues = @venues.joins(gigs: { bookings: :band }).where(bands: { genre: params[:search][:genre] }).distinct
+#       @available_genres = Band.joins(bookings: { gig: :venue }).where(venues: { id: @venues.pluck(:id) }).distinct.pluck(:genre)
     if params.dig(:search, :genre).present? && params[:search][:genre] != "All"
       genre = params[:search][:genre]
       filtered = @venues.joins(gigs: { bookings: :band }).where(bands: { genre: genre }).distinct
@@ -56,5 +66,10 @@ class VenuesController < ApplicationController
   def show
     @venue = Venue.find(params[:id])
     authorize @venue
+    puts "--- VenuesController#show START ---"
+    puts "Is user signed in (Devise check): #{user_signed_in?}"
+    puts "Current user object (Devise): #{current_user.inspect}" if user_signed_in?
+    puts "Authorization performed for show? on venue id #{@venue.id}"
+    puts "--- VenuesController#show END ---"
   end
 end
