@@ -11,8 +11,4 @@ class Venue < ApplicationRecord
 
   geocoded_by :address
   after_validation :geocode, if: :will_save_change_to_address?
-
-  def unique_coords
-    Venue.where(latitude: latitude, longitude: longitude).count <= 2
-  end
 end
