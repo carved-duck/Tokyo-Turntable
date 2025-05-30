@@ -11,44 +11,55 @@
       <%= image_tag ("venue_image.jpg"), class: "gig-img"; %>
     </div>
   </div>
-
   <%# venue details %>
   <p class="d-inline-flex gap-1 px-3 pt-3">
     <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    + see venue details
+      + see venue details
     </a>
   </p>
   <div class="collapse px-3" id="collapseExample">
     <div class="venue-details">
       <table style="color: white;">
         <tr>
-          <td class="label"><div>address:</div></td>
-          <td><div><%= venue.address %></div></td>
-        </tr>
-        <tr>
-          <td class="label"><div>website:</div></td>
-            <td><div><%= venue.website %></div></td>
+          <td class="label">
+            <div>address:</div>
+          </td>
+          <td>
+            <div><%= venue.address %></div>
           </td>
         </tr>
         <tr>
-          <td class="label"><div>email:</div></td>
-            <td><div><%= venue.email %></div></td>
-          </tr>
-      </table>
-    </div>
+          <td class="label">
+            <div>website:</div>
+          </td>
+          <td>
+            <div><%= venue.website %></div>
+          </td>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">
+          <div>email:</div>
+        </td>
+        <td>
+          <div><%= venue.email %></div>
+        </td>
+      </tr>
+    </table>
   </div>
-  <%# gig info %>
-  <div class="gig-body p-3">
-    <h5 class="body-header my-3"><%= @gig.date.strftime("%B %d, %Y") %></h5>
-    <div style="display: flex; gap: 13px;">
-      <p>OPEN: <%= @gig.open_time.to_datetime.strftime("%-k:%M") %></p>
-      <p>START: <%= @gig.start_time.to_datetime.strftime("%-k:%M") %></p>
-    </div>
-    <p class="gig-price">PRICE: ¥<%= Gig.all.sample.price %></p>
-    <p>GENRE: <%= Band.all.sample.genre %></p>
-    <div class="artist">
+</div>
+<%# gig info %>
+<div class="gig-body p-3">
+  <h5 class="body-header my-3"><%= @gig.date.strftime("%B %d, %Y") %></h5>
+  <div style="display: flex; gap: 13px;">
+    <p>OPEN: <%= @gig.open_time.to_datetime.strftime("%-k:%M") %></p>
+    <p>START: <%= @gig.start_time.to_datetime.strftime("%-k:%M") %></p>
+  </div>
+  <p class="gig-price">PRICE: ¥<%= @gig.price %></p>
+  <p>GENRE: <%= @gig.bands.first.genre %></p>
+  <div class="artist">
     <ul class="ps-0">
-      <% Band.all.sample(2).each do |band| %>
+      <% @gig.bands.each do |band| %>
         <div class="band-info">
           <div class="band-info-text">
             <p><%= band.name %></p>
@@ -57,29 +68,28 @@
         </div>
       <% end %>
     </ul>
-    </div>
-
-    <div class="gig-actions">
-      <% if user_signed_in? %>
-        <%# Check if the current user has favorited this gig %>
-        <% if current_user.favorited?(@gig) %>
-          <%# If already favorited, show an Unfavorite button %>
-          <%= link_to "Unfavorite", gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
+  </div>
+  <div class="gig-actions">
+    <% if user_signed_in? %>
+      <%# Check if the current user has favorited this gig %>
+      <% if current_user.favorited?(@gig) %>
+        <%# If already favorited, show an Unfavorite button %>
+        <%= link_to "Unfavorite", gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
     data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
     class: "btn btn-outline-danger" %>
-        <% else %>
-          <%# If not favorited, show a Favorite button %>
-          <%= link_to "Favorite", gig_favorites_path(@gig),
+      <% else %>
+        <%# If not favorited, show a Favorite button %>
+        <%= link_to "Favorite", gig_favorites_path(@gig),
           data: { turbo_method: :post },
           class: "btn btn-primary" %>
-        <% end %>
-      <% else %>
-        <%# If not signed in, prompt them to log in %>
-        <p><%= link_to "Log in to favorite this gig", new_user_session_path %></p>
       <% end %>
-    </div>
-    <hr>
-    <%= link_to "Back to Gigs", gigs_path %>
+    <% else %>
+      <%# If not signed in, prompt them to log in %>
+      <p><%= link_to "Log in to favorite this gig", new_user_session_path %></p>
+    <% end %>
   </div>
-  </div>
+  <hr>
+  <%= link_to "Back to Gigs", gigs_path %>
+</div>
+</div>
 </div>
