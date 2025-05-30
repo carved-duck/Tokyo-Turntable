@@ -1,6 +1,7 @@
 .mapboxgl-map {
   border-radius: 16px;
-  margin-top: 24px;
-  opacity: 0.85;
+  margin-top: 1px;
+  opacity: 0.99;
   display: flex;
+  z-index: 100;
 }
