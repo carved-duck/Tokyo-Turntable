@@ -1,5 +1,6 @@
-<%= render 'shared/rectangle_box', title: "Find Your Next Show With..." %>
+<%= render 'shared/rectangle_box', title: " " %>
 <div class="gig-show container">
+  <%# gig header %>
   <div class="gig-header">
     <div class="gig-header-text">
       <% venue = Venue.find(@gig.venue_id) %>
@@ -10,32 +11,55 @@
       <%= image_tag ("venue_image.jpg"), class: "gig-img"; %>
     </div>
   </div>
-
-  <div class="gig-body">
-    <h2 class="body-header"><%= @gig.date.strftime("%B %d, %Y") %> </h2>
-    <p> Open: <%= @gig.open_time.to_datetime.strftime("%-k:%M") %> </p>
-    <p> Start: <%= @gig.start_time.to_datetime.strftime("%-k:%M") %> </p>
-    <h4> <%= Band.all.sample.genre %> </h4>
-    <ul>
+  <%# venue details %>
+  <p class="d-inline-flex gap-1 px-3 pt-3">
+    <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    + see venue details
+    </a>
+  </p>
+  <div class="collapse px-3" id="collapseExample">
+    <div class="venue-details">
+      <table style="color: white;">
+        <tr>
+          <td class="label"><div>address:</div></td>
+          <td><div><%= venue.address %></div></td>
+        </tr>
+        <tr>
+          <td class="label"><div>website:</div></td>
+            <td><div><%= venue.website %></div></td>
+          </td>
+        </tr>
+        <tr>
+          <td class="label"><div>email:</div></td>
+            <td><div><%= venue.email %></div></td>
+          </tr>
+      </table>
+    </div>
+  </div>
+  <%# gig info %>
+  <div class="gig-body p-3">
+    <h5 class="body-header my-3"><%= @gig.date.strftime("%B %d, %Y") %></h5>
+    <div style="display: flex; gap: 13px;">
+      <p>OPEN: <%= @gig.open_time.to_datetime.strftime("%-k:%M") %></p>
+      <p>START: <%= @gig.start_time.to_datetime.strftime("%-k:%M") %></p>
+    </div>
+    <p class="gig-price">PRICE: ¥<%= Gig.all.sample.price %></p>
+    <p>GENRE: <%= Band.all.sample.genre %></p>
+    <div class="artist">
+    <ul class="ps-0">
       <% Band.all.sample(2).each do |band| %>
         <div class="band-info">
           <div class="band-info-text">
-            <p> <%= band.name %> </p>
-            <p> <%= band.website_link %> </p>
+            <p><%= band.name %></p>
+            <p><%= band.website_link %></p>
           </div>
           <div class="band-info-song">
             <iframe width="100" height="100" src="https://www.youtube.com/embed/hh-jwdWmgxg?si=QW28YDzS0Dt7cDe_&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </div>
         </div>
       <% end %>
-      <p class="gig-price">Price: ¥<%= Gig.all.sample.price %> </p>
     </ul>
-  </div>
-
-  <div class="venue-details">
-    <p> <strong>address:</strong> <%= venue.address %> </p>
-    <p> <strong>website:</strong> <%= venue.website %> </p>
-    <p> <strong>email:</strong> <%= venue.email %> </p>
+    </div>
   </div>
 
 </div>
