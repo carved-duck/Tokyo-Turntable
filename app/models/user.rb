@@ -8,4 +8,6 @@ class User < ApplicationRecord
   belongs_to :band, optional: true
 
   has_one_attached :photo
+
+  acts_as_favoritor # Means that this model can favourite other models
 end
