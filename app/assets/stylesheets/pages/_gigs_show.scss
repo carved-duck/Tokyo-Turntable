@@ -3,11 +3,12 @@
   flex-direction: column;
   height: 100%;
 
-  h1 {
+  h1, h4, h5 {
     color: white;
   }
 }
 
+// ----- gig header -----
 .gig-header {
   height: 25vh;
   align-items: end;
@@ -27,23 +28,24 @@
   border-radius: 16%;
 }
 
-
-p {
+// ----- gig body -----
+.gig-body p {
   color: white;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.body-header {
-  color: white;
-}
-
-
-// ----- venue details -----
-.text-custom {
-  color: rgb(143, 142, 142);
+  font-size: 14px;
+  // font-weight: bold;
   font-weight: lighter;
 }
+
+.border-bottom {
+  border-bottom: 1px solid rgb(121, 120, 120) !important;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+// ----- venue details -----
+// (style of ".text-custom" in the "_text_custom.scss" file)
 
 .venue-details {
   // border-top: 1px solid $dark-red;
@@ -51,33 +53,56 @@ p {
 
 }
 
-// .venue-details td {
-//   font-size: 12px;
-//   font-weight: normal;
-//   font-family: Comfortaa;
-// }
-
-// .venue-details .label {
-//   font-weight: bold;
-// }
-
-// .venue-details td.label {
-//   vertical-align: top;
-//   font-weight: bold;
-//   padding-right: 10px;
-//   color: $dark-red;
-// }
-
-// .venue-details td div {
-//   margin-bottom: 12px;
-// }
-
-.band-info {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
+// ----- gig info -----
+.label-space {
+  margin-left: 12px;
 }
 
-h4, h5 {
-  color: white;
+
+// for button & link in bottom
+.sticky-buttons {
+  position: sticky;
+  bottom: 20px;
+  right: 0;
+  z-index: 10;
+}
+
+
+// ----- favorite button -----
+.btn-favorite {
+
+  border-radius: 30px;
+  font-weight: lighter;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  padding: 0.45rem 1.2rem; ;
+  font-size: 0.9rem;
+  min-width: 90px;
+  display: inline-block;
+  text-align: center;
+}
+
+// ----- when not favorited -----
+.btn-outline-danger {
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  background-color: transparent;
+
+  &:hover {
+    background-color: #d1051a;
+    color: #ffffff;
+    border-color: #d1051a;
+  }
+}
+
+// ----- when favorited -----
+.btn-danger {
+  color: #fff;
+  background-color: #d1051a;
+  border: 1px solid #d1051a;
+
+  &:hover {
+    background-color: #a0001f;
+    color: #fff;
+    border-color: #a0001f;
+  }
 }

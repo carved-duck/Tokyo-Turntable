@@ -1,0 +1,25 @@
+// this is for "+ see details" button & "< back to gigs" link
+
+a.text-custom {
+  position: relative;
+  text-decoration: none;
+  // color: rgb(143, 142, 142); // original font color
+  color:#ccc; // brighten it for better visibility
+  font-size: 12px;
+  font-weight: lighter;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0; // spacing from the text
+    width: 0%;
+    height: 0.7px; // thinness of the line
+    background-color: currentColor; // same color as text
+    transition: width 0.3s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
