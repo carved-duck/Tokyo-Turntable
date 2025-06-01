@@ -107,6 +107,24 @@
   }
 }
 
+.venue-sheet-btn {
+  background-color: #B64F44; /* Your custom dark red for buttons */
+  color: black; /* Black text for buttons */
+  border-radius: 24px; /* Rounded corners to match your cards and other buttons */
+  padding: 8px 15px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  text-decoration: none;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: darken(#B64F44, 10%);
+    color: black;
+  }
+}
+
 // Upcoming show section
 .venue-body {
   // Styles handled by main-content-card, and specific elements below
