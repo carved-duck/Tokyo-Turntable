@@ -22,10 +22,8 @@
     <% else %>
       <%# For all other pages, keep the 'content' wrapper and the empty bg-red div %>
       <div class="content <%= "ms-5" unless current_page?(venues_path) %>">
-        <div class="bg-red"> <%# This seems to be a placeholder bg-red for non-home pages %>
-        </div>
-        <%= yield %>
       </div>
+      <%= yield %>
     <% end %>
     <%= render "shared/tokyo_navbar" %> <%# This is your actual bottom navigation bar %>
   </body>
