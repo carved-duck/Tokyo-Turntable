@@ -1,18 +1,20 @@
+<%# app/views/pages/home.html.erb %>
 <div id="home-page">
-  <%# long rectangle %>
-  <%= render 'shared/rectangle_box', title: "Find Your Next Show With..."%>
-  <div>
-    <%# login button %>
-    <div class="bg-red">
-      <h4 class="text-end py-4 me-2 pe-2" style="color: #F0DFDF;">Login</h4>
-      <%# home page title %>
-      <h1>Tokyo <br>
-        Turntable</h1>
-    </div>
-    <%# map image %>
-    <%#= image_tag "red-map.png", alt: "map", width: 200 %>
+  <%# Top section: Contains the main graphic image and the title %>
+  <%# MODIFIED: Added main-content-card to home-top-section %>
+  <div class="home-top-section main-content-card">
+    <%# The main graphic image. Using .jpg as your file is .jpg. %>
+    <%# Ensure 'tokyo_tt_background.png' is correct, your file upload shows 'tokyo_tt_background.jpg' %>
+    <%= image_tag "tokyo_tt_background.png", alt: "Tokyo Turntable Graphic", class: "main-visual-graphic" %>
+    <%# The H1 title positioned over or near the graphic %>
   </div>
-  <div class="container">
-    <%= render "shared/location" %>
+  <%# Bottom section: Contains the search fields %>
+  <%# MODIFIED: Added main-content-card to search-fields-container %>
+  <div class="home-bottom-section main-content-card form-card-bottom-margin">
+    <div class="search-fields-container"> <%# This inner container is fine if it helps your search field styling %>
+      <div class="container"> <%# This inner container is fine if it helps your search field styling %>
+        <%= render "shared/location" %>
+      </div>
+    </div>
   </div>
 </div>

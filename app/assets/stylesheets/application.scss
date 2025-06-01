@@ -1,3 +1,18 @@
+/* app/assets/stylesheets/application.scss */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrollbar */
+  box-sizing: border-box; /* Ensures padding/border are included in element's total width/height */
+}
+
+body {
+  background-color: #3D4F5A; /* CHANGED: Set the main body background to your dark blue-grey */
+}
+
 // Graphical variables
 @import "config/fonts";
 @import "config/colors";
@@ -12,22 +27,81 @@
 @import "components/index";
 @import "pages/index";
 
+// CORRECTED: Import your custom Tom Select file from the 'components' directory
+@import "components/tom-select";
+@import "components/location"; // Corrected import path for _location.scss
 
-// Tom Select
+
+// Tom Select official styles (keep this if you're pulling from CDN)
 @import url('https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css');
 
-body {
-
-  background-color: black;
-  height: 100vh;
-  height: 100dvh;
-
-  display: flex;
-  flex-direction: column;
-
-
-}
 
 .content {
   flex-grow: 1;
+}
+
+/* --- Card-like styling for main content sections --- */
+.main-content-card {
+  background-color: #F6F2E6; /* Light cream background for your cards */
+  border-radius: 24px; /* Rounded corners for the cards */
+  padding: 20px; /* Padding inside the card content */
+  margin: 15px 15px 5px 15px; /* Margin on top/bottom and sides to show body background */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  overflow: hidden; /* Ensures content (like images) respects rounded corners */
+  box-sizing: border-box; /* Ensure padding/border are included in total width */
+  max-width: calc(100% - 30px); /* Limit card width to viewport minus margins */
+  margin-left: auto; /* Center the cards */
+  margin-right: auto; /* Center the cards */
+}
+
+.form-card-bottom-margin {
+  margin-bottom: 25px; /* More space for the bottom card if needed */
+}
+
+// Adjustments for the graphic within its card
+.home-top-section .main-visual-graphic {
+  display: block;
+  max-width: 100%; /* Ensure the image never exceeds the width of its parent */
+  height: auto;
+}
+
+// Ensure the image *inside* the card has appropriate sizing.
+.main-content-card img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+// Ensure Bootstrap containers/rows/cols don't introduce extra margins/paddings that cause overflow
+// Keep only the necessary overrides for `row` and `col` here if they are directly causing overflow.
+// Removed the aggressive `.container` and most `.col` overrides.
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+// If specific columns need padding removed, it's better to target them directly
+// or use Bootstrap's no-gutters utilities in HTML.
+// No general .col padding overrides in application.scss for now.
+
+
+// Adjust tom-select input container to respect margins/padding within the form card
+.ts-control {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important; /* Ensure it takes full width of its parent */
+  box-sizing: border-box !important;
+}
+
+// If the "Use my location" button or its container is causing overflow
+.find-location {
+  // Styles handled in _location.scss
+}
+
+// For the discover button
+.discover-button-rounded {
+  width: 100%; /* Make it take full width if it's currently causing overflow */
+  max-width: none; /* Remove any max-width constraints if it's too wide */
+  box-sizing: border-box;
 }

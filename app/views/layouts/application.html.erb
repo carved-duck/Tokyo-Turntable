@@ -16,11 +16,17 @@
   </head>
   <body>
     <%= render "shared/flash" %>
-    <div class="content <%= "ms-5" unless current_page?(venues_path) %>">
-      <div class="bg-red">
+    <%# Conditional rendering: If it's the home page, yield directly. Otherwise, use the 'content' wrapper. %>
+    <% if controller_name == 'pages' && action_name == 'home' %>
+      <%= yield %> <%# Your #home-page div will be rendered here, taking full width %>
+    <% else %>
+      <%# For all other pages, keep the 'content' wrapper and the empty bg-red div %>
+      <div class="content <%= "ms-5" unless current_page?(venues_path) %>">
+        <div class="bg-red"> <%# This seems to be a placeholder bg-red for non-home pages %>
+        </div>
+        <%= yield %>
       </div>
-      <%= yield %>
-    </div>
-    <%= render "shared/tokyo_navbar" %>
+    <% end %>
+    <%= render "shared/tokyo_navbar" %> <%# This is your actual bottom navigation bar %>
   </body>
 </html>
