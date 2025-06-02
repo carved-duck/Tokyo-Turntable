@@ -3,6 +3,7 @@
 <%#= render "shared/_location", search_path: gigs_path %>
 <div class="container">
   <!-- hidden templates for offcanvas/info‐panels -->
+  <%= render "gig_sheet" %>
   <% @gigs.each do |gig| %>
     <template id="gig-sheet-<%= gig.id %>">
       <h2><%= gig.venue.name %></h2>
@@ -16,5 +17,5 @@
        data-map-markers-value="<%= @markers.to_json %>"
        data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
   </div>
-  <%= render "gig_sheet" %>
+  <%= render "card" %>
 </div>
