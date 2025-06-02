@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   has_many :attendances
   belongs_to :band, optional: true
-
+  validates :username, presence: true
   has_one_attached :photo
 
   acts_as_favoritor # Means that this model can favourite other models
