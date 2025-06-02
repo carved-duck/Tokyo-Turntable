@@ -2,14 +2,13 @@
 <div class="profile-page-content-wrapper"> <%# NEW: This wrapper will center the profile content %>
   <%# Profile Title Section %>
   <div class="text-center mb-4 main-content-card">
-    <h2><%= "#{@user&.username.capitalize}'s Profile" %></h2>
+    <h2><%= "#{@user.username.capitalize}'s Profile" %></h2>
   </div>
   <%# User Image Placeholder Section %>
   <div class="text-center mb-5 main-content-card">
     <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center profile-image-container">
       <% if @user.photo.attached? %>
-        <%# REMOVED: img-fluid and rounded-circle classes %>
-        <%= image_tag @user.photo, class: "profile-image", alt: @user&.username %>
+        <%= image_tag @user.photo, class: "img-fluid rounded-circle profile-image", alt: @user.username %>
       <% else %>
         <span class="h1 text-dark">👤</span>
       <% end %>
@@ -27,13 +26,13 @@
         <% if @user.band.present? %>
           <div class="row g-2 text-dark">
             <div class="col-md-6">
-              <p class="mb-1"><strong>Band Name:</strong> <%= @user&.band&.name %></p>
-              <p class="mb-1"><strong>Genre:</strong> <%= @user&.band&.genre %></p>
-              <p class="mb-1"><strong>Hometown:</strong> <%= @user&.band&.hometown %></p>
+              <p class="mb-1"><strong>Band Name:</strong> <%= @user.band.name %></p>
+              <p class="mb-1"><strong>Genre:</strong> <%= @user.band.genre %></p>
+              <p class="mb-1"><strong>Hometown:</strong> <%= @user.band.hometown %></p>
             </div>
             <div class="col-md-6">
               <% if @user.band.website_link.present? %>
-                <p class="mb-1"><strong>Website:</strong> <a href="<%= @user&.band&.website_link %>" target="_blank" class="text-dark text-decoration-none">Website</a></p>
+                <p class="mb-1"><strong>Website:</strong> <a href="<%= @user.band.website_link %>" target="_blank" class="text-dark text-decoration-none">Website</a></p>
               <% end %>
             </div>
           </div>
@@ -48,19 +47,19 @@
     <div class="card-body">
       <h3 class="card-title mb-3 text-dark">Other Details</h3>
       <ul class="list-unstyled mb-0 text-dark">
-        <% if @user&.spotify_link&.present? %>
+        <% if @user.spotify_link.present? %>
           <li class="mb-2">
-            <strong>My Spotify:</strong> <a href="<%= @user&.spotify_link %>" target="_blank" class="text-dark text-decoration-none">Visit Spotify</a>
+            <strong>My Spotify:</strong> <a href="<%= @user.spotify_link %>" target="_blank" class="text-dark text-decoration-none">Visit Spotify</a>
           </li>
         <% end %>
-        <% if @user&.discogs_link&.present? %>
+        <% if @user.discogs_link.present? %>
           <li class="mb-2">
-            <strong>My Discogs:</strong> <a href="<%= @user&.discogs_link %>" target="_blank" class="text-dark text-decoration-none">Visit Discogs</a>
+            <strong>My Discogs:</strong> <a href="<%= @user.discogs_link %>" target="_blank" class="text-dark text-decoration-none">Visit Discogs</a>
           </li>
         <% end %>
-        <% if @user&.past_shows.present? %>
+        <% if @user.past_shows.present? %>
           <li class="mb-2">
-            <strong>Past Shows:</strong> <%= @user&.past_shows %>
+            <strong>Past Shows:</strong> <%= @user.past_shows %>
           </li>
         <% end %>
       </ul>
@@ -100,4 +99,4 @@
     <p class="text-dark">You haven't favorited any gigs yet.</p>
   <% end %>
 </div>
-<%# End of .profile-page-content-wrapper %>
+ <%# End of .profile-page-content-wrapper %>
