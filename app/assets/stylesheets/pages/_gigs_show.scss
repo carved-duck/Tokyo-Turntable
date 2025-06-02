@@ -21,18 +21,19 @@
   gap: 20px; /* Adjusted gap */
   justify-content: space-around;
   padding: 0 0 12px; /* Adjusted padding as main-content-card has its own padding */
-  text-align: center; /* Center content within header */
+  // text-align: center; /* Center content within header */
 
   h1 {
     color: black; /* Changed to black for card background */
     margin-bottom: 0.2rem;
   }
 
-  p.neighborhood {
-    color: black; /* Changed to black for card background */
-    font-size: 14px;
-    font-weight: normal;
-  }
+}
+
+p.neighborhood {
+  color: black; /* Changed to black for card background */
+  font-size: 14px;
+  font-weight: normal;
 }
 
 .gig-header-text {
@@ -61,11 +62,17 @@
   font-size: 1rem; /* Adjust font size */
 }
 
-.gig-body p.gig-price,
-.gig-body p.gig-genre {
-  font-weight: bold !important; /* Keep bold for price/genre if desired */
-}
+// ----- commented out at this moment (only label is bold) -----
+// .gig-body p.gig-venue,
+// .gig-body p.gig-times,
+// .gig-body p.gig-price,
+// .gig-body p.gig-genre {
+//   font-weight: bold !important; /* Keep bold for price/genre if desired */
+// }
 
+.gig-show-page-content-wrapper .page-title {
+  color: #333333 !important; //
+}
 
 h4, h5, h6 {
   color: black !important; /* Ensure all headers are black */
@@ -86,8 +93,16 @@ h4, h5, h6 {
 
 // Artist / Band Info
 .artist-header {
-  color: #B64F44 !important; /* Use your dark red for the header */
+  // color: #B64F44 !important; /* Use your dark red for the header */
   font-weight: bold;
+  border-bottom: 1px solid #C6C1B5;
+  // margin-bottom: 1rem;
+  padding-bottom: 8px
+}
+
+// act width in the header
+.artist {
+  width: 65%;
 }
 
 
@@ -96,8 +111,8 @@ h4, h5, h6 {
   display: flex;
   justify-content: space-between; /* Spacing for band name and website */
   align-items: center;
-  padding: 5px 0; /* Add some padding */
-  border-bottom: 1px solid #e0e0e0; /* Subtle separator */
+  // padding: 5px 0; /* Add some padding */
+  // border-bottom: 1px solid #e0e0e0; /* Subtle separator */
 
   &:last-child {
     border-bottom: none; /* No border for the last item */
@@ -113,13 +128,15 @@ h4, h5, h6 {
   .band-name {
     font-weight: bold !important;
     margin-bottom: 0;
-    font-size: 1.1rem;
-  }
+    font-size: 1.4rem;
+    }
+
   .band-website {
     font-size: 0.9rem;
     margin-bottom: 0;
   }
 }
+
 // Buttons at the bottom of the gig card
 .gig-actions {
   display: flex;
@@ -168,14 +185,18 @@ h4, h5, h6 {
 
 .gig-back-btn {
   background-color: #C6C1B5; /* Grey for back button */
-  color: black;
+  // color: black;
+  color: #333333;
   border-radius: 24px;
   padding: 8px 15px;
   border: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  // box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
   text-decoration: none;
   display: inline-block;
   font-weight: bold;
+  font-size: 15px;
 
   &:hover {
     background-color: darken(#C6C1B5, 10%);
@@ -185,9 +206,9 @@ h4, h5, h6 {
 
 // Reusing venue-details styles from _venues_show.scss for consistency
 // These styles are applied directly to elements with .venue-details in gig show HTML
-.venue-details {
-  // Styles handled by main-content-card, and specific elements below
-}
+// .venue-details {
+//   // Styles handled by main-content-card, and specific elements below
+// }
 
 .venue-details table {
   width: 100%;
@@ -239,4 +260,18 @@ h4, h5, h6 {
     color: black;
 
   }
+}
+
+.label-space {
+  margin-left: 10px;
+}
+
+.sticky-buttons {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  color: #333 !important;
+  text-decoration: underline;
 }
