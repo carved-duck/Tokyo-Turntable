@@ -37,7 +37,7 @@ class GigsController < ApplicationController
     begin
       chosen = Date.parse(raw_date)
     rescue ArgumentError
-      flash.now[:alert] = "Couldn’t understand “#{raw_date}” as a date. Showing all gigs."
+      flash.now[:alert] = "Couldn't understand “#{raw_date}” as a date. Showing all gigs."
       return scope
     end
 
@@ -73,30 +73,6 @@ class GigsController < ApplicationController
       scope
     end
   end
-
-    # This is for filtering by location, but don't need. Keeping just incase.
-    # def filter_by_location(scope)
-    #   address = params.dig(:search, :address)
-    #   radius  = params.dig(:search, :radius)&.to_f || 5
-    #   return scope if address.blank?
-
-    #   # Check if Geocoder can find that address
-    #   if Geocoder.search(address).present?
-    #     # Find all venues near that address, then pick gigs whose venue_id is in that set
-    #     nearby_venue_ids = Venue.near(address, radius, units: :km, order: false).pluck(:id)
-    #     if nearby_venue_ids.any?
-    #       scope.where(venue_id: nearby_venue_ids)
-    #     else
-    #       flash.now[:alert] ||= ""
-    #       flash.now[:alert] += " No venues within #{radius.to_i} km of '#{address}'. Showing all gigs."
-    #       scope
-    #     end
-    #   else
-    #     flash.now[:alert] ||= ""
-    #     flash.now[:alert] += " Couldn't find location '#{address}'. Showing all gigs."
-    #     scope
-    #   end
-    # end
 
     def marker_data_for(gig)
       {
