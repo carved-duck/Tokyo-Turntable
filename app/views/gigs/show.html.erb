@@ -12,6 +12,7 @@
         <%= image_tag("venue_image.jpg", class: "gig-img") %>
       </div>
     </div>
+
     <%# SEE VENUE DETAILS BUTTON %>
     <p class="d-inline-flex gap-1" style="padding: 12px 12px 0 12px;">
       <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -73,10 +74,12 @@
         <h5 class="border-bottom mt-3">ARTIST</h5>
         <div class="ps-0">
           <% Band.all.sample(2).each do |band| %>
+
             <p><%= band.name %></p>
             <p><%= band.website_link %></p>
           <% end %>
         </div>
+
       </div>
     </div>
   </div>
@@ -107,5 +110,7 @@
     </div>
     <%# BACK TO GIGS LINK %>
     <p class="mb-0 mt-2 pe-2"><%= link_to "< back to gigs", gigs_path, class: "text-custom"%></p>
-  </div>
+
+     
+</div>
 </div>
