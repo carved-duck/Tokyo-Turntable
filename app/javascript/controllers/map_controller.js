@@ -27,17 +27,15 @@ export default class extends Controller {
   }
 
   _addMarker(marker) {
-    const el = document.createElement("div")
-    // el.innerHTML = marker.marker_html  <-- and el to get custom map marker
-    new mapboxgl.Marker({ color: "#B64F44" })
-      .setLngLat([marker.lng, marker.lat])
-      .addTo(this.map)
-      .getElement()
-      .addEventListener("click", () => {
-        const tpl = document.getElementById(`gig-sheet-${marker.id}`)
-        document.getElementById("gigDetailsContent").innerHTML = tpl.innerHTML
-        new Offcanvas(document.getElementById("gigDetailsSheet")).show()
-      })
+    const mbMarker = new mapboxgl.Marker({ color: "#B64F44" })
+    .setLngLat([marker.lng, marker.lat])
+    .addTo(this.map)
+
+    mbMarker.getElement().addEventListener("click", () => {
+      const tpl = document.getElementById(`gig-sheet-${marker.id}`)
+      document.getElementById("gigDetailsContent").innerHTML = tpl.innerHTML
+      new Offcanvas(document.getElementById("gigDetailsSheet")).show()
+    })
   }
 
   _fitMapToMarkers() {
