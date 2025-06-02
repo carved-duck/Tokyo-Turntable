@@ -1,1 +1,20 @@
 <h1>Gigs shows</h1>
+<%#= render "shared/rectangle_box", title: "Upcoming Shows" %>
+<%#= render "shared/_location", search_path: gigs_path %>
+<div class="container">
+  <!-- hidden templates for offcanvas/info‐panels -->
+  <% @gigs.each do |gig| %>
+    <template id="gig-sheet-<%= gig.id %>">
+      <h2><%= gig.venue.name %></h2>
+      <p><%= gig.date.strftime("%Y/%m/%d") %> at <%= gig.start_time %></p>
+      <%= link_to "View details", gig_path(gig), class: "btn btn-sm btn-primary" %>
+    </template>
+  <% end %>
+  <!-- Mapbox container -->
+  <div style="width:100%; height:400px;"
+       data-controller="map"
+       data-map-markers-value="<%= @markers.to_json %>"
+       data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+  </div>
+  <%= render "gig_sheet" %>
+</div>

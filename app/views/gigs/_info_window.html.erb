@@ -1,0 +1,10 @@
+<h2>
+  <% if gig.bands.any? %>
+    <% gig.bands.each_with_index do |band, idx| %>
+      <%= band.name %><%= ", " unless idx == gig.bands.size - 1 %>
+    <% end %>
+  <% else %>
+    No band listed
+  <% end %>
+</h2>
+<p><%= gig.date.strftime("%Y/%m/%d") %></p>

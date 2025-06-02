@@ -12,13 +12,15 @@ export default class extends Controller {
       style: "mapbox://styles/mapbox/streets-v12",
     });
 
-    const good = this.markersValue.filter(m => m.lng && m.lat)
-    good.forEach(m => this._addMarker(m))
+    // filter out any null coords, but need to check later...
+    const valid = this.markersValue.filter(m => m.lng != null && m.lat != null)
+    // add each gig-marker
+    valid.forEach(m => this._addMarker(m))
 
-    if (good.length > 0) {
-      this._fitMapToMarkers()
+    if (valid.length > 0) {
+      this._fitMapToMarkers(valid)
     } else {
-      // no markers → show Tokyo
+      // no markers then we show Tokyo
       this.map.setCenter([139.6917, 35.6895])
       this.map.setZoom(10)
     }
@@ -32,9 +34,9 @@ export default class extends Controller {
       .addTo(this.map)
       .getElement()
       .addEventListener("click", () => {
-        const tpl = document.getElementById(`venue-sheet-${marker.id}`)
-        document.getElementById("venueDetailsContent").innerHTML = tpl.innerHTML
-        new Offcanvas(document.getElementById("venueDetailsSheet")).show()
+        const tpl = document.getElementById(`gig-sheet-${marker.id}`)
+        document.getElementById("gigDetailsContent").innerHTML = tpl.innerHTML
+        new Offcanvas(document.getElementById("gigDetailsSheet")).show()
       })
   }
 
