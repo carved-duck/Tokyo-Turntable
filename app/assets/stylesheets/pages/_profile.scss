@@ -16,29 +16,16 @@
   width: 150px;
   height: 150px;
   overflow: hidden;
-  border-radius: 50%;
   border: 3px solid #C6C1B5;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   margin: 0 auto;
-
-  // This targets the image INSIDE the circular container
-  .profile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-    .default-profile-icon {
-    font-size: 2.5rem; /* Adjust this size as needed to fill the circle nicely */
-    line-height: 1;    /* Crucial: removes extra vertical space around the icon */
-    margin: 0;         /* Removes any default margins from Bootstrap or browser */
-    padding: 0;        /* Removes any default padding */
-    display: block;    /* Ensures line-height applies consistently */
-    color: black;      /* Ensure the color is black on the light gray background */
-  }
 }
 
-
+.profile-image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
 
 // Style for the "+ My Band Details" collapse button
 .profile-collapse-btn {
