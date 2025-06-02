@@ -1,21 +1,41 @@
-.venue-show {
+/* app/assets/stylesheets/pages/_venues_show.scss */
+
+// Wrapper for centering all content on the venue show page
+.venue-show-page-content-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100%;
-
-  h1 {
-    color: white;
-  }
+  align-items: center; /* Centers the main-content-cards horizontally */
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 70px; /* Add padding at the bottom to account for the fixed navbar */
+  background-color: #829B9D;
 }
 
+// Your existing .venue-show styles, adjusted
+.venue-show-page-content-wrapper { // Use the new wrapper class
+  // height: 100%; // Not needed here as min-height is on body, and content wrapper has flex-direction column.
+}
+
+// Styles specific to the header section within its card
 .venue-header {
-  height: 25vh;
+  height: auto; /* Changed from 25vh to auto to be more flexible within card */
   align-items: end;
   display: flex;
-  gap: 40px;
+  gap: 20px; /* Adjusted gap for potentially better fit within card */
   justify-content: space-around;
-  padding: 0 12px 12px;
-  // border-bottom: 1px solid $dark-red;
+  padding: 0 0 12px; /* Adjust padding as main-content-card has its own padding */
+  text-align: center; /* Center content within header if space allows */
+
+  h1 {
+    color: black; /* Changed to black for card background */
+    margin-bottom: 0.2rem; /* Reduce default h1 margin */
+  }
+
+  p.neighborhood {
+    color: black; /* Changed to black for card background */
+    font-size: 14px; /* Adjusted font size for better readability */
+    font-weight: normal; /* Set to normal as bold might be too much */
+  }
 }
 
 .venue-header-text {
@@ -23,93 +43,130 @@
 }
 
 .venue-img {
-  width: 120px;
-  margin-top: 8px;
+  width: 100px; /* Adjusted width for potentially better fit within card */
+  height: 100px; /* Make it square */
+  object-fit: cover; /* Ensure image covers the area */
+  margin-top: 0;
   border-radius: 16%;
+  flex-shrink: 0; /* Prevent it from shrinking */
 }
 
+// Details toggle button
+.venue-details-collapse-btn {
+  background-color: #C6C1B5; /* Match "Use my location" button */
+  color: black; /* Black text */
+  border-radius: 24px;
+  padding: 8px 15px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.9rem;
 
-p {
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
+  &:hover {
+    background-color: darken(#C6C1B5, 10%);
+    color: black;
+  }
 }
 
-
-.body-header {
-  color: white;
-}
-
-// .venue-body {
-//   border-top: 1px solid $dark-red;
-// }
-
-
-// ----- venue details -----
-.text-custom {
-  color: rgb(143, 142, 142);
-  font-weight: lighter;
-}
-
+// Venue details table
 .venue-details {
-  padding-top: 12px;
+  padding-top: 0; /* Adjusted as main-content-card has its own padding */
+}
+
+.venue-details table {
+  width: 100%;
 }
 
 .venue-details td {
-  font-size: 12px;
+  font-size: 14px; /* Slightly larger for readability */
   font-weight: normal;
-  font-family: Comfortaa;
-}
-
-.venue-details .label {
-  font-weight: bold;
+  font-family: 'Comfortaa', sans-serif; /* Ensure Comfortaa font */
+  color: black; /* Default text color for table cells */
+  padding-bottom: 8px; /* Consistent spacing */
 }
 
 .venue-details td.label {
   vertical-align: top;
   font-weight: bold;
   padding-right: 10px;
-  color: $dark-red;
+  color: #B64F44; /* Use the dark red from your palette */
+  min-width: 70px; /* Ensure labels don't get too narrow */
 }
 
 .venue-details td div {
-  margin-bottom: 12px;
+  margin-bottom: 0; /* Removed margin as padding on td handles spacing */
 }
 
+// Custom link style within cards
+.venue-link {
+  color: #333 !important; /* Dark grey for links */
+  text-decoration: underline;
+  &:hover {
+    color: #000 !important; /* Darker on hover */
+  }
+}
 
-//----- upcoming show ------
+.venue-sheet-btn {
+  background-color: #B64F44; /* Your custom dark red for buttons */
+  color: black; /* Black text for buttons */
+  border-radius: 24px; /* Rounded corners to match your cards and other buttons */
+  padding: 8px 15px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  text-decoration: none;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: darken(#B64F44, 10%);
+    color: black;
+  }
+}
+
+// Upcoming show section
+.venue-body {
+  // Styles handled by main-content-card, and specific elements below
+}
+
+h4.body-header {
+  color: black; /* Changed to black */
+  text-align: center;
+}
+
+// Gig table
 .gig-table {
   width: 100%;
-  color: white;
-  font-size: 1.1rem; /* テーブル全体の文字サイズ */
-  border-spacing: 0 10px; /* 行ごとの余白 */
+  color: black; /* Changed to black for card background */
+  font-size: 1rem; /* Adjusted font size */
+  border-spacing: 0 10px; /* Row spacing */
+  margin-bottom: 0; /* Handled by mb-3 on table in HTML */
+
+  td {
+    padding-bottom: 8px;
+    padding-top: 8px;
+    color: black; /* Ensure cell text is black */
+  }
 }
 
-.label {
-  width: 33px;
-  text-align: center;
-  vertical-align: top;
+.gig-table .label {
+  width: 33px; /* Keep icon label width */
   text-align: left;
-  padding-right: 4px;
-}
-
-.icon {
-  font-size: 20px;
-  margin-top: 4px;
-  color: #FFFFFF;
   vertical-align: top;
+  padding-right: 4px;
+  color: #B64F44; /* Use dark red for icon labels */
 }
 
-.gig-text {
-  font-size: 0.9rem;
+.gig-table .icon {
+  font-size: 18px; /* Adjusted icon size */
+  margin-top: 0;
+  color: #B64F44; /* Use dark red for icons */
   vertical-align: middle;
 }
 
-.gig-table tr {
-  padding-bottom: 12px;   /* 行の下にスペース */
-}
-
-.gig-table td {
-  padding-bottom: 8px;    /* 各セルの下にも余白 */
-  padding-top: 8px;
+.gig-table .gig-text {
+  font-size: 0.9rem;
+  vertical-align: middle;
+  color: black; /* Ensure gig text is black */
 }

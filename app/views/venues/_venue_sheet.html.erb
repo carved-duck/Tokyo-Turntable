@@ -1,7 +1,8 @@
-<div class="offcanvas offcanvas-bottom bg-dark" tabindex="-1" id="venueDetailsSheet" data-bs-scroll="true" data-bs-backdrop="false">
+<div class="offcanvas offcanvas-bottom custom-offcanvas" tabindex="-1" id="venueDetailsSheet" data-bs-scroll="true" data-bs-backdrop="false">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="venueDetailsLabel">Venue details</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    <h5 class="offcanvas-title text-dark" id="venueDetailsLabel">Venue details</h5>
+ <%# Added text-dark for title %>
+    <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> <%# Added custom-btn-close %>
   </div>
   <div class="offcanvas-body small">
     <div id="venueDetailsContent"></div>

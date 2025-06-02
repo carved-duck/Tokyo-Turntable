@@ -1,19 +1,85 @@
+/* app/assets/stylesheets/_tom-select.scss */
+
 .ts-control input {
-  color: white;
+  // This rule was setting input text to white.
+  // We need to override this for the main input text (Shinjuku) and selected tags (Rock).
+  // We'll handle input text color with a more specific rule, but keep this for now if it serves other general inputs.
+  // color: white;
 }
 
+// === MODIFIED: Dropdown overall styling ===
 .ts-dropdown, .ts-dropdown.form-control, .ts-dropdown.form-select {
-  background: black;
-  color: $red;
+  background: #F6F2E6; /* Light cream background for the dropdown */
+  color: black; /* Black text for general dropdown items */
+  border: 1px solid #D9D2C8; /* Subtle border for the dropdown */
+  border-radius: 8px; /* Slightly rounded corners for the dropdown */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
 }
 
+// === MODIFIED: Active (hovered/selected by keyboard) item in dropdown ===
 .ts-dropdown .active {
-  color: $red;
-  background-color: black;
-  border-radius: 24px;
-  box-shadow: inset 0 0 0 2px $red;
+  background-color: #C6C1B5; /* Background for hovered/active item */
+  color: black; /* Black text for hovered/active item */
+  border-radius: 8px; /* Rounded corners for active item */
+  box-shadow: inset 0 0 0 2px #829B9D /* Border/shadow using your Discover button color */
 }
 
 .ts-wrapper.multi .ts-control>div {
-  border-radius: 24px;
+  border-radius: 24px; /* Your preferred border-radius for multi-select items */
+}
+
+
+/* --- NEW/MODIFIED RULES FOR TAG BACKGROUNDS AND TEXT COLORS (FROM PREVIOUS) --- */
+
+// Target the main input field for the genre selector, where text is typed and tags appear
+.ts-control {
+  background-color: #F0DFDF !important; /* Light cream background for the input field */
+  border: 1px solid #D9D2C8 !important; /* Subtle border for the input field */
+  border-radius: 24px !important; /* Ensure the whole input field is rounded */
+}
+
+// Target the selected tags themselves (e.g., "Rock")
+.ts-wrapper.multi .ts-control .item {
+  background-color: #C6C1B5 !important; /* Background for selected tags like "Rock" */
+  color: black !important; /* Text color for selected tags like "Rock" */
+  border-radius: 24px !important; /* Rounded corners for the individual tags */
+  padding: 3px 8px !important; /* Adjust padding for selected tags */
+  margin: 0 5px 0 0 !important; /* Adjust margin between tags */
+  border: none !important;
+}
+
+// Ensure the *input text* itself (where you type to search genres, or the "Shinjuku" field) is dark.
+// This targets the actual <input> element within a Tom-Select control.
+.ts-control input[type="text"] {
+  color: #333 !important; /* Dark grey for input text like "Shinjuku" or typed genre search */
+}
+
+// Placeholder text within the Tom-Select input
+.ts-control input::placeholder {
+  color: #555 !important; /* Slightly lighter dark grey for placeholders */
+  opacity: 1 !important; /* Full opacity */
+}
+
+// Target the down arrow in Tom-Select
+.ts-control .ts-arrow {
+  background-color: #C6C1B5 !important; /* Set arrow background color */
+  border-left: 1px solid #D9D2C8 !important; /* Add a separator if desired */
+  width: 3rem !important;
+  border-radius: 0 24px 24px 0 !important; /* Rounded right side for the arrow background to match overall rounding */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+// If Tom-Select uses a pseudo-element for the arrow icon
+.ts-control .ts-arrow::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%233D0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E") !important; /* Custom SVG down arrow */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  margin-top: 2px;
 }

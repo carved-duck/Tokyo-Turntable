@@ -1,16 +1,15 @@
 <%= render "venue_sheet" %>
-<%= render "shared/rectangle_box", title: "Map!" %>
 <div class="container">
   <!-- This is hidden template for the venue's sheet panel (canvas) -->
   <% @venues.each do |venue| %>
     <template id="venue-sheet-<%= venue.id %>">
       <h2><%= venue.name %></h2>
       <p><%= venue.address %></p>
-      <%= link_to "View page", venue_path(venue), class: "btn btn-sm btn-primary" %>
+      <%= link_to "View page", venue_path(venue), class: "btn venue-sheet-btn" %>
     </template>
   <% end %>
   <!-- mapbox container -->
-  <div style="width: 100%; height: 736px;"
+  <div style="width: 100%; height: 400px;"
     data-controller="map"
     data-map-markers-value="<%= @markers.to_json %>"
     data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">

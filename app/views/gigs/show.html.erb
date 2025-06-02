@@ -1,28 +1,27 @@
-<%= render 'shared/rectangle_box', title: " " %>
-<div class="gig-show container justify-content-between">
-  <div>
-    <%# GIG HEADER %>
-    <div class="gig-header">
-      <div class="gig-header-text">
-        <% venue = Venue.find(@gig.venue_id) %>
-        <h1><%= venue.name %></h1>
-        <p class="neighborhood"><%= venue.neighborhood %>, Tokyo</p>
-      </div>
-      <div class="header-header-img">
-        <%= image_tag("venue_image.jpg", class: "gig-img") %>
-      </div>
+<%# app/views/gigs/show.html.erb %>
+<div class="gig-show-page-content-wrapper"> <%# New wrapper for centering all content %>
+  <%# Gig Header Section %>
+  <div class="gig-header main-content-card mb-4"> <%# Applied main-content-card here %>
+    <div class="gig-header-text">
+      <% venue = Venue.find(@gig.venue_id) %>
+      <h1><%= venue.name %></h1>
+      <p class="neighborhood"><span><%= venue.neighborhood %></span>, Tokyo </p>
     </div>
-
-    <%# SEE VENUE DETAILS BUTTON %>
-    <p class="d-inline-flex gap-1" style="padding: 12px 12px 0 12px;">
-      <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-        + see venue details
+    <div class="header-header-img">
+      <%= image_tag ("venue_image.jpg"), class: "gig-img" %>
+    </div>
+  </div>
+  <%# Venue Details Toggle Section (reusing venue-details class from venue show) %>
+  <div class="main-content-card mb-4"> <%# Applied main-content-card here %>
+    <p class="mb-0">
+      <a class="btn venue-details-collapse-btn" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        + See Venue Details
       </a>
     </p>
-    <%# VENUE DETAILS %>
-    <div class="collapse px-3" id="collapseExample">
-      <div class="venue-details">
-        <table style="color: white;">
+    <div class="collapse mt-3" id="collapseExample">
+      <div class="venue-details"> <%# Reusing venue-details class %>
+        <%# Removed inline style="color: white;" here %>
+        <table>
           <tr>
             <td class="label">
               <div>address:</div>
@@ -36,7 +35,7 @@
               <div>website:</div>
             </td>
             <td>
-              <div><%= venue.website %></div>
+              <div><a href="<%= venue.website %>" target="_blank" class="venue-link"><%= venue.website %></a></div>
             </td>
           </tr>
           <tr>
@@ -44,73 +43,66 @@
               <div>email:</div>
             </td>
             <td>
-              <div><%= venue.email %></div>
+              <div><a href="mailto:<%= venue.email %>" class="venue-link"><%= venue.email %></a></div>
             </td>
           </tr>
         </table>
       </div>
     </div>
-    <%# GIG INFO %>
-    <div class="gig-body p-3">
-      <div class="gig-info text-end">
-        <h5 class="border-bottom mt-3">CONCERT INFO</h5>
-        <p class="my-3">
-          DATE:<span class="label-space"><%= @gig.date.strftime("%B %d, %Y") %></span>
-        </p>
-        <div style="display: flex; justify-content: flex-end; gap: 13px;">
-          <p>
-            OPEN/START:<span class="label-space"><%= @gig.open_time.to_datetime.strftime("%H:%M") %>/<%= @gig.start_time.to_datetime.strftime("%H:%M") %></span>
-          </p>
-        </div>
-        <p class="gig-price">
-          PRICE:<span class="label-space">¥<%= Gig.all.sample.price %></span>
-        </p>
-        <p>
-          GENRE:<span class="label-space"><%= Band.all.sample.genre %></span>
-        </p>
-      </div>
-      <%# ARTIST %>
-      <div class="artist mt-5">
-        <h5 class="border-bottom mt-3">ARTIST</h5>
-        <div class="ps-0">
-          <% Band.all.sample(2).each do |band| %>
-
-            <p><%= band.name %></p>
-            <p><%= band.website_link %></p>
-          <% end %>
-        </div>
-
-      </div>
-    </div>
   </div>
-  <div class="bottom-button-link sticky-buttons d-flex flex-column align-items-end pe-2">
-    <div class="gig-actions">
-      <%# FAVORITE ACTION %>
+  <%# Gig Info Section %>
+  <div class="gig-body main-content-card mb-4"> <%# Applied main-content-card here %>
+    <h5 class="body-header my-3"><%= @gig.date.strftime("%B %d, %Y") %></h5>
+    <div class="gig-times"> <%# New wrapper for times %>
+      <p>OPEN: <%= @gig.open_time.to_datetime.strftime("%-k:%M") %></p>
+      <p>START: <%= @gig.start_time.to_datetime.strftime("%-k:%M") %></p>
+    </div>
+    <p class="gig-price">PRICE: ¥<%= @gig.price %></p>
+    <p class="gig-genre">GENRE: <%= @gig.bands.first.genre %></p>
+ <%# Added gig-genre class %>
+    <div class="artist">
+      <h6 class="artist-header mt-3 mb-2">Artists:</h6>
+ <%# New header for artists %>
+      <ul class="ps-0 list-unstyled"> <%# Removed ps-0, added list-unstyled %>
+        <% @gig.bands.each do |band| %>
+          <li class="band-info mb-2"> <%# Added mb-2 for spacing between bands %>
+            <div class="band-info-text">
+              <p class="band-name"><%= band.name %></p>
+              <% if band.website_link.present? %>
+                <p class="band-website"><a href="<%= band.website_link %>" target="_blank" class="venue-link">Website</a></p>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="gig-actions mt-4">
+
       <% if user_signed_in? %>
         <%# Check if the current user has favorited this gig %>
         <% if current_user.favorited?(@gig) %>
           <%# If already favorited, show an Unfavorite button %>
-          <%= link_to "unfavorite", gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
-                    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
-                    class: "btn btn-danger btn-favorite" %>
+
+          <%= link_to "Unfavorite", gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
+      data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
+      class: "btn gig-unfavorite-btn" %> <%# Updated class %>
         <% else %>
           <%# If not favorited, show a Favorite button %>
-          <%= link_to "favorite", gig_favorites_path(@gig),
-                    data: { turbo_method: :post },
-                    class: "btn btn-outline-danger btn-favorite" %>
+          <%= link_to "Favorite", gig_favorites_path(@gig),
+            data: { turbo_method: :post },
+            class: "btn gig-favorite-btn" %> <%# Updated class %>
         <% end %>
       <% else %>
         <%# If not signed in, prompt them to log in %>
-        <p class="mb-2 pe-2">
-          <%= link_to new_user_session_path, class: "text-custom" do %>
-            <i class="fa fa-sign-in-alt" style="margin-right: 5px;"></i>log in to favorite this gig
-          <% end %>
-        </p>
+        <p class="login-prompt text-center"><%= link_to "Log in to favorite this gig", new_user_session_path, class: "venue-link" %></p>
+ <%# Added classes %>
       <% end %>
     </div>
-    <%# BACK TO GIGS LINK %>
-    <p class="mb-0 mt-2 pe-2"><%= link_to "< back to gigs", gigs_path, class: "text-custom"%></p>
+    <hr class="my-4"> <%# Added margin for hr %>
+    <div class="text-center"> <%# Centered back button %>
+      <%= link_to "Back to Gigs", gigs_path, class: "btn gig-back-btn" %> <%# Added gig-back-btn class %>
+    </div>
+  </div>
 
-     
 </div>
-</div>
+ <%# End of .gig-show-page-content-wrapper %>

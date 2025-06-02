@@ -1,16 +1,40 @@
+/* app/assets/stylesheets/components/_location.scss */
+
+// Ensure the direct parent of .find-location is a positioning context
+// This might be the form itself, or a specific div inside the form.
+// From previous examples, it seems to be inside a .row or direct children of the form.
+// Let's explicitly define a wrapper if not already done in HTML:
+.location-input-wrapper { // You might need to add this class to your HTML around the input and button
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 99px; /* Give space for the "Use my location" button (88px width + 11px right offset) */
+}
+
+// Your existing .find-location styles (preserving your background-color)
 .find-location {
+  // Keep original styles, but ensure parent is relative
   position: absolute;
-  top: 60px;
-  right: 11px;
-  width: 88px;
-  height: 45px;
-  border-radius: 24px;
-  background-color: white;
-  color: $black;
-  font-size: 13px;
-  line-height: 15px;
-  opacity: .9;
-  font-style: $body-font
+  top: 60px; /* Keep this as it positions relative to parent */
+  right: 11px; /* Keep your existing offset from right edge */
+  width: 88px; /* Your defined width */
+  height: 43px; /* Your defined height */
+  border-radius: 0 24px 24px 0; /* Your specific border radius */
+  background-color: #C6C1B5; /* Your preferred background color */
+  opacity: .9; /* Your opacity */
+  font-size: 13px; /* Your font size */
+  line-height: 15px; /* Your line height */
+  font-style: $body-font; /* Your font style */
+  border: none;
+  box-sizing: border-box;
+  text-align: center; /* Center the text inside the button */
+  display: flex; /* Use flexbox to vertically center content */
+  align-items: center; /* Vertically center content */
+  justify-content: center; /* Horizontally center content */
+}
+
+.find-location-black {
+  color: black !important; /* Force "Use my location" text to black */
 }
 
 .col-auto {
@@ -20,6 +44,48 @@
   }
 }
 
-#location-form-container button[type=submit] p {
+.discover-text-black {
+  color: black !important; /* Force "Discover" text to black */
   font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.discover-button-rounded {
+  background-color: #B64F44; /* Your preferred background color */
+  border-radius: 24px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  width: auto;
+  min-width: 120px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#search-container {
+  color: black;
+  padding: 0;
+  margin: 0;
+  position: relative; /* Make #search-container the positioning context for .find-location */
+  box-sizing: border-box;
+}
+
+// Ensure the input field (`form-input-black` or similar) has enough space
+// Assuming it's a Bootstrap form-control
+.form-control {
+  padding-right: 99px; /* This padding should accommodate the button's width + right offset */
+  box-sizing: border-box;
+}
+
+/* --- TEXT COLORS (existing, keep as is) --- */
+.form-label-black {
+  color: black !important;
+}
+
+.form-input-black {
+  /* No direct color or background styles here for the input itself, handled by _tom-select.scss */
 }

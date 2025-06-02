@@ -1,73 +1,85 @@
-<%= render 'shared/rectangle_box', title: "" %>
-<div class="venue-show container">
-  <%# venue header %>
-  <div class="venue-header">
+<%# app/views/venues/show.html.erb %>
+<div class="venue-show-page-content-wrapper"> <%# New wrapper for centering all content %>
+  <%# Venue Header Section %>
+  <div class="venue-header main-content-card mb-4"> <%# Applied main-content-card here %>
     <div class="header-header-text">
       <h1><%= @venue.name %></h1>
-      <p class="neighborhood"><%= @venue.neighborhood %>, Tokyo </p>
+      <p class="neighborhood"><span><%= @venue.neighborhood %></span>, Tokyo </p>
+ <%# Wrapped neighborhood in span for styling if needed %>
     </div>
     <div class="header-header-img">
-      <%= image_tag ("venue_image.jpg"), class: "venue-img"; %>
+      <%# Consider using @venue.photo.attached? and image_tag @venue.photo if you have attached images %>
+      <%= image_tag ("venue_image.jpg"), class: "venue-img" %>
     </div>
   </div>
-  <%# venue details %>
-  <p class="d-inline-flex gap-1 px-3 pt-3">
-    <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-      + details
-    </a>
-  </p>
-  <div class="collapse px-3" id="collapseExample">
-    <div class="venue-details">
-      <table style="color: white;">
-        <tr>
-          <td class="label">
-            <div>address:</div>
-          </td>
-          <td>
-            <div><%= @venue.address %></div>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">
-            <div>website:</div>
-          </td>
-          <td>
-            <div><%= @venue.website %></div>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">
-            <div>email:</div>
-          </td>
-          <td>
-            <div><%= @venue.email %></div>
-          </td>
-        </tr>
-      </table>
+  <%# Venue Details Toggle Section %>
+  <div class="main-content-card mb-4"> <%# Applied main-content-card here %>
+    <p class="mb-0">
+      <a class="btn venue-details-collapse-btn" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        + Details
+      </a>
+    </p>
+    <div class="collapse mt-3" id="collapseExample">
+      <div class="venue-details">
+        <%# Removed inline style="color: white;" here %>
+        <table>
+          <tr>
+            <td class="label">
+              <div>address:</div>
+            </td>
+            <td>
+              <div><%= @venue.address %></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">
+              <div>website:</div>
+            </td>
+            <td>
+              <div><a href="<%= @venue.website %>" target="_blank" class="venue-link"><%= @venue.website %></a></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">
+              <div>email:</div>
+            </td>
+            <td>
+              <div><a href="mailto:<%= @venue.email %>" class="venue-link"><%= @venue.email %></a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
-  <%# upcoming show %>
-  <div class="venue-body p-3">
+  <%# Upcoming Show Section %>
+  <div class="venue-body main-content-card mb-4"> <%# Applied main-content-card here %>
     <h4 class="body-header mb-3 mt-3">Upcoming</h4>
-    <% @venue.gigs.each do |gig| %>
-      <table class="gig-table">
-        <tr>
-          <td class="label"><i class="fa-regular fa-calendar icon"></i></td>
-          <td class="gig-text"><%= gig.date.strftime("%Y/%m/%d") %></td>
-        </tr>
-        <tr>
-          <td class="label"><i class="fa-solid fa-microphone icon"></i></td>
-          <td class="gig-text"> <%= link_to gig.bands.map(&:name).join(', '), gig_path(gig) %></td>
-        </tr>
-        <tr>
-          <td class="label"><i class="fa-regular fa-clock icon"></i></td>
-          <td class="gig-text">OPEN: <%= gig.open_time %> / START: <%= Gig.all.sample.start_time %></td>
-        </tr>
-        <tr>
-          <td class="label"><i class="fa-solid fa-yen-sign icon"></i></td>
-          <td class="gig-text">PRICE: ¥<%= gig.price %></td>
-        </tr>
-      </table>
+    <% if @venue.gigs.any? %>
+      <% @venue.gigs.each do |gig| %>
+        <table class="gig-table mb-3"> <%# Added mb-3 for spacing between gig tables %>
+          <tr>
+            <td class="label"><i class="fa-regular fa-calendar icon"></i></td>
+            <td class="gig-text"><%= gig.date.strftime("%Y/%m/%d") %></td>
+          </tr>
+          <tr>
+            <td class="label"><i class="fa-solid fa-microphone icon"></i></td>
+            <td class="gig-text"> <%= link_to gig.bands.map(&:name).join(', '), gig_path(gig), class: "venue-link" %></td>
+ <%# Added venue-link class %>
+          </tr>
+          <tr>
+            <td class="label"><i class="fa-regular fa-clock icon"></i></td>
+            <td class="gig-text">OPEN: <%= gig.open_time %> / START: <%= Gig.all.sample.start_time %></td>
+          </tr>
+          <tr>
+            <td class="label"><i class="fa-solid fa-yen-sign icon"></i></td>
+            <td class="gig-text">PRICE: ¥<%= gig.price %></td>
+          </tr>
+        </table>
+      <% end %>
+    <% else %>
+      <p class="text-black">No upcoming gigs for this venue.</p>
+ <%# Added text-black for visibility %>
     <% end %>
   </div>
 </div>
+ <%# End of .venue-show-page-content-wrapper %>

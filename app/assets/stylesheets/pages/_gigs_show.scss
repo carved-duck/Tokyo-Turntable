@@ -1,21 +1,38 @@
-.gig-show {
+/* app/assets/stylesheets/pages/_gigs_show.scss */
+
+// Wrapper for centering all content on the gig show page
+.gig-show-page-content-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100%;
 
-  h1, h4, h5 {
-    color: white;
-  }
+  align-items: center; /* Centers the main-content-cards horizontally */
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 70px; /* Add padding at the bottom to account for the fixed navbar */
+  background-color: #829B9D;
 }
 
-// ----- gig header -----
+// Styles specific to the header section within its card
+
 .gig-header {
-  height: 25vh;
+  height: auto; /* Adjusted for flexibility within card */
   align-items: end;
   display: flex;
-  gap: 40px;
+  gap: 20px; /* Adjusted gap */
   justify-content: space-around;
-  padding: 0 12px 12px;
+  padding: 0 0 12px; /* Adjusted padding as main-content-card has its own padding */
+  text-align: center; /* Center content within header */
+
+  h1 {
+    color: black; /* Changed to black for card background */
+    margin-bottom: 0.2rem;
+  }
+
+  p.neighborhood {
+    color: black; /* Changed to black for card background */
+    font-size: 14px;
+    font-weight: normal;
+  }
 }
 
 .gig-header-text {
@@ -23,86 +40,202 @@
 }
 
 .gig-img {
-  max-width: 120px;
-  margin-top: 8px;
+  max-width: 100px; /* Adjusted max-width */
+  height: 100px; /* Make it square */
+  object-fit: cover;
+  margin-top: 0;
   border-radius: 16%;
-}
-
-// ----- gig body -----
-.gig-body p {
-  color: white;
-  font-size: 14px;
-  // font-weight: bold;
-  font-weight: lighter;
-}
-
-.border-bottom {
-  border-bottom: 1px solid rgb(121, 120, 120) !important;
-  padding-bottom: 8px;
-  margin-bottom: 15px;
-  font-weight: 600;
-  font-size: 20px;
-}
-
-// ----- venue details -----
-// (style of ".text-custom" in the "_text_custom.scss" file)
-
-.venue-details {
-  // border-top: 1px solid $dark-red;
-  padding-top: 12px;
-
-}
-
-// ----- gig info -----
-.label-space {
-  margin-left: 12px;
+  flex-shrink: 0;
 }
 
 
-// for button & link in bottom
-.sticky-buttons {
-  position: sticky;
-  bottom: 20px;
-  right: 0;
-  z-index: 10;
+// General text color within gig info (overrides global p rule)
+.gig-body p,
+.gig-body h5,
+.gig-body h6,
+.gig-body ul,
+.gig-body li,
+.gig-body div {
+  color: black !important; /* Ensure all text within the gig-body card is black */
+  font-weight: normal; /* Override previous bold */
+  font-size: 1rem; /* Adjust font size */
+}
+
+.gig-body p.gig-price,
+.gig-body p.gig-genre {
+  font-weight: bold !important; /* Keep bold for price/genre if desired */
 }
 
 
-// ----- favorite button -----
-.btn-favorite {
+h4, h5, h6 {
+  color: black !important; /* Ensure all headers are black */
+}
 
-  border-radius: 30px;
-  font-weight: lighter;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-  padding: 0.45rem 1.2rem; ;
-  font-size: 0.9rem;
-  min-width: 90px;
-  display: inline-block;
+.body-header {
+  color: black !important; /* Ensure this specific header is black */
   text-align: center;
 }
 
-// ----- when not favorited -----
-.btn-outline-danger {
-  color: #dc3545;
-  border: 1px solid #dc3545;
-  background-color: transparent;
+// Gig times (OPEN/START)
+.gig-times {
+  display: flex;
+  gap: 13px;
+  justify-content: center; /* Center these paragraphs */
+  margin-bottom: 1rem;
+}
 
-  &:hover {
-    background-color: #d1051a;
-    color: #ffffff;
-    border-color: #d1051a;
+// Artist / Band Info
+.artist-header {
+  color: #B64F44 !important; /* Use your dark red for the header */
+  font-weight: bold;
+}
+
+
+.band-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Spacing for band name and website */
+  align-items: center;
+  padding: 5px 0; /* Add some padding */
+  border-bottom: 1px solid #e0e0e0; /* Subtle separator */
+
+  &:last-child {
+    border-bottom: none; /* No border for the last item */
+  }
+
+  .band-info-text {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .band-name {
+    font-weight: bold !important;
+    margin-bottom: 0;
+    font-size: 1.1rem;
+  }
+  .band-website {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+// Buttons at the bottom of the gig card
+.gig-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  .btn {
+    width: auto; /* Allow buttons to size based on content */
+    min-width: 150px; /* Give them a minimum width if desired */
+    padding: 8px 15px;
+    border-radius: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .gig-favorite-btn {
+    background-color: #B64F44; /* Dark red for Favorite */
+    color: black;
+    border: none;
+    &:hover {
+      background-color: darken(#B64F44, 10%);
+      color: black;
+    }
+  }
+
+  .gig-unfavorite-btn {
+    background-color: #C6C1B5; /* Grey for Unfavorite */
+    color: black;
+    border: none;
+    &:hover {
+      background-color: darken(#C6C1B5, 10%);
+      color: black;
+    }
+  }
+
+  .login-prompt {
+    font-size: 0.9rem;
+    .venue-link {
+      font-weight: bold;
+    }
   }
 }
 
-// ----- when favorited -----
-.btn-danger {
-  color: #fff;
-  background-color: #d1051a;
-  border: 1px solid #d1051a;
+.gig-back-btn {
+  background-color: #C6C1B5; /* Grey for back button */
+  color: black;
+  border-radius: 24px;
+  padding: 8px 15px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-decoration: none;
+  display: inline-block;
+  font-weight: bold;
 
   &:hover {
-    background-color: #a0001f;
-    color: #fff;
-    border-color: #a0001f;
+    background-color: darken(#C6C1B5, 10%);
+    color: black;
+  }
+}
+
+// Reusing venue-details styles from _venues_show.scss for consistency
+// These styles are applied directly to elements with .venue-details in gig show HTML
+.venue-details {
+  // Styles handled by main-content-card, and specific elements below
+}
+
+.venue-details table {
+  width: 100%;
+}
+
+.venue-details td {
+  font-size: 14px;
+  font-weight: normal;
+  font-family: 'Comfortaa', sans-serif;
+  color: black;
+  padding-bottom: 8px;
+}
+
+.venue-details td.label {
+  vertical-align: top;
+  font-weight: bold;
+  padding-right: 10px;
+  color: #B64F44;
+  min-width: 70px;
+}
+
+.venue-details td div {
+  margin-bottom: 0;
+}
+
+// Custom link style (reused from _venues_show.scss)
+.venue-link {
+  color: #333 !important;
+  text-decoration: underline;
+  &:hover {
+    color: #000 !important;
+  }
+}
+
+// Details collapse button (reused from _venues_show.scss)
+.venue-details-collapse-btn {
+  background-color: #C6C1B5;
+  color: black;
+  border-radius: 24px;
+  padding: 8px 15px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.9rem;
+
+  &:hover {
+    background-color: darken(#C6C1B5, 10%);
+    color: black;
+
   }
 }

@@ -1,41 +1,71 @@
-// Specific CSS for your home-page
+/* app/assets/stylesheets/home-page.scss */
 
 #home-page {
-  height: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
+  width: 100%;
+  min-height: 100vh; /* Ensure it's at least full viewport height */
+  display: flex;
+  flex-direction: column; /* Stack top and bottom sections vertically */
+  /* Remove justify-content/align-items from here for now, they are handled by child sections */
+  background-color: #829B9D
+; /* Fallback background for body/home-page, from image */
+  overflow-y: auto; /* Allow scrolling if content is taller than screen */
+  padding-bottom: 84px; /* Space for the fixed navbar (60px height + 24px margin-top) */
+}
 
-  .bg-red {
-    background-color: #3D0000;
-    position: relative;
-    height: 25vh;
-    margin-bottom: 4rem;
+.home-top-section {
+  flex-grow: 1; /* Allow this section to grow and take most of the available space */
+  display: flex;
+  justify-content: center; /* Center graphic horizontally */
+  align-items: center; /* Center graphic vertically */
+  position: relative; /* For absolute positioning of the title */
+  width: 100%; /* Take full width of parent */
+  overflow: hidden; /* Hide anything that overflows, especially the image if it's too big */
+  padding-top: 20px; /* Small padding at the top */
+  padding-bottom: 20px; /* Small padding at the bottom to separate from search fields */
 
-    h1 {
-      position: absolute;
-      color: #F0DFDF;
-      left: 35%;
-      bottom: -1.7em;
-      line-height: 1.5;
-      font-size: 2rem;
-      transform: translateX(-50%);
-    }
-  }
+}
 
-  img {
-    display: block;
-    margin: 0 auto;
-  }
+.main-visual-graphic {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  display: block;
+  object-fit: contain; /* Ensure the entire image is visible within .home-top-section */
+  max-width: 500px; /* Constrain image width for better appearance on large screens */
+  max-height: 60vh; /* Limit the image height to prevent it from being "too big" */
+  /* This max-height is crucial. Adjust the '60vh' value to fit your desired visual balance. */
+}
 
-  // h5 {
-  //   color: #F0DFDF;
-  //   text-align: center;
-  // }
+.main-title-overlay {
+  position: absolute; /* Position over the graphic */
+  /* Fine-tune these values to place the title exactly over the graphic's text area */
+  top: 15%; /* Example: 15% down from the top of .home-top-section */
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally relative to itself */
+  color: black; /* Dark text for readability */
+  font-size: clamp(2rem, 8vw, 4rem); /* Responsive font size */
+  text-align: center;
+  line-height: 1.1;
+  z-index: 2; /* Ensure it's above the image */
+  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.5); /* For readability over background */
+}
 
-// h1 {
-//   width: 100px;
-//   color: rgb(203, 30, 30);
-//   display: flex;
-//   justify-content: space-between;
-// >>>>>>> master
+.home-bottom-section {
+  flex-shrink: 0; /* Prevent this section from shrinking */
+  width: 100%; /* Take full width */
+  display: flex;
+  justify-content: center; /* Center search fields horizontally */
+  align-items: flex-end; /* Align search fields to the bottom if there's extra space */
+  padding-bottom: 10px; /* Padding for the bottom of this section before the navbar */
+}
+
+.search-fields-container {
+  width: 100%; /* Take full width of its parent (.home-bottom-section) */
+  max-width: 500px; /* Constrain search fields width for better appearance */
+  padding: 10px 15px; /* Top/bottom padding and side padding */
+  background-color: #F6F2E6; /* Semi-transparent white background for readability */
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 8px;
+  /* margin-top: auto; *//* If you want it pushed to the bottom of the section */
+  color: #333; /* Dark gray for input labels/placeholders */
 }

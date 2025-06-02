@@ -1,26 +1,33 @@
-<div class="container py-4 position-relative">
+<%# app/views/shared/_location.html.erb %>
+<div id="search-container" class="container py-4 position-relative">
   <%= simple_form_for :search, url: venues_path, method: :get, html: { class: "row", id: "location-form-container" } do |f| %>
     <%= f.input :address,
               label: "Where are you?",
-              input_html: { value: params.dig(:search, :address) || "Shinjuku" },
-              wrapper_html: { class: "col-sm-6 text-white border-light" } %>
+              # ADDED label_class for "Where are you?"
+              label_html: { class: "form-label-black" },
+              input_html: { value: params.dig(:search, :address) || "Shinjuku", class: "form-input-black" }, # ADDED class for input value
+              wrapper_html: { class: "col-sm-6 border-light" } %>
     <%= f.input :genre,
               label: "Choose a few genres",
+              # ADDED label_class for "Choose a few genres"
+              label_html: { class: "form-label-black" },
               collection: ["All"] + Band.distinct.pluck(:genre),
               input_html: {
                 multiple: true,
                 data: {
                   controller: "tom-select",
-                }
+                },
+                class: "form-input-black" # ADDED class for select input
               } %>
     <div class="col-auto">
-      <button type="submit" class="btn d-flex">
+      <button type="submit" class="btn d-flex discover-button-rounded"> <%# ADDED new class here for button styling %>
         <%# <i class="fa-solid fa-record-vinyl text-white"></i> %>
-        <p class="text-white discover-button" id="find">Discover</p>
+        <p class="discover-text-black" id="find">Discover</p>
+        <%# ADDED new class here for p tag text %>
       </button>
     </div>
   <% end %>
-  <button class="find-location">
+  <button class="find-location find-location-black"> <%# ADDED new class here for button text %>
     Use my location
   </button>
 </div>

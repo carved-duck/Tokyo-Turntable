@@ -1,10 +1,42 @@
-.alert {
-  position: fixed;
-  bottom: 102px;
-  right: 8px;
-  z-index: 101;
-  left: 8px;
-  border-radius: 16px;
-  background-color: #950101;
-  color: black;
+/* app/assets/stylesheets/components/_alert.scss */
+
+// Base styling for all custom alerts/flash messages
+.main-alert-card {
+  padding: 15px 20px;
+  border-radius: 24px; /* Match your main-content-card border-radius */
+  margin: 15px auto; /* Centered with auto margins */
+  width: 100%;
+  max-width: 500px; /* Match your main-content-card max-width */
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none; /* Remove default Bootstrap border */
+
+  .btn-close { /* Styling for Bootstrap's close button */
+    color: white; /* Default to white for dark backgrounds */
+    opacity: 0.8;
+    filter: invert(1); /* Helps ensure visibility on colored backgrounds */
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+// Specific styling for 'alert' flash messages (errors, warnings)
+.main-alert-card.flash-alert {
+  background-color: #B64F44; /* Your custom dark red for alerts */
+  color: white; /* White text for contrast */
+}
+
+// Specific styling for 'notice' flash messages (info, success)
+.main-alert-card.flash-notice {
+  background-color: #5cb85c; /* A standard green for success/notice */
+  color: white; /* White text for contrast */
+  /* Alternatively, if you want it to match your cream cards with dark text:
+  background-color: #F6F2E6; // Your cream background
+  color: black; // Dark text for contrast
+  .btn-close { filter: invert(0); } // For dark text, no invert */
 }

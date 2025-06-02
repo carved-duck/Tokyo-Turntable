@@ -1,8 +1,88 @@
-.body {
+/* app/assets/stylesheets/pages/_profile.scss */
 
+// Wrapper for centering all content on the profile page
+.profile-page-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This will center the main-content-cards horizontally */
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 70px; /* Add padding at the bottom to account for the fixed navbar */
+  background-color: #829B9D;
 }
 
-a {
-  color: white;
+// Profile Image Container (inside a main-content-card)
+.profile-image-container {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border: 3px solid #C6C1B5;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  margin: 0 auto;
+}
+
+.profile-image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+// Style for the "+ My Band Details" collapse button
+.profile-collapse-btn {
+  background-color: #C6C1B5;
+  color: black;
+  border-radius: 24px;
+  padding: 8px 15px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   text-decoration: none;
+  display: inline-block;
+
+  &:hover {
+    background-color: darken(#B64F44, 10%);
+    color: black;
+  }
+}
+
+// Style for the "Unfavorite" button
+.profile-unfavorite-btn {
+  background-color: #C6C1B5;
+  color: black;
+  border-radius: 24px;
+  padding: 6px 12px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-decoration: none;
+  font-size: 0.875rem;
+  display: inline-block;
+
+  &:hover {
+    background-color: darken(#C6C1B5, 10%);
+    color: black;
+  }
+}
+
+// General text color within profile cards
+.main-content-card p,
+.main-content-card li,
+.main-content-card h3,
+.main-content-card h2,
+.main-content-card strong,
+.main-content-card div {
+  color: black !important;
+}
+
+// Ensure links within cards are dark
+.main-content-card a {
+  color: #333 !important;
+  text-decoration: underline;
+}
+
+.main-content-card a:hover {
+  color: #000 !important;
+}
+
+// Override Bootstrap's default card-body padding if needed to match homepage card padding
+.main-content-card .card-body {
+  padding: 20px;
 }

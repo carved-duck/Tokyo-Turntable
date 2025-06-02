@@ -1,4 +1,45 @@
-.offcanvas{
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+/* app/assets/stylesheets/components/_offcanvas.scss */
+
+.offcanvas {
+  // Base Bootstrap offcanvas styles, kept for structure
+  // You had border-top-left-radius and border-top-right-radius here.
+  // The custom-offcanvas class will override/enhance this.
 }
+
+.custom-offcanvas {
+  background-color: #F6F2E6; /* Your light cream background */
+  color: black; /* Dark text for contrast on cream */
+  border-top-left-radius: 24px; /* More rounded to match other cards */
+  border-top-right-radius: 24px; /* More rounded to match other cards */
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.1); /* Subtle shadow from the bottom */
+  border-top: none; /* Remove default border if Bootstrap adds one */
+
+  .offcanvas-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle separator */
+    padding-bottom: 15px; /* Adjust padding if needed */
+  }
+
+  .offcanvas-title {
+    color: black; /* Ensure title is black */
+  }
+
+  .custom-btn-close {
+    background-color: transparent; /* Remove any default button background */
+    color: black; /* Set icon color to black for light background */
+    opacity: 0.7; /* Make it slightly transparent */
+    filter: none; /* Remove any previous invert filter if present */
+
+    &:hover {
+      opacity: 1;
+    }
+    // For Bootstrap's X icon, sometimes you need to override its background image
+    // Make sure it's using the 'content' property or directly setting the icon color.
+    // If it's a background-image based close icon, you might need to adjust its SVG.
+    // A common way to make Bootstrap's default btn-close visible on a light background is:
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") !important;
+  }
+}
+
+// Ensure _offcanvas.scss is imported in application.scss
+// Example:
+// @import "components/offcanvas";

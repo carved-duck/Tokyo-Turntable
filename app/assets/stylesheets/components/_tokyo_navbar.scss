@@ -1,13 +1,17 @@
+/* app/assets/stylesheets/tokyo-navbar.scss */
+
 .tokyo-navbar {
   height: 60px;
   width: 100%;
-  color: black;
-  background-color: rgb(243, 6, 6);
-  opacity: 0.7;
-  border-radius: 1%;
-  border-top: 1px solid white;
-  margin-top: 24px;
-
+  background-color: #F6F2E6; /* Cream color from image */
+  // opacity: 0.95;
+  border-top: 1px solid #D9D2C8; /* Slightly darker cream */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  border-radius: 0;
 }
 
 .navbar-flex {
@@ -16,17 +20,17 @@
   width: 100%;
   justify-content: space-around;
   align-items: center;
-
 }
 
 .navbar-item {
   font-size: 24px;
   line-height: 1;
   vertical-align: middle;
-  color: rgb(92, 25, 25);
+  color: #829B9D; /* Dark grey/brown from image */
+  text-decoration: none;
 }
 
 #logo {
   font-size: 40px;
-  color: rgb(28, 26, 26);
+  color: #829B9D; /* Dark red/brown from Tokyo Tower */
 }
