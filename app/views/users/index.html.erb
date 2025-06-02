@@ -1,0 +1,8 @@
+<%# app/views/users/profile.html.erb %>
+<div class="profile-page-content-wrapper"> <%# NEW: This wrapper will center the profile content %>
+  <%# Profile Title Section %>
+  <% @users.each do |user| %>
+    <h2><%= user.username %></h2>
+    <%= link_to "View details", user_path(user), class: "btn btn-sm btn-primary" %>
+  <% end %>
+</div>

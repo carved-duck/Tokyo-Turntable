@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     resources :bookings, only: [ :index ]
   end
 
-  resources :users, only: [ :show ] do
+  resources :users, only: [ :index, :show ] do
     collection do
       get :profile, as: :profile
     end
