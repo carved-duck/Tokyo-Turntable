@@ -1,0 +1,32 @@
+// Profile Image Container (inside a main-content-card)
+.index-profile-image-container {
+  // Use a smaller size for the image in the list view, as discussed for the left column
+  width: 75px;  /* <--- RECOMMENDED: Change this to 75px for list view */
+  height: 75px; /* <--- RECOMMENDED: Change this to 75px for list view */
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid #C6C1B5; /* Adjust border if changing size */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Adjust shadow if changing size */
+
+  // Add flex properties to center the icon inside the circle if there's no image
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // This targets the image INSIDE the circular container
+  .index-profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; /* Ensure the image itself is rounded */
+  }
+
+  .index-default-profile-icon {
+    font-size: 2.5rem; /* Keep this size, or adjust for the 75px container */
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    display: block;
+    color: black;
+  }
+}
