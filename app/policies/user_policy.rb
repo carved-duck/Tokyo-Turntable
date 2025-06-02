@@ -7,14 +7,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    user == record
+    true
   end
 
   def profile?
     user == record
   end
 
-  def index?
-    user == record
-  end
 end

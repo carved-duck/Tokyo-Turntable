@@ -7,8 +7,10 @@
       <i class="fa-solid fa-record-vinyl"></i>
     <% end %>
     <%# The Messages icon, linked to the user profile page %>
-    <%= link_to profile_users_path, class: "navbar-item" do %>
-      <i class="fa-solid fa-comment"></i>
+    <% if user_signed_in? %>
+      <%= link_to user_path(current_user), class: "navbar-item" do %>
+        <i class="fa-solid fa-comment"></i>
+      <% end %>
     <% end %>
     <%# Calendar icon (user menu) dropdown %>
     <div class="navbar-item dropdown">
@@ -17,7 +19,7 @@
       </a>
       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
         <% if user_signed_in? %>
-          <%= link_to "My Profile", profile_users_path, class: "dropdown-item" %>
+          <%= link_to "My Profile", user_path(current_user), class: "dropdown-item" %>
           <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
         <% else %>
           <%= link_to "Login", new_user_session_path, class: "dropdown-item" %>

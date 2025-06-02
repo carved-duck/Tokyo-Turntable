@@ -1,8 +1,26 @@
 <%# app/views/users/profile.html.erb %>
-<div class="profile-page-content-wrapper"> <%# NEW: This wrapper will center the profile content %>
-  <%# Profile Title Section %>
-  <% @users.each do |user| %>
-    <h2><%= user.username %></h2>
-    <%= link_to "View details", user_path(user), class: "btn btn-sm btn-primary" %>
-  <% end %>
+<div class="profile-page-content-wrapper">
+  <div class="row row-cols-1 g-3">
+    <% @users.each do |user| %>
+      <div class="col">
+        <div class="main-content-card">
+          <div class="card-body d-flex align-items-center text-dark">
+            <div class="me-3">
+              <div class="rounded-circle bg-secondary index-profile-image-container">
+                <% if user&.photo.attached? %>
+                  <%= image_tag user.photo, class: "index-profile-image", alt: user&.username %>
+                <% else %>
+                  <span class="text-dark index-default-profile-icon">👤</span>
+                <% end %>
+              </div>
+            </div>
+            <div>
+              <p class="mb-1"><strong>Username:</strong> <%= user&.username&.capitalize %></p>
+              <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn btn-sm">View Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

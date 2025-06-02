@@ -27,9 +27,6 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [ :index, :show ] do
-    collection do
-      get :profile, as: :profile
-    end
     resources :attendances, only: [ :index ]
   end
 

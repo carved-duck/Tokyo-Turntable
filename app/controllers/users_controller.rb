@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  def profile
-    @user = current_user
+  def show
+    @user = User.find(params[:id])
     # Fetch favorited gigs for the current user
     @favorited_gigs = @user.favorited_by_type('Gig')
     # Or, if you want all favorited items regardless of type:
