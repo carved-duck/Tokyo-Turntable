@@ -7,19 +7,17 @@
       <% end %>
     </div>
     <div class="d-flex flex-column align-items-center">
-      <% if user_signed_in? %>
-        <%= link_to user_path(current_user), class: "navbar-item" do %>
-          <i class="fa-solid fa-message"></i>
-        <% end %>
+      <%= link_to profile_users_path, class: "navbar-item" do %>
+        <i class="fa-solid fa-message"></i>
       <% end %>
     </div>
     <div class="navbar-item dropdown">
-      <a class="nav-link" href="#" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa-solid fa-user"></i>
-      </a>
+      <%= link_to profile_users_path, class: "navbar-item" do %>
+        <i class="fa-solid fa-user", size="42x42"></i>
+      <% end %>
       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
         <% if user_signed_in? %>
-          <%= link_to "My Profile", profile_users_path, class: "dropdown-item" %>
+          <%= link_to "My Profile", user_path(current_user), class: "dropdown-item" %>
           <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
         <% else %>
           <%= link_to "Login", new_user_session_path, class: "dropdown-item" %>
