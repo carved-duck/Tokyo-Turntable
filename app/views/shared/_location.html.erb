@@ -1,5 +1,6 @@
 <div id="search-container" class="container py-4 position-relative">
   <%= simple_form_for :search, url: gigs_path, method: :get, html: { class: "row", id: "location-form-container" } do |f| %>
+
     <%= f.input :select_a_date,
             as: :string,
             label_html: { class: "form-label-black" },
@@ -7,6 +8,7 @@
               value: params.dig(:search, :select_a_date),
               data: { controller: "datepicker" }
               } %>
+
     <%= f.input :genre,
               label: "Choose a few genres",
               # ADDED label_class for "Choose a few genres"
@@ -22,7 +24,7 @@
     <div class="col-auto">
       <button type="submit" class="btn d-flex discover-button-rounded"> <%# ADDED new class here for button styling %>
         <%# <i class="fa-solid fa-record-vinyl text-white"></i> %>
-        <p class="discover-text-black" id="find">Discover</p>
+        <p class="discover-text-black" id="find">Search</p>
         <%# ADDED new class here for p tag text %>
       </button>
     </div>
