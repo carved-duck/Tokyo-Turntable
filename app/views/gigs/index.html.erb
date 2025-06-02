@@ -1,25 +1,55 @@
-<div class="container pt-3">
-  <!-- hidden templates for offcanvas/info‐panels -->
-  <%= render "gig_sheet" %>
-  <% @gigs.each do |gig| %>
-    <template id="gig-sheet-<%= gig.id %>">
-      <% if gig.bands.any? %>
-        <h2>Bands: <%= gig.bands.map(&:name).join(", ") %></h2>
-        <p>Genre: <%= gig.bands.map(&:genre).uniq.join(", ") %></p>
-      <% else %>
-        <h2>No band listed</h2>
-      <% end %>
-      <p>Date: <%= gig.date.strftime("%Y/%m/%d") %></p>
-      <p>Open: <%= gig.open_time %> / Start: <%= gig.start_time %></p>
-      <p>Price: <%= gig.price %></p>
-      <%= link_to "View details", gig_path(gig), class: "btn btn-sm btn-primary" %>
-    </template>
-  <% end %>
-  <!-- Mapbox container -->
-  <div style="width:100%; height:400px ;"
-       data-controller="map"
-       data-map-markers-value="<%= @markers.to_json %>"
-       data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+<!-- STart of the toggle -->
+<div class="container pt-3" data-controller="view-toggle">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="m-0">Upcoming Shows</h1>
+    <!-- This button toggles between map and list -->
+    <button
+      data-action="click->view-toggle#toggle"
+      data-view-toggle-target="button"
+      class="btn btn-sm btn-outline-primary">
+      Show Map
+    </button>
   </div>
-  <%= render "card" %>
+  <!-- MAP PANEL (initially hidden) -->
+  <div
+    id="map-panel"
+    data-view-toggle-target="map"
+    class="d-none"
+    style="width: 100%; height: 600px; margin-bottom: 16px;">
+    <!-- Offcanvas partial -->
+    <%= render "gig_sheet" %>
+    <% @gigs.each do |gig| %>
+      <template id="gig-sheet-<%= gig.id %>">
+        <% if gig.bands.any? %>
+          <h2>Bands: <%= gig.bands.map(&:name).join(", ") %></h2>
+          <p>Genre: <%= gig.bands.map(&:genre).uniq.join(", ") %></p>
+        <% else %>
+          <h2>No band listed</h2>
+        <% end %>
+        <p>Date: <%= gig.date.strftime("%Y/%m/%d") %></p>
+        <p>Open: <%= gig.open_time %> / Start: <%= gig.start_time %></p>
+        <p>Price: <%= gig.price %></p>
+        <%= link_to "View details", gig_path(gig), class: "btn btn-sm btn-primary" %>
+      </template>
+    <% end %>
+    <!-- The actual Mapbox container  -->
+    <div
+      data-controller="map"
+      data-map-markers-value="<%= @markers.to_json %>"
+      data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+      style="width: 100%; height: 100%;"
+    ></div>
+  </div>
+  <!-- LIST PANEL (initially visible) -->
+  <div id="list-panel" data-view-toggle-target="list" class="">
+    <div class="container-card py-2">
+      <div class="row row-cols-1 g-3">
+        <% @gigs.each do |gig| %>
+          <div class="col">
+            <%= render "card", gig: gig %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
