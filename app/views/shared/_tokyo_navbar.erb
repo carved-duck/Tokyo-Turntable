@@ -7,14 +7,16 @@
       <% end %>
     </div>
     <div class="d-flex flex-column align-items-center">
-      <%= link_to profile_users_path, class: "navbar-item" do %>
-        <i class="fa-solid fa-message"></i>
+      <% if user_signed_in? %>
+        <%= link_to user_path(current_user), class: "navbar-item" do %>
+          <i class="fa-solid fa-message"></i>
+        <% end %>
       <% end %>
     </div>
     <div class="navbar-item dropdown">
-      <%= link_to profile_users_path, class: "navbar-item" do %>
-        <i class="fa-solid fa-user", size="42x42"></i>
-      <% end %>
+      <a class="nav-link" href="#" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa-solid fa-user"></i>
+      </a>
       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
         <% if user_signed_in? %>
           <%= link_to "My Profile", profile_users_path, class: "dropdown-item" %>
