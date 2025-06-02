@@ -1,0 +1,25 @@
+<!-- For gigs index -->
+<div class="row row-cols-1 row-cols-sm-2 g-3 mt-4">
+  <% @gigs.each do |gig| %>
+    <div class="col">
+      <div class="card h-100">
+        <% if gig.venue.photo.attached? %>
+          <%= cl_image_tag gig.venue.photo.key,class: "card-img-top",style: "height:150px; object-fit:cover;" %>
+        <% else %>
+          <%= image_tag "https://via.placeholder.com/300x150?text=No+Image",
+                  class: "card-img-top",
+                  style: "height:150px; object-fit:cover;" %>
+        <% end %>
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title mb-1">
+            <% band_names = gig.bands.map(&:name).join(", ") %>
+            <%= link_to band_names, gig_path(gig), class: "stretched-link text-decoration-none" %>
+          </h5>
+          <p class="card-text text-muted small mb-2">
+            <%= gig.date.strftime("%Y/%m/%d") %> at <%= gig.start_time %>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

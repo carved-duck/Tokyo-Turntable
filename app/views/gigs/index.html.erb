@@ -1,20 +1,25 @@
-<h1>Gigs shows</h1>
-<%#= render "shared/rectangle_box", title: "Upcoming Shows" %>
-<%#= render "shared/_location", search_path: gigs_path %>
-<div class="container">
+<div class="container pt-3">
   <!-- hidden templates for offcanvas/info‐panels -->
+  <%= render "gig_sheet" %>
   <% @gigs.each do |gig| %>
     <template id="gig-sheet-<%= gig.id %>">
-      <h2><%= gig.venue.name %></h2>
-      <p><%= gig.date.strftime("%Y/%m/%d") %> at <%= gig.start_time %></p>
+      <% if gig.bands.any? %>
+        <h2>Bands: <%= gig.bands.map(&:name).join(", ") %></h2>
+        <p>Genre: <%= gig.bands.map(&:genre).uniq.join(", ") %></p>
+      <% else %>
+        <h2>No band listed</h2>
+      <% end %>
+      <p>Date: <%= gig.date.strftime("%Y/%m/%d") %></p>
+      <p>Open: <%= gig.open_time %> / Start: <%= gig.start_time %></p>
+      <p>Price: <%= gig.price %></p>
       <%= link_to "View details", gig_path(gig), class: "btn btn-sm btn-primary" %>
     </template>
   <% end %>
   <!-- Mapbox container -->
-  <div style="width:100%; height:400px;"
+  <div style="width:100%; height:400px ;"
        data-controller="map"
        data-map-markers-value="<%= @markers.to_json %>"
        data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
   </div>
-  <%= render "gig_sheet" %>
+  <%= render "card" %>
 </div>

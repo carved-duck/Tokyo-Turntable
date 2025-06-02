@@ -22,7 +22,7 @@
       <%= yield %> <%# Your #home-page div will be rendered here, taking full width %>
     <% else %>
       <%# For all other pages, keep the 'content' wrapper and the empty bg-red div %>
-      <div class="content <%= "ms-5" unless current_page?(venues_path) %>">
+      <div class="content <%= "ms-5" unless current_page?(gigs_path) %>">
       </div>
       <%= yield %>
     <% end %>

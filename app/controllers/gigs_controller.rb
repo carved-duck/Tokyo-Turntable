@@ -4,8 +4,8 @@ class GigsController < ApplicationController
   def index
     # @gigs = Gig.all
     @gigs = policy_scope(Gig)
+    @gigs = filter_by_date(@gigs)
     @gigs = filter_by_genre(@gigs)
-    @gigs = filter_by_location(@gigs)
 
     # remove exact‐duplicate markers (round lat/lng to 5 decimals, for example)
     @gigs = @gigs.uniq { |g| [ g.venue.latitude&.round(5), g.venue.longitude&.round(5) ] }
@@ -29,6 +29,26 @@ class GigsController < ApplicationController
   end
 
   private
+
+  def filter_by_date(scope)
+    raw_date = params.dig(:search, :select_a_date)
+    return scope if raw_date.blank?
+
+    begin
+      chosen = Date.parse(raw_date)
+    rescue ArgumentError
+      flash.now[:alert] = "Couldn't understand “#{raw_date}” as a date. Showing all gigs."
+      return scope
+    end
+
+    matched = scope.where(date: chosen)
+    if matched.any?
+      matched
+    else
+      flash.now[:alert] = "No gigs on #{chosen.strftime('%Y/%m/%d')}. Showing all gigs."
+      scope
+    end
+  end
   # This is for keeping gigs whose band-genre matches the selected param
   def filter_by_genre(scope)
     genre = params.dig(:search, :genre)
@@ -53,30 +73,6 @@ class GigsController < ApplicationController
       scope
     end
   end
-
-    # This is for filtering by location! TOOOOOOO CHANGE
-    def filter_by_location(scope)
-      address = params.dig(:search, :address)
-      radius  = params.dig(:search, :radius)&.to_f || 5
-      return scope if address.blank?
-
-      # Check if Geocoder can find that address
-      if Geocoder.search(address).present?
-        # Find all venues near that address, then pick gigs whose venue_id is in that set
-        nearby_venue_ids = Venue.near(address, radius, units: :km, order: false).pluck(:id)
-        if nearby_venue_ids.any?
-          scope.where(venue_id: nearby_venue_ids)
-        else
-          flash.now[:alert] ||= ""
-          flash.now[:alert] += " No venues within #{radius.to_i} km of '#{address}'. Showing all gigs."
-          scope
-        end
-      else
-        flash.now[:alert] ||= ""
-        flash.now[:alert] += " Couldn't find location '#{address}'. Showing all gigs."
-        scope
-      end
-    end
 
     def marker_data_for(gig)
       {

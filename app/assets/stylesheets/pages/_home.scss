@@ -2,7 +2,7 @@
 
 #home-page {
   width: 100%;
-  min-height: 100vh; /* Ensure it's at least full viewport height */
+  height: 100vh; /* Ensure it's at least full viewport height */
   display: flex;
   flex-direction: column; /* Stack top and bottom sections vertically */
   /* Remove justify-content/align-items from here for now, they are handled by child sections */
