@@ -1,20 +1,20 @@
 <div class="tokyo-navbar container">
   <div class="navbar-flex">
-    <i class="fa-solid fa-heart navbar-item"></i>
-    <i class="fa-solid fa-music navbar-item"></i>
-    <%# The middle button (record-vinyl icon), now linked to the home page %>
-    <%= link_to root_path, class: "navbar-item", id: "logo" do %> <%# Added link_to root_path %>
-      <i class="fa-solid fa-record-vinyl"></i>
-    <% end %>
-    <%# The Messages icon, linked to the user profile page %>
-    <%= link_to profile_users_path, class: "navbar-item" do %>
-      <i class="fa-solid fa-comment"></i>
-    <% end %>
-    <%# Calendar icon (user menu) dropdown %>
+    <div class="d-flex flex-column align-items-center">
+      <%= link_to root_path, class: "navbar-item text-center", id: "logo" do %>
+        <%= image_tag "icons/record-player-icon.png", alt: "Tokyo Turntable Logo", size: "42x42" %>
+        <p class="mx-0 mb-0" style="font-size: 14px; color: black;">Home</p>
+      <% end %>
+    </div>
+    <div class="d-flex flex-column align-items-center">
+      <%= link_to profile_users_path, class: "navbar-item" do %>
+        <i class="fa-solid fa-message"></i>
+      <% end %>
+    </div>
     <div class="navbar-item dropdown">
-      <a class="nav-link" href="#" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa-solid fa-calendar-week"></i>
-      </a>
+      <%= link_to profile_users_path, class: "navbar-item" do %>
+        <i class="fa-solid fa-user", size="42x42"></i>
+      <% end %>
       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
         <% if user_signed_in? %>
           <%= link_to "My Profile", profile_users_path, class: "dropdown-item" %>
@@ -24,5 +24,8 @@
         <% end %>
       </div>
     </div>
+    <%# The middle button (record-vinyl icon), now linked to the home page %>
+    <%# The Messages icon, linked to the user profile page %>
+    <%# Calendar icon (user menu) dropdown %>
   </div>
 </div>

@@ -1,7 +1,7 @@
 /* app/assets/stylesheets/tokyo-navbar.scss */
 
 .tokyo-navbar {
-  height: 60px;
+  height: 70px;
   width: 100%;
   background-color: #F6F2E6; /* Cream color from image */
   // opacity: 0.95;
@@ -33,4 +33,9 @@
 #logo {
   font-size: 40px;
   color: #829B9D; /* Dark red/brown from Tokyo Tower */
+}
+
+.style-image {
+  background-color: blue;
+  color: red;
 }
