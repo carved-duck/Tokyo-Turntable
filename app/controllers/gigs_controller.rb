@@ -51,13 +51,14 @@ class GigsController < ApplicationController
   end
   # This is for keeping gigs whose band-genre matches the selected param
   def filter_by_genre(scope)
-    genre = params.dig(:search, :genre)
-    return scope if genre.blank? || genre == "All"
+    raw_genres = Array(params.dig(:search, :genre))
+    chosen = raw_genres.reject(&:blank?)
+    return scope if chosen.empty? || chosen.include?("All")
 
     # join through bookings→band to filter gigs by band genre
     filtered = scope
       .joins( bookings: :band )
-      .where(bands: { genre: genre })
+      .where(bands: { genre: chosen })
       .distinct
 
     if filtered.any?
@@ -69,7 +70,7 @@ class GigsController < ApplicationController
         .pluck(:genre)
       filtered
     else
-      flash.now[:alert] = "No gigs match genre '#{genre}'. Showing all."
+      flash.now[:alert] = "No gigs match genre '#{chosen.inspect}'. Showing all."
       scope
     end
   end
