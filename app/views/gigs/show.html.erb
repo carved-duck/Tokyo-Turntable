@@ -1,95 +1,116 @@
 <%= render 'shared/rectangle_box', title: " " %>
-<div class="gig-show container">
-  <%# gig header %>
-  <div class="gig-header">
-    <div class="gig-header-text">
-      <% venue = Venue.find(@gig.venue_id) %>
-      <h1><%= venue.name %></h1>
-      <p class="neighborhood"><%= venue.neighborhood %>, Tokyo </p>
+<div class="gig-show container justify-content-between">
+  <div>
+    <%# GIG HEADER %>
+    <div class="gig-header">
+      <div class="gig-header-text">
+        <% venue = Venue.find(@gig.venue_id) %>
+        <h1><%= venue.name %></h1>
+        <p class="neighborhood"><%= venue.neighborhood %>, Tokyo</p>
+      </div>
+      <div class="header-header-img">
+        <%= image_tag("venue_image.jpg", class: "gig-img") %>
+      </div>
     </div>
-    <div class="header-header-img">
-      <%= image_tag ("venue_image.jpg"), class: "gig-img"; %>
+
+    <%# SEE VENUE DETAILS BUTTON %>
+    <p class="d-inline-flex gap-1" style="padding: 12px 12px 0 12px;">
+      <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        + see venue details
+      </a>
+    </p>
+    <%# VENUE DETAILS %>
+    <div class="collapse px-3" id="collapseExample">
+      <div class="venue-details">
+        <table style="color: white;">
+          <tr>
+            <td class="label">
+              <div>address:</div>
+            </td>
+            <td>
+              <div><%= venue.address %></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">
+              <div>website:</div>
+            </td>
+            <td>
+              <div><%= venue.website %></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">
+              <div>email:</div>
+            </td>
+            <td>
+              <div><%= venue.email %></div>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
-  </div>
-  <%# venue details %>
-  <p class="d-inline-flex gap-1 px-3 pt-3">
-    <a class="text-custom" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-      + see venue details
-    </a>
-  </p>
-  <div class="collapse px-3" id="collapseExample">
-    <div class="venue-details">
-      <table style="color: white;">
-        <tr>
-          <td class="label">
-            <div>address:</div>
-          </td>
-          <td>
-            <div><%= venue.address %></div>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">
-            <div>website:</div>
-          </td>
-          <td>
-            <div><%= venue.website %></div>
-          </td>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">
-          <div>email:</div>
-        </td>
-        <td>
-          <div><%= venue.email %></div>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
-<%# gig info %>
-<div class="gig-body p-3">
-  <h5 class="body-header my-3"><%= @gig.date.strftime("%B %d, %Y") %></h5>
-  <div style="display: flex; gap: 13px;">
-    <p>OPEN: <%= @gig.open_time.to_datetime.strftime("%-k:%M") %></p>
-    <p>START: <%= @gig.start_time.to_datetime.strftime("%-k:%M") %></p>
-  </div>
-  <p class="gig-price">PRICE: ¥<%= @gig.price %></p>
-  <p>GENRE: <%= @gig.bands.first.genre %></p>
-  <div class="artist">
-    <ul class="ps-0">
-      <% @gig.bands.each do |band| %>
-        <div class="band-info">
-          <div class="band-info-text">
+    <%# GIG INFO %>
+    <div class="gig-body p-3">
+      <div class="gig-info text-end">
+        <h5 class="border-bottom mt-3">CONCERT INFO</h5>
+        <p class="my-3">
+          DATE:<span class="label-space"><%= @gig.date.strftime("%B %d, %Y") %></span>
+        </p>
+        <div style="display: flex; justify-content: flex-end; gap: 13px;">
+          <p>
+            OPEN/START:<span class="label-space"><%= @gig.open_time.to_datetime.strftime("%H:%M") %>/<%= @gig.start_time.to_datetime.strftime("%H:%M") %></span>
+          </p>
+        </div>
+        <p class="gig-price">
+          PRICE:<span class="label-space">¥<%= Gig.all.sample.price %></span>
+        </p>
+        <p>
+          GENRE:<span class="label-space"><%= Band.all.sample.genre %></span>
+        </p>
+      </div>
+      <%# ARTIST %>
+      <div class="artist mt-5">
+        <h5 class="border-bottom mt-3">ARTIST</h5>
+        <div class="ps-0">
+          <% Band.all.sample(2).each do |band| %>
+
             <p><%= band.name %></p>
             <p><%= band.website_link %></p>
-          </div>
+          <% end %>
         </div>
-      <% end %>
-    </ul>
+
+      </div>
+    </div>
   </div>
-  <div class="gig-actions">
-    <% if user_signed_in? %>
-      <%# Check if the current user has favorited this gig %>
-      <% if current_user.favorited?(@gig) %>
-        <%# If already favorited, show an Unfavorite button %>
-        <%= link_to "Unfavorite", gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
-    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
-    class: "btn btn-outline-danger" %>
+  <div class="bottom-button-link sticky-buttons d-flex flex-column align-items-end pe-2">
+    <div class="gig-actions">
+      <%# FAVORITE ACTION %>
+      <% if user_signed_in? %>
+        <%# Check if the current user has favorited this gig %>
+        <% if current_user.favorited?(@gig) %>
+          <%# If already favorited, show an Unfavorite button %>
+          <%= link_to "unfavorite", gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
+                    class: "btn btn-danger btn-favorite" %>
+        <% else %>
+          <%# If not favorited, show a Favorite button %>
+          <%= link_to "favorite", gig_favorites_path(@gig),
+                    data: { turbo_method: :post },
+                    class: "btn btn-outline-danger btn-favorite" %>
+        <% end %>
       <% else %>
-        <%# If not favorited, show a Favorite button %>
-        <%= link_to "Favorite", gig_favorites_path(@gig),
-          data: { turbo_method: :post },
-          class: "btn btn-primary" %>
+        <%# If not signed in, prompt them to log in %>
+        <p class="mb-2 pe-2">
+          <%= link_to new_user_session_path, class: "text-custom" do %>
+            <i class="fa fa-sign-in-alt" style="margin-right: 5px;"></i>log in to favorite this gig
+          <% end %>
+        </p>
       <% end %>
-    <% else %>
-      <%# If not signed in, prompt them to log in %>
-      <p><%= link_to "Log in to favorite this gig", new_user_session_path %></p>
-    <% end %>
-  </div>
-  <hr>
-  <%= link_to "Back to Gigs", gigs_path %>
-</div>
+    </div>
+    <%# BACK TO GIGS LINK %>
+    <p class="mb-0 mt-2 pe-2"><%= link_to "< back to gigs", gigs_path, class: "text-custom"%></p>
+
+     
 </div>
 </div>
