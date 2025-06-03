@@ -24,10 +24,8 @@
     <%# duplicated icon %>
     <div class="navbar-item d-flex flex-column align-items-center">
       <div class="connect-icon">
-        <% if user_signed_in? %>
-          <%= link_to users_path, class: "navbar-item" do %>
-            <i class="fa-solid fa-user-group"></i>
-          <% end %>
+        <%= link_to users_path, class: "navbar-item" do %>
+          <i class="fa-solid fa-user-group"></i>
         <% end %>
       </div>
       <div class="connect-text">
