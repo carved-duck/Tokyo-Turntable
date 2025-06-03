@@ -89,3 +89,4 @@ gem "geocoder"
 gem "faker"
 gem "ferrum"
 gem 'acts_as_favoritor'
+gem "pg_search"
