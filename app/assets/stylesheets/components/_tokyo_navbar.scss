@@ -28,6 +28,11 @@
   vertical-align: middle;
   color: #829B9D; /* Dark grey/brown from image */
   text-decoration: none;
+  margin-bottom: 4px;
+
+  p {
+    color: #829B9D;
+  }
 }
 
 #logo {
@@ -38,4 +43,8 @@
 .style-image {
   background-color: blue;
   color: red;
+}
+
+.connect-icon {
+  margin-bottom: .1rem;
 }

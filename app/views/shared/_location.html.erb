@@ -1,6 +1,5 @@
 <div id="search-container" class="container py-4 position-relative">
-  <%= simple_form_for :search, url: gigs_path, method: :get, html: { class: "row", id: "location-form-container" } do |f| %>
-
+  <%= simple_form_for :search, url: gigs_path, method: :get, html: { class: "row", id: "location-form-container", data: { controller: "genre-filter"} } do |f| %>
     <%= f.input :select_a_date,
             as: :string,
             label_html: { class: "form-label-black" },
@@ -8,12 +7,14 @@
               value: params.dig(:search, :select_a_date),
               data: { controller: "datepicker" }
               } %>
-
+    <label class="form-label text-white select required form-label-black" for="search_genre-ts-control" id="search_genre-ts-label">
+      Choose some genres <br>
+      (up to 3) <abbr title="required">*</abbr>
+    </label>
     <%= f.input :genre,
-              label: "Choose a few genres",
-              # ADDED label_class for "Choose a few genres"
+              label: false,
               label_html: { class: "form-label-black" },
-              collection: ["All"] + Band.distinct.pluck(:genre),
+              collection: Band.distinct.pluck(:genre),
               input_html: {
                 multiple: true,
                 data: {

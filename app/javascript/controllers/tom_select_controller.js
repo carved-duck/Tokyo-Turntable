@@ -9,6 +9,7 @@ export default class extends Controller {
       this.element,
       {
         maxItems: 3,
+        maxOptions: 3,
         create: false,
         plugins: ['remove_button'],
         openOnFocus: false,
