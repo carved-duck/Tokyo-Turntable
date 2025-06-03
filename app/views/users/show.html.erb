@@ -15,7 +15,6 @@
       <% end %>
     </div>
   </div>
-  <%# Band Details Section %>
   <div class="main-content-card mb-4">
     <div class="card-body">
       <p class="mb-0">
@@ -43,7 +42,6 @@
       </div>
     </div>
   </div>
-  <%# Spotify, Discogs, and Past Shows Section %>
   <div class="main-content-card mb-4">
     <div class="card-body">
       <h3 class="card-title mb-3 text-dark">Other Details</h3>
@@ -66,38 +64,61 @@
       </ul>
     </div>
   </div>
-  <%# My Favorite Gigs Section %>
-  <h2 class="mb-3 text-dark">My Favorite Gigs</h2>
-  <% if @favorited_gigs.any? %>
-    <div class="row row-cols-1 g-3">
-      <% @favorited_gigs.each do |gig| %>
-        <div class="col">
-          <div class="main-content-card">
-            <div class="card-body d-flex justify-content-between align-items-center flex-wrap text-dark">
-              <div>
-                <p class="mb-1"><strong>Date:</strong> <%= gig.date.strftime("%B %d, %Y") %></p>
-                <% if gig.bands.any? %>
-                  <p class="mb-0"><strong>Bands:</strong> <%= gig.bands.map(&:name).join(', ') %></p>
-                <% else %>
-                  <p class="mb-0">No bands booked for this gig.</p>
-                <% end %>
-              </div>
-              <%# Unfavorite Button %>
-              <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
-              <% if favorite_record_id.present? %>
-                <div class="mt-2 mt-md-0">
-                  <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
-                      data-turbo-method="delete" data-turbo-confirm="Remove from favorites?"
-                      class="btn profile-unfavorite-btn">Unfavorite</a>
+  <%# app/views/users/profile.html.erb - relevant section %>
+  <%# My Favorite Gigs Section - Overall Card with Centered Button and Collapsible List %>
+  <div class="main-content-card mb-4">
+    <div class="card-body">
+      <p class="mb-0 text-center"> <%# text-center to center the button within its card-body %>
+        <%# Ensure data-bs-target points to a UNIQUE ID for the collapse section %>
+        <a class="btn profile-collapse-btn" data-bs-toggle="collapse" href="#favoriteGigsCollapse" role="button" aria-expanded="false" aria-controls="favoriteGigsCollapse">
+          + My Favorite Gigs <%# Button text %>
+        </a>
+      </p>
+      <%# The collapsible content for the favorite gigs list - starts collapsed by default %>
+      <div class="collapse mt-3" id="favoriteGigsCollapse"> <%# This ID must match the button's href %>
+        <% if @favorited_gigs.any? %>
+          <%# This mimics the "My Band Details" inner structure: a row with full-width columns %>
+          <div class="row g-2 text-dark"> <%# g-2 provides consistent spacing like other cards %>
+            <% @favorited_gigs.each_with_index do |gig, index| %>
+              <div class="col-12"> <%# col-12 ensures each item takes the full width, preventing multiple columns %>
+                <div class="d-flex justify-content-between align-items-center py-1"> <%# py-1 for very compact vertical padding %>
+                  <%# Left side: Headliner Band Name (linked) - no date, just band name %>
+                  <div class="flex-grow-1 me-2">
+                    <a href="<%= gig_path(gig) %>" class="text-decoration-none text-dark">
+                      <% if gig.bands.any? %>
+                        <p class="mb-0"><strong><%= gig.bands.first.name %></strong></p>
+                        <%# Simple p tag, mb-0 for no margin %>
+                      <% else %>
+                        <p class="mb-0"><small class="text-muted">No band listed.</small></p>
+                      <% end %>
+                    </a>
+                  </div>
+                  <%# Right side: Unfavorite Button %>
+                  <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
+                  <% if favorite_record_id.present? %>
+                    <div class="flex-shrink-0">
+                      <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
+                        data-turbo-method="delete" data-turbo-confirm="Remove from favorites?"
+                        class="btn btn-sm btn-outline-dark compact-unfavorite-btn">Unfavorite</a>
+                    </div>
+                  <% end %>
                 </div>
+                <%# End of d-flex for list item %>
+              </div>
+              <%# End of col-12 %>
+              <%# Line separator after each gig item, but not after the very last one %>
+              <% unless index == @favorited_gigs.length - 1 %>
+                <hr class="my-1 border-dark"> <%# my-1 for minimal vertical margin around the line %>
               <% end %>
-            </div>
+            <% end %> <%# End of @favorited_gigs.each %>
           </div>
-        </div>
-      <% end %>
+          <%# End of row %>
+        <% else %>
+          <p class="text-dark mt-3 text-center">You haven't favorited any gigs yet.</p>
+        <% end %>
+      </div>
+      <%# End of collapse div %>
     </div>
-  <% else %>
-    <p class="text-dark">You haven't favorited any gigs yet.</p>
-  <% end %>
-</div>
-<%# End of .profile-page-content-wrapper %>
+    <%# End of card-body %>
+  </div>
+  <%# End of main-content-card for Favorite Gigs Section %>
