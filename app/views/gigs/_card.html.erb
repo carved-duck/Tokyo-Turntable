@@ -1,8 +1,8 @@
 <!-- For gigs index -->
-<div class="card gig-card mb-3" style="max-width: 540px;">
+<div class="card gig-card mb-3 gig-card-hover" style="max-width: 540px;">
   <div class="row g-0">
     <!-- Left column: venue photo -->
-    <div class="col-4">
+    <div class="col-4 p-2">
       <% if gig.venue.photo.attached? %>
         <%= cl_image_tag gig.venue.photo.key,
               class: "img-fluid rounded-start",
