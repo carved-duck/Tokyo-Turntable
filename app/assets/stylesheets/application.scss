@@ -49,22 +49,23 @@ body {
   padding: 20px; /* Padding inside the card content */
   margin: 15px 15px 5px 15px; /* Margin on top/bottom and sides to show body background */
   box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-  overflow: hidden; /* Ensures content (like images) respects rounded corners */
   box-sizing: border-box; /* Ensure padding/border are included in total width */
   max-width: calc(100% - 30px); /* Limit card width to viewport minus margins */
   margin-left: auto; /* Center the cards */
   margin-right: auto; /* Center the cards */
+  flex-grow: 1;
 }
 
 .form-card-bottom-margin {
-  margin-bottom: 25px; /* More space for the bottom card if needed */
+  margin-bottom: 20px; /* More space for the bottom card if needed */
 }
 
 // Adjustments for the graphic within its card
 .home-top-section .main-visual-graphic {
   display: block;
-  max-width: 100%; /* Ensure the image never exceeds the width of its parent */
-  height: auto;
+  width: auto; /* Ensure the image never exceeds the width of its parent */
+  height: 300px;
+  margin: 0 auto;
 }
 
 // Ensure the image *inside* the card has appropriate sizing.

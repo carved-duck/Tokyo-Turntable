@@ -9,20 +9,13 @@
   background-color: #829B9D
 ; /* Fallback background for body/home-page, from image */
   overflow-y: auto; /* Allow scrolling if content is taller than screen */
-  padding-bottom: 84px; /* Space for the fixed navbar (60px height + 24px margin-top) */
+  padding-bottom: 70px; /* Space for the fixed navbar (60px height + 24px margin-top) */
 }
 
 .home-top-section {
-  flex-grow: 1; /* Allow this section to grow and take most of the available space */
-  display: flex;
-  justify-content: center; /* Center graphic horizontally */
-  align-items: center; /* Center graphic vertically */
   position: relative; /* For absolute positioning of the title */
   width: 100%; /* Take full width of parent */
-  overflow: hidden; /* Hide anything that overflows, especially the image if it's too big */
-  padding-top: 20px; /* Small padding at the top */
-  padding-bottom: 20px; /* Small padding at the bottom to separate from search fields */
-
+  padding: 0 !important;
 }
 
 .main-visual-graphic {
@@ -54,8 +47,7 @@
   width: 100%; /* Take full width */
   display: flex;
   justify-content: center; /* Center search fields horizontally */
-  align-items: flex-end; /* Align search fields to the bottom if there's extra space */
-  padding-bottom: 10px; /* Padding for the bottom of this section before the navbar */
+  align-items: flex-end; /* Align search fields to the bottom if there's extra space */ /* Padding for the bottom of this section before the navbar */
 }
 
 .search-fields-container {
