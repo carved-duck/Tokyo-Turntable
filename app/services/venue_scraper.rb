@@ -207,7 +207,7 @@ class VenueScraper
     parsed_data = JSON.parse(json)
     parsed_data["venues"].each do |venue_attr|
       img_link = venue_attr.delete("photo")
-      venue = Venue.where(name: venue_attr["name"])
+      venue = Venue.find_by(name: venue_attr["name"])
       venue = Venue.new(venue_attr) unless venue
       if img_link.start_with?("http")
         file = URI.parse(img_link).open
