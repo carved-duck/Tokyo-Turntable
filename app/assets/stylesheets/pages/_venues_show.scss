@@ -19,10 +19,6 @@
 // Styles specific to the header section within its card
 .venue-header {
   height: auto; /* Changed from 25vh to auto to be more flexible within card */
-  align-items: end;
-  display: flex;
-  gap: 20px; /* Adjusted gap for potentially better fit within card */
-  justify-content: space-around;
   padding: 0 0 12px; /* Adjust padding as main-content-card has its own padding */
   text-align: center; /* Center content within header if space allows */
 
@@ -50,25 +46,6 @@
   border-radius: 16%;
   flex-shrink: 0; /* Prevent it from shrinking */
 }
-
-// ----- moved to see_venue_details.scss -----
-// Details toggle button
-// .venue-details-collapse-btn {
-//   background-color: #C6C1B5; /* Match "Use my location" button */
-//   color: black; /* Black text */
-//   border-radius: 24px;
-//   padding: 8px 15px;
-//   border: none;
-//   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-//   text-decoration: none;
-//   display: inline-block;
-//   font-size: 0.9rem;
-
-//   &:hover {
-//     background-color: darken(#C6C1B5, 10%);
-//     color: black;
-//   }
-// }
 
 // Venue details table
 .venue-details {
@@ -102,7 +79,7 @@
 // Custom link style within cards
 .venue-link {
   color: #333 !important; /* Dark grey for links */
-  text-decoration: underline;
+  text-decoration: underline !important;
   &:hover {
     color: #000 !important; /* Darker on hover */
   }
@@ -167,6 +144,8 @@ h4.body-header {
 }
 
 .gig-table .gig-text {
+  white-space: normal; // to wrap
+  word-break: break-word; // to wrap
   font-size: 0.9rem;
   vertical-align: middle;
   color: black; /* Ensure gig text is black */

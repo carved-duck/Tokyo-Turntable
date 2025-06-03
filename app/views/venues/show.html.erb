@@ -2,29 +2,28 @@
 <div class="venue-show-page-content-wrapper"> <%# New wrapper for centering all content %>
   <%# Venue Header Section %>
   <div class="venue-header p-4" style="background-color: #F6F2E6; width: 100%;"> <%# Applied main-content-card here %>
-    <div class="">
-      <div class="d-flex justify-content-between">
-        <div class="venue-header-text text-start">
-          <h1><%= @venue.name %></h1>
-          <p class="neighborhood mt-2"><span><%= @venue.neighborhood %></span>, Tokyo </p>
-          <%# Wrapped neighborhood in span for styling if needed %>
-        </div>
-        <div class="venue-header-img ps-2">
-          <%# Consider using @venue.photo.attached? and image_tag @venue.photo if you have attached images %>
-          <%= image_tag ("venue_image.jpg"), class: "venue-img" %>
-        </div>
+    <div class="d-flex justify-content-between">
+      <div class="venue-header-text text-start">
+        <h1><%= @venue.name %></h1>
+        <p class="neighborhood mt-2"><span><%= @venue.neighborhood %></span>, Tokyo </p>
+        <%# Wrapped neighborhood in span for styling if needed %>
       </div>
-      <div class="text-start">
-        <%# render venue Details Toggle Section%>
-        <%= render partial: "shared/see_venue_details", locals: { venue: @venue } %></div>
+      <div class="venue-header-img ps-2">
+        <%# Consider using @venue.photo.attached? and image_tag @venue.photo if you have attached images %>
+        <%= image_tag ("venue_image.jpg"), class: "venue-img" %>
+      </div>
+    </div>
+    <div class="text-start">
+      <%# render venue Details Toggle Section%>
+      <%= render partial: "shared/see_venue_details", locals: { venue: @venue } %>
     </div>
   </div>
 </div>
 <%# Upcoming Show Section %>
 <h4 class="body-header mb-3 mt-3">Upcoming</h4>
-<div class="venue-body main-content-card mb-4 mt-0" style="width: 400px;"> <%# Applied main-content-card here %>
-  <% if @venue.gigs.any? %>
-    <% @venue.gigs.each do |gig| %>
+<% if @venue.gigs.any? %>
+  <% @venue.gigs.each do |gig| %>
+    <div class="venue-body main-content-card mb-4 mt-0" style="width: 400px;"> <%# Applied main-content-card here %>
       <table class="gig-table mb-3"> <%# Added mb-3 for spacing between gig tables %>
         <tr>
           <td class="label"><i class="fa-regular fa-calendar icon"></i></td>
@@ -37,17 +36,24 @@
         </tr>
         <tr>
           <td class="label"><i class="fa-regular fa-clock icon"></i></td>
-          <td class="gig-text">OPEN: <%= gig.open_time %> / START: <%= Gig.all.sample.start_time %></td>
+          <td class="gig-text">OPEN: <%= gig.open_time %> / START: <%= gig.formatted_start_time %></td>
         </tr>
         <tr>
           <td class="label"><i class="fa-solid fa-yen-sign icon"></i></td>
-          <td class="gig-text">PRICE: ¥<%= gig.price %></td>
+          <td class="gig-text">
+            <% if gig.price.to_s =~ /\d/ %>
+              ¥<%= gig.price.to_s.gsub(/(¥|\s*JPY|\s*yen)/i, '').strip %>
+            <% else %>
+              <%= gig.price %>
+            <% end %>
+          </td>
         </tr>
       </table>
-    <% end %>
-  <% else %>
-    <p class="text-black">No upcoming gigs for this venue.</p>
-    <%# Added text-black for visibility %>
+    </div>
   <% end %>
+<% else %>
+  <p class="text-black">No upcoming gigs for this venue.</p>
+  <%# Added text-black for visibility %>
+<% end %>
 </div>
 <%# End of .venue-show-page-content-wrapper %>

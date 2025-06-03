@@ -13,4 +13,8 @@ class Gig < ApplicationRecord
   validates :price, presence: true
 
   acts_as_favoritable # Means that this model can be favourited
+
+  def formatted_start_time
+    (DateTime.parse("#{self.date.strftime("%Y-%m-%d")} #{self.open_time.gsub(".",":")}:00") + 30.minutes).strftime("%H:%M")
+  end
 end
