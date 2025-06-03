@@ -1,5 +1,5 @@
 <%# app/views/users/profile.html.erb %>
-<div class="profile-page-content-wrapper"> <%# NEW: This wrapper will center the profile content %>
+<div class="profile-page-content-wrapper">
   <%# Profile Title Section %>
   <div class="text-center mb-4 main-content-card">
     <h2><%= "#{@user&.username.capitalize}'s Profile" %></h2>
@@ -8,17 +8,30 @@
   <div class="text-center mb-5 main-content-card">
     <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center profile-image-container">
       <% if @user.photo.attached? %>
-        <%# REMOVED: img-fluid and rounded-circle classes %>
         <%= image_tag @user.photo, class: "profile-image", alt: @user&.username %>
       <% else %>
         <span class="h1 text-dark">👤</span>
       <% end %>
     </div>
   </div>
-  <%# My Band Details Card %>
-  <%# Other Details Card %>
+  <%# Other Details Card - All content within this card-body %>
   <div class="main-content-card mb-4">
-    <div class="card-body">
+    <div class="card-body"> <%# This opens the content area for this card %>
+      <% if @user.bio.present? %>
+        <div class="user-bio mb-3"> <%# Added mb-3 for spacing %>
+          <h3>Bio</h3>
+          <p><%= @user.bio %></p>
+        </div>
+      <% end %>
+      <% if @user == current_user %>
+        <div class="user-details mb-3"> <%# Added mb-3 for spacing %>
+          <h3>Private Details</h3>
+          <p>Email: <%= @user.email %></p>
+          <p>Address: <%= @user.address %></p>
+          <%# Add any other private details here, e.g., %>
+        </div>
+      <% end %>
+      <%# This content is correctly inside the card-body, after the conditional sections %>
       <h3 class="card-title mb-3 text-dark">Other Details</h3>
       <ul class="list-unstyled mb-0 text-dark">
         <% if @user&.spotify_link&.present? %>
@@ -38,55 +51,49 @@
         <% end %>
       </ul>
     </div>
+ <%# closes card-body %>
   </div>
+ <%# closes main-content-card %>
   <%# My Friends Section - Overall Card with Centered Button and Collapsible List %>
   <div class="main-content-card mb-4">
     <div class="card-body">
-      <p class="mb-0 text-center"> <%# text-center to center the button within its card-body %>
-        <%# Ensure data-bs-target points to a UNIQUE ID for the collapse section %>
-        <a class="btn profile-collapse-btn" data-bs-toggle="collapse" href="#favoriteUsersCollapse" role="button" aria-expanded="false" aria-controls="favoriteUsersCollapse"> <%# FIXED: aria-controls %>
-          + My Friends <%# Button text %>
+      <p class="mb-0 text-center">
+        <a class="btn profile-collapse-btn" data-bs-toggle="collapse" href="#favoriteUsersCollapse" role="button" aria-expanded="false" aria-controls="favoriteUsersCollapse">
+          + My Friends
         </a>
       </p>
-      <%# The collapsible content for the favorited users list - starts collapsed by default %>
-      <div class="collapse mt-3" id="favoriteUsersCollapse"> <%# This ID must match the button's href %>
+      <div class="collapse mt-3" id="favoriteUsersCollapse">
         <% if @favorited_users.any? %>
-          <%# This mimics the "My Band Details" inner structure: a row with full-width columns %>
-          <div class="row g-2 text-dark"> <%# g-2 provides consistent spacing like other cards %>
+          <div class="row g-2 text-dark">
             <% @favorited_users.each_with_index do |user, index| %>
-              <div class="col-12"> <%# col-12 ensures each item takes the full width, preventing multiple columns %>
-                <div class="d-flex justify-content-between align-items-center py-1"> <%# py-1 for very compact vertical padding %>
-                  <%# Left side: User's Username (linked) %>
+              <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center py-1">
                   <div class="flex-grow-1 me-2">
                     <a href="<%= user_path(user) %>" class="text-decoration-none text-dark">
-                      <% if user.username.present? %> <%# FIXED: .present? for string check %>
+                      <% if user.username.present? %>
                         <p class="mb-0"><strong><%= user&.username&.capitalize %></strong></p>
                       <% else %>
                         <p class="mb-0"><small class="text-muted">Username not available.</small></p>
-                        <%# Adjusted message %>
                       <% end %>
                     </a>
                   </div>
-                  <%# Right side: Unfollow Button (assuming favoriting a user is 'following') %>
                   <% favorite_record_id = current_user.favorites.find_by(favoritable: user)&.id %>
                   <% if favorite_record_id.present? %>
                     <div class="flex-shrink-0">
                       <a href="<%= user_favorite_path(user, favorite_record_id) %>"
-                        data-turbo-method="delete" data-turbo-confirm="Unfollow this user?"
-                        class="btn btn-sm btn-outline-dark compact-unfavorite-btn">Unfollow</a> <%# Changed text to Unfollow %>
+                          data-turbo-method="delete" data-turbo-confirm="Unfollow this user?"
+                          class="btn btn-sm btn-outline-dark compact-unfavorite-btn">Unfollow</a>
                     </div>
                   <% end %>
                 </div>
               </div>
-              <%# Line separator after each user, but not after the very last one %>
-              <% unless index == @favorited_users.length - 1 %> <%# FIXED: Checking @favorited_users.length %>
+              <% unless index == @favorited_users.length - 1 %>
                 <hr class="my-1 border-dark">
               <% end %>
             <% end %>
           </div>
         <% else %>
           <p class="text-dark mt-3 text-center">You have no friends yet.</p>
-          <%# FIXED: Message for users %>
         <% end %>
       </div>
     </div>
@@ -94,21 +101,17 @@
   <%# My Favorite Gigs Section - Overall Card with Centered Button and Collapsible List %>
   <div class="main-content-card mb-4">
     <div class="card-body">
-      <p class="mb-0 text-center"> <%# text-center to center the button within its card-body %>
-        <%# Ensure data-bs-target points to a UNIQUE ID for the collapse section %>
+      <p class="mb-0 text-center">
         <a class="btn profile-collapse-btn" data-bs-toggle="collapse" href="#favoriteGigsCollapse" role="button" aria-expanded="false" aria-controls="favoriteGigsCollapse">
-          + My Favorite Gigs <%# Button text %>
+          + My Favorite Gigs
         </a>
       </p>
-      <%# The collapsible content for the favorite gigs list - starts collapsed by default %>
-      <div class="collapse mt-3" id="favoriteGigsCollapse"> <%# This ID must match the button's href %>
+      <div class="collapse mt-3" id="favoriteGigsCollapse">
         <% if @favorited_gigs.any? %>
-          <%# This mimics the "My Band Details" inner structure: a row with full-width columns %>
-          <div class="row g-2 text-dark"> <%# g-2 provides consistent spacing like other cards %>
+          <div class="row g-2 text-dark">
             <% @favorited_gigs.each_with_index do |gig, index| %>
-              <div class="col-12"> <%# col-12 ensures each item takes the full width, preventing multiple columns %>
-                <div class="d-flex justify-content-between align-items-center py-1"> <%# py-1 for very compact vertical padding %>
-                  <%# Left side: Headliner Band Name (linked) - no date, just band name %>
+              <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center py-1">
                   <div class="flex-grow-1 me-2">
                     <a href="<%= gig_path(gig) %>" class="text-decoration-none text-dark">
                       <% if gig.bands.any? %>
@@ -118,18 +121,16 @@
                       <% end %>
                     </a>
                   </div>
-                  <%# Right side: Unfavorite Button %>
                   <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
                   <% if favorite_record_id.present? %>
                     <div class="flex-shrink-0">
                       <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
-                        data-turbo-method="delete" data-turbo-confirm="Remove from favorites?"
-                        class="btn btn-sm btn-outline-dark compact-unfavorite-btn">Unfavorite</a>
+                          data-turbo-method="delete" data-turbo-confirm="Remove from favorites?"
+                          class="btn btn-sm btn-outline-dark compact-unfavorite-btn">Unfavorite</a>
                     </div>
                   <% end %>
                 </div>
               </div>
-              <%# Line separator after each gig item, but not after the very last one %>
               <% unless index == @favorited_gigs.length - 1 %>
                 <hr class="my-1 border-dark">
               <% end %>

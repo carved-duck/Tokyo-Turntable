@@ -83,32 +83,6 @@ class VenueScraper
             all_scraped_venues_data << venue_data
             puts "  Successfully scraped data for: #{venue_data[:name]}."
 
-            # --- Database Population Logic (Uncomment and ensure your Rails environment is loaded) ---
-            # To run this in a Rails environment, you would typically execute it within a Rake task
-            # or a custom script where your Rails models are accessible.
-            # Example:
-            #   `rails runner 'VenueScraper.new.venue_scraper'`
-
-            # Make sure your Venue model has these attributes and validations are met.
-            # `find_or_create_by!` will raise an error if validation fails, which is good for debugging.
-            # begin
-            #   venue = Venue.find_or_create_by!(name: venue_data[:name]) do |v|
-            #     v.website = venue_data[:website]
-            #     v.address = venue_data[:address]
-            #     v.email = venue_data[:email]
-            #     v.neighborhood = venue_data[:neighborhood]
-            #     v.details = venue_data[:details]
-            #     # v.photo = venue_data[:photo] commenting out for now, link causing problems during create due to being a link
-            #     # Add any other attributes you want to save
-            #   end
-            #   puts "  Venue '#{venue.name}' (ID: #{venue.id}) #{venue.new_record? ? 'CREATED' : 'UPDATED'} in database."
-            # rescue ActiveRecord::RecordInvalid => e
-            #   puts "  ERROR: Could not save/update venue '#{venue_data[:name]}' due to validation errors: #{e.message}"
-            # rescue StandardError => e
-            #   puts "  ERROR: An unexpected error occurred during database operation for '#{venue_data[:name]}': #{e.message}"
-            # end
-            # --- END Database Population Logic ---
-
           else
             puts "  WARNING: Could not scrape data for #{venue_link} (or name was not available/empty). Skipping."
           end
@@ -233,7 +207,7 @@ class VenueScraper
     parsed_data = JSON.parse(json)
     parsed_data["venues"].each do |venue_attr|
       img_link = venue_attr.delete("photo")
-      venue = Venue.find_by(name: venue_attr["name"])
+      venue = Venue.where(name: venue_attr["name"])
       venue = Venue.new(venue_attr) unless venue
       if img_link.start_with?("http")
         file = URI.parse(img_link).open
