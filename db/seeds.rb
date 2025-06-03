@@ -5,8 +5,8 @@ Attendance.destroy_all
 Booking.destroy_all
 Gig.destroy_all
 Venue.destroy_all
-Band.destroy_all
 User.destroy_all
+Band.destroy_all
 
 users = [
   User.create!(
