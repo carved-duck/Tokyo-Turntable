@@ -1,11 +1,11 @@
-<!-- STart of the toggle -->
+<!-- Start of the toggle -->
 <div class="container pt-3" data-controller="view-toggle">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <!-- This button toggles between map and list -->
     <button
       data-action="click->view-toggle#toggle"
       data-view-toggle-target="button"
-      class="btn btn-sm btn-outline-primary">
+      class="index-btn btn btn-sm btn-primary">
       Show Map
     </button>
   </div>
@@ -13,7 +13,7 @@
   <div
     id="map-panel"
     data-view-toggle-target="map"
-    class="d-none"
+    class="d-none mt-4"
     style="width: 100%; height: 600px; margin-bottom: 16px;">
     <!-- Offcanvas partial -->
     <%= render "gig_sheet" %>
