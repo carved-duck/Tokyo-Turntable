@@ -1,0 +1,26 @@
+<%# Venue Details Toggle Section (reusing venue-details class from venue show) %>
+<a class="btn venue-details-collapse-btn" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+  + See venue details
+</a>
+<%# Venue details %>
+<div class="collapse mt-3" id="collapseExample">
+  <div class="venue-details p-3"> <%# Reusing venue-details class %>
+    <div>
+      <div class="d-flex mb-2">
+        <i class="fa-solid fa-location-dot me-3 pt-1"></i>
+        <span><%= @venue.address %></span>
+      </div>
+      <div class="d-flex mb-2">
+        <i class="fa-solid fa-globe me-3 pt-1"></i>
+        <span>
+          <a href="<%= @venue.website %>" target="_blank" class="venue-link"><%= @venue.website %></a>
+        </span>
+      </div>
+      <div class="d-flex mb-2">
+        <i class="fa-solid fa-envelope me-3 pt-1"></i>
+        <span>
+          <a href="mailto:<%= @venue.email %>" class="venue-link"><%= @venue.email %></a>
+        </span>
+      </div>
+    </div>
+  </div>

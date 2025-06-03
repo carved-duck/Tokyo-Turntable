@@ -26,6 +26,8 @@ body {
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+@import "pages/see_venue_details";
+
 
 // CORRECTED: Import your custom Tom Select file from the 'components' directory
 @import "components/tom-select";

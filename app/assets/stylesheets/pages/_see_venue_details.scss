@@ -1,0 +1,17 @@
+// Details toggle button
+.venue-details-collapse-btn {
+  background-color: #C6C1B5; /* Match "Use my location" button */
+  color: black; /* Black text */
+  border-radius: 24px;
+  padding: 8px 15px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.9rem;
+
+  &:hover {
+    background-color: darken(#C6C1B5, 10%);
+    color: black;
+  }
+}
