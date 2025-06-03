@@ -27,7 +27,9 @@ export default class extends Controller {
   }
 
   _addMarker(marker) {
-    const mbMarker = new mapboxgl.Marker({ color: "#B64F44" })
+    const el = document.createElement('div')
+    el.innerHTML = marker.marker_html
+    const mbMarker = new mapboxgl.Marker({ element: el, color: "#B64F44" })
     .setLngLat([marker.lng, marker.lat])
     .addTo(this.map)
 

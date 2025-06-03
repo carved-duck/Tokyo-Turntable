@@ -1,13 +1,22 @@
 <div class="container my-4">
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
-    <%= form_with url: venues_path, method: :get, local: true, class: "d-flex" do %>
-      <%= text_field_tag :query, params[:query], class: "form-control", placeholder: "Type a keyword"%>
-      <%= submit_tag "Search", class: "btn btn-primary" %>
-    <% end %>
+  <!-- Search row -->
+  <div class="venue-index-header d-flex justify-content-between align-items-center mb-3">
+    <div class="venue-index-header-text">
+    </div>
+    <div class="search-form-wrapper">
+      <%= form_with url: venues_path, method: :get, local: true, class: "d-flex" do %>
+        <%= text_field_tag :query, params[:query], class: "form-control me-2", placeholder: "Search" %>
+        <%= submit_tag "Search", class: "index-btn btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+  <!-- Cards -->
+  <div class="d-grid gap-3">
     <% @venues.each do |venue| %>
-      <div class="col">
-        <%= render "venue_card", venue: venue %>
-      </div>
+      <%= render "venue_card", venue: venue %>
+    <% end %>
+    <% if @venues.empty? %>
+      <p class="text-center">No venues found.</p>
     <% end %>
   </div>
 </div>
