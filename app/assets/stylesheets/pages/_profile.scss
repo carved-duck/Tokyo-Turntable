@@ -38,8 +38,6 @@
   }
 }
 
-
-
 // Style for the "+ My Band Details" collapse button
 .profile-collapse-btn {
   background-color: #C6C1B5;
@@ -57,7 +55,7 @@
   }
 }
 
-// Style for the "Unfavorite" button
+// Style for the "Unfavorite" button (used in some contexts)
 .profile-unfavorite-btn {
   background-color: #C6C1B5;
   color: black;
@@ -75,27 +73,60 @@
   }
 }
 
-// General text color within profile cards
-.main-content-card p,
-.main-content-card li,
-.main-content-card h3,
-.main-content-card h2,
-.main-content-card strong,
-.main-content-card div {
-  color: black !important;
+// Styling for the compact Unfavorite button in the lists (used in favorited gigs/users)
+.compact-unfavorite-btn {
+  border-color: #C6C1B5;
+  color: black;
+  font-weight: bold;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: darken(#C6C1B5, 10%);
+    color: black;
+    border-color: darken(#C6C1B5, 10%);
+  }
 }
 
-// Ensure links within cards are dark
-.main-content-card a {
-  color: #333 !important;
-  text-decoration: underline;
-}
+// General styling for all main content cards on the profile page
+.main-content-card {
+  width: 100%; /* Ensures it takes full width of its parent's available space */
+  max-width: 450px; /* <<<--- THIS IS THE KEY LINE FOR CONSISTENT WIDTH */
+  background-color: #F6F2E6; /* Light background color (as seen in screenshots) */
+  border-radius: 24px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Subtle shadow */
+  margin: 15px auto; /* Centers the card horizontally within its parent */
+  box-sizing: border-box; /* Ensures padding and border are included in the width */
+  padding: 20px; /* Default padding for the card content (can be overridden by p-3, etc.) */
 
-.main-content-card a:hover {
-  color: #000 !important;
-}
+  // General text color within profile cards
+  p,
+  li,
+  h3,
+  h2,
+  strong,
+  div {
+    color: black !important;
+  }
 
-// Override Bootstrap's default card-body padding if needed to match homepage card padding
-.main-content-card .card-body {
-  padding: 20px;
+  // Ensure links within cards are dark
+  a {
+    color: #333 !important;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #000 !important;
+  }
+
+  // Override Bootstrap's default card-body padding if needed to match homepage card padding
+  .card-body {
+    padding: 20px;
+  }
+
+  // Styles for the HR separator within the main-content-card
+  hr.border-dark {
+    border-top: 1px solid #ddd; /* A lighter line for subtlety */
+    margin-top: 0.5rem !important; /* Control spacing above the line */
+    margin-bottom: 0.5rem !important; /* Control spacing below the line */
+  }
 }

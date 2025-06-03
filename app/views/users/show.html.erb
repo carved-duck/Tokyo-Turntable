@@ -1,18 +1,17 @@
 <%# app/views/users/profile.html.erb %>
 <div class="profile-page-content-wrapper">
   <%# Profile Title Section %>
-  <div class="text-center mb-4 main-content-card">
-    <h2><%= "#{@user&.username.capitalize}'s Profile" %></h2>
-  </div>
-  <%# User Image Placeholder Section %>
-  <div class="text-center mb-5 main-content-card">
-    <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center profile-image-container">
+  <div class="text-center mb-4 main-content-card"> <%# This is now one card for all three elements %>
+    <%# Profile Image Container %>
+    <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center profile-image-container mb-3"> <%# Added mb-3 for spacing below image %>
       <% if @user.photo.attached? %>
         <%= image_tag @user.photo, class: "profile-image", alt: @user&.username %>
       <% else %>
         <span class="h1 text-dark">👤</span>
       <% end %>
     </div>
+    <%# Profile Title (Username) %>
+    <h2 class="mb-0"><%= "#{@user&.username.capitalize}'s Profile" %></h2>
   </div>
   <%# Other Details Card - All content within this card-body %>
   <div class="main-content-card mb-4">
@@ -23,14 +22,17 @@
           <p><%= @user.bio %></p>
         </div>
       <% end %>
+      <hr class="my-1 border-dark">
       <% if @user == current_user %>
         <div class="user-details mb-3"> <%# Added mb-3 for spacing %>
           <h3>Private Details</h3>
           <p>Email: <%= @user.email %></p>
           <p>Address: <%= @user.address %></p>
-          <% if @user == current_user %>
-            <%= link_to "Edit Profile", edit_user_registration_path, class: "btn btn-sm btn-outline-dark mt-3" %>
-          <% end %>
+
+          <hr class="my-1 border-dark">
+
+         
+
           <%# Add any other private details here, e.g., %>
         </div>
       <% end %>
@@ -47,6 +49,9 @@
             <strong>My Discogs:</strong> <a href="<%= @user&.discogs_link %>" target="_blank" class="text-dark text-decoration-none">Visit Discogs</a>
           </li>
         <% end %>
+        <% if @user == current_user %>
+          <%= link_to "Edit Profile", edit_user_registration_path, class: "btn profile-collapse-btn mt-3" %>
+        <% end %>
         <% if @user&.past_shows.present? %>
           <li class="mb-2">
             <strong>Past Shows:</strong> <%= @user&.past_shows %>
@@ -62,7 +67,7 @@
     <div class="card-body">
       <p class="mb-0 text-center">
         <a class="btn profile-collapse-btn" data-bs-toggle="collapse" href="#favoriteUsersCollapse" role="button" aria-expanded="false" aria-controls="favoriteUsersCollapse">
-          + My Friends
+          My Friends
         </a>
       </p>
       <div class="collapse mt-3" id="favoriteUsersCollapse">
@@ -106,7 +111,7 @@
     <div class="card-body">
       <p class="mb-0 text-center">
         <a class="btn profile-collapse-btn" data-bs-toggle="collapse" href="#favoriteGigsCollapse" role="button" aria-expanded="false" aria-controls="favoriteGigsCollapse">
-          + My Favorite Gigs
+          My Favorite Gigs
         </a>
       </p>
       <div class="collapse mt-3" id="favoriteGigsCollapse">
