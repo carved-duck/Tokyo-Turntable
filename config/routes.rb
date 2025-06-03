@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [ :index, :show ] do
     resources :attendances, only: [ :index ]
+    resources :favorites, only: [:create, :destroy]
   end
 
   resources :genres, only: [:index]

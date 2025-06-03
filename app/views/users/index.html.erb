@@ -18,9 +18,24 @@
               <p class="mb-1"><strong>Username:</strong> <%= user&.username&.capitalize %></p>
               <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn btn-sm">View Details</a>
             </div>
+            <div class="gig-actions mb-0 ms-auto"> <%# Added ms-auto to push it to the right %>
+              <% if user_signed_in? %>
+                <% if current_user.favorited?(user) %>
+                  <%= link_to "Unfollow", user_favorite_path(user, current_user.favorites.find_by(favoritable: user).id),
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" },
+                    class: "btn gig-unfavorite-btn" %>
+                <% else %>
+                  <%= link_to "Follow", user_favorites_path(user),
+                       data: { turbo_method: :post },
+                        class: "btn gig-favorite-btn" %>
+                <% end %>
+              <% else %>
+                <small class="text-muted">Sign in to follow</small> <%# Example placeholder %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
-    <% end %>
+    <% end %> <%# Close @users.each %>
   </div>
 </div>
