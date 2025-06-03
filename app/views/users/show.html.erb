@@ -28,6 +28,9 @@
           <h3>Private Details</h3>
           <p>Email: <%= @user.email %></p>
           <p>Address: <%= @user.address %></p>
+          <% if @user == current_user %>
+            <%= link_to "Edit Profile", edit_user_registration_path, class: "btn btn-sm btn-outline-dark mt-3" %>
+          <% end %>
           <%# Add any other private details here, e.g., %>
         </div>
       <% end %>
@@ -51,9 +54,9 @@
         <% end %>
       </ul>
     </div>
- <%# closes card-body %>
+    <%# closes card-body %>
   </div>
- <%# closes main-content-card %>
+  <%# closes main-content-card %>
   <%# My Friends Section - Overall Card with Centered Button and Collapsible List %>
   <div class="main-content-card mb-4">
     <div class="card-body">
