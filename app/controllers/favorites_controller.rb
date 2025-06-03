@@ -16,11 +16,15 @@ class FavoritesController < ApplicationController
     redirect_to @favoritable, notice: "#{@favoritable.class.name} favorited!"
   end
 
-  def destroy
+ def destroy
+    # 1. AUTHORIZE THE ACTION FIRST!
+    # Check if the current_user is authorized to unfavorite this @favoritable object.
+    # At this point, the favorite record still exists, so user.favorited?(record) will return true.
+    authorize @favoritable, :unfavorite?
+
+    # 2. THEN perform the action that modifies the database.
     # The `acts_as_favoritor` gem's unfavorite method requires the favoritable object
     current_user.unfavorite(@favoritable)
-    # Authorize the specific action on the @favoritable object
-    authorize @favoritable, :unfavorite?
 
     # Use a more generic notice based on the favoritable's class name
     redirect_to @favoritable, notice: "#{@favoritable.class.name} unfavorited."
