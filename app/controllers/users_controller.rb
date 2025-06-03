@@ -2,9 +2,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     # Fetch favorited gigs for the current user
-    @favorited_gigs = @user.favorited_by_type('Gig')
-    # Or, if you want all favorited items regardless of type:
-    # @all_favorited_items = @user.all_favorited
+    @favorited_users = @user.favorites.where(favoritable_type: 'User').map(&:favoritable)
+    @favorited_gigs = @user.favorites.where(favoritable_type: 'Gig').map(&:favoritable)
     authorize @user # If you are using Pundit
   end
 

@@ -7,4 +7,6 @@ class Band < ApplicationRecord
   validates :genre, presence: true
   validates :hometown, presence: true
   validates :email, presence: true
+
+  acts_as_favoritable # Allows Band to be followed/favorited by others
 end

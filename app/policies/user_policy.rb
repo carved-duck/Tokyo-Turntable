@@ -14,4 +14,14 @@ class UserPolicy < ApplicationPolicy
     user == record
   end
 
+   def favorite?
+    # A user can favorite another user if they are logged in and not trying to favorite themselves
+    user.present? && user != record
+  end
+
+  def unfavorite?
+    # A user can unfavorite another user if they are logged in and have previously favorited them
+    user.present? && user != record && user.favorited?(record)
+  end
+
 end
