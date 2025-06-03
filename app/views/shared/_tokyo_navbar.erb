@@ -1,21 +1,46 @@
 <div class="tokyo-navbar container">
-  <div class="navbar-flex">
+  <div class="navbar-flex align-items-end">
+    <%# Home %>
     <div class="d-flex flex-column align-items-center">
       <%= link_to root_path, class: "navbar-item text-center", id: "logo" do %>
-        <%= image_tag "icons/record-player-icon.png", alt: "Tokyo Turntable Logo", size: "42x42" %>
-        <p class="mx-0 mb-0" style="font-size: 14px; color: black;">Home</p>
+        <%= image_tag "icons/TokyoTurntableBtn.svg", alt: "Tokyo Turntable Logo", size: "28x28" %>
+        <p class="mx-0 mb-0" style="font-size: 14px; line-height:1.5; margin-top: 2px">Home</p>
       <% end %>
     </div>
-    <div class="d-flex flex-column align-items-center">
-      <% if user_signed_in? %>
-        <%= link_to user_path(current_user), class: "navbar-item" do %>
-          <i class="fa-solid fa-message"></i>
+    <%# Connect %>
+    <div class="navbar-item d-flex flex-column align-items-center">
+      <div class="connect-icon">
+        <%= link_to venues_path, class: "navbar-item" do %>
+          <i class="fa-solid fa-martini-glass"></i>
         <% end %>
-      <% end %>
+      </div>
+      <div class="connect-text">
+        <p class="mb-0 mt-1" style="font-size: 14px; line-height:1.5">Venues</p>
+      </div>
+      <%# The middle button (record-vinyl icon), now linked to the home page %>
+      <%# The Messages icon, linked to the user profile page %>
+      <%# Calendar icon (user menu) dropdown %>
     </div>
-    <div class="navbar-item dropdown">
+    <%# duplicated icon %>
+    <div class="navbar-item d-flex flex-column align-items-center">
+      <div class="connect-icon">
+        <% if user_signed_in? %>
+          <%= link_to users_path, class: "navbar-item" do %>
+            <i class="fa-solid fa-user-group"></i>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="connect-text">
+        <p class="mb-0 mt-1" style="font-size: 14px; line-height:1.5">Users</p>
+      </div>
+      <%# The middle button (record-vinyl icon), now linked to the home page %>
+      <%# The Messages icon, linked to the user profile page %>
+      <%# Calendar icon (user menu) dropdown %>
+    </div>
+    <%# Profile %>
+    <div class="navbar-item dropdown d-flex flex-column align-items-center mt-2">
       <a class="nav-link" href="#" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa-solid fa-user"></i>
+        <i class="fa-solid fa-address-card"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
         <% if user_signed_in? %>
@@ -25,9 +50,6 @@
           <%= link_to "Login", new_user_session_path, class: "dropdown-item" %>
         <% end %>
       </div>
+      <p class="mt-2 mb-0" style="font-size: 14px; line-height:1.5">Profile</p>
     </div>
-    <%# The middle button (record-vinyl icon), now linked to the home page %>
-    <%# The Messages icon, linked to the user profile page %>
-    <%# Calendar icon (user menu) dropdown %>
   </div>
-</div>
