@@ -1,13 +1,24 @@
 <!-- Start of the toggle -->
 <div class="container pt-3" data-controller="view-toggle">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <!-- This button toggles between map and list -->
-    <button
+  <div class="gig-index-header d-flex justify-content-space-around align-items-center">
+    <div class="gig-index-header-text">
+      <h3>
+        Shows happening
+        <span id="selected-date">
+          <% selected = params.dig(:search, :select_a_date) %>
+          <%= selected.present? ? Date.parse(selected).strftime("%B %d, %Y") : "on all dates" %>
+        </span>
+      </h3>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <!-- This button toggles between map and list -->
+      <button
       data-action="click->view-toggle#toggle"
-      data-view-toggle-target="button"
-      class="index-btn btn btn-sm btn-primary">
-      Show Map
-    </button>
+        data-view-toggle-target="button"
+        class="index-btn btn btn-sm btn-primary">
+        Show Map
+      </button>
+    </div>
   </div>
   <!-- MAP PANEL (initially hidden) -->
   <div
@@ -40,12 +51,14 @@
     ></div>
   </div>
   <!-- LIST PANEL (initially visible) -->
-  <div id="list-panel" data-view-toggle-target="list" class="">
+  <div id="list-panel" data-view-toggle-target="list">
     <div class="container-card py-2">
       <div class="row row-cols-1 g-3">
         <% @gigs.each do |gig| %>
           <div class="col">
-            <%= render "card", gig: gig %>
+            <%= link_to gig_path(gig), class: "text-decoration-none text-dark d-block" do %>
+              <%= render "card", gig: gig %>
+            <% end %>
           </div>
         <% end %>
       </div>

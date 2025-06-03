@@ -1,10 +1,25 @@
 .index-btn {
-  position: fixed;
-  top: 3px;
-  right: -8%;
-  transform: translateX(-50%);
   z-index: 101;
-  color: #829B9D;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  background: $brick-red;
+  border: 1px solid $brick-red;
+  box-shadow: 0 2px 6px #00000026;
   border-radius: 9px;
+}
+
+.gig-index-header {
+  background-color: $cream;
+  border-radius: 9px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+
+.gig-card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 8px;
+  &:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  }
 }
