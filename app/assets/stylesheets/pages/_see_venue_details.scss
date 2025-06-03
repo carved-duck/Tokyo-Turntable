@@ -6,7 +6,7 @@
   padding: 8px 15px;
   border: none;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  text-decoration: none;
+  text-decoration: none !important;
   display: inline-block;
   font-size: 0.9rem;
 
@@ -14,4 +14,19 @@
     background-color: darken(#C6C1B5, 10%);
     color: black;
   }
+}
+
+.venue-details span {
+  white-space: normal;         // 折り返しを許可
+  word-wrap: break-word;       // 単語途中でも折り返し可
+  overflow-wrap: break-word;   // モダンなブラウザ対応
+  display: inline-block;       // 必要に応じて span を block に
+  max-width: 100%;             // 親要素に収まるよう制限
+}
+
+#collapseExample, .venue-details {
+  width: 100%; /* 親要素に対して100%にする */
+  box-sizing: border-box; /* パディングも幅に含める */
+  word-wrap: break-word;/* 長いテキストを折り返す */
+  font-size: 16px;
 }

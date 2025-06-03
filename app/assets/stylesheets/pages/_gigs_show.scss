@@ -70,8 +70,17 @@ p.neighborhood {
 //   font-weight: bold !important; /* Keep bold for price/genre if desired */
 // }
 
+// page title
 .gig-show-page-content-wrapper .page-title {
-  color: #333333 !important; //
+  color: #000000 !important; //
+  width: 100%;
+  text-align: center;
+  position: sticky;
+  top: 0; /* スクロール時に画面上部に固定 */
+  background-color: #829B9D; /* 背景をつけて下の内容と重ならないように */
+  z-index: 10; /* 他要素より前面に出す */
+  padding: 0.9rem 2rem; /* 必要に応じて調整 */
+  border-bottom: 1px solid #ccc; /*
 }
 
 h4, h5, h6 {
@@ -81,6 +90,10 @@ h4, h5, h6 {
 .body-header {
   color: black !important; /* Ensure this specific header is black */
   text-align: center;
+}
+
+.event-details-bottom {
+  font-size: 17px; /* お好みのサイズに変更 */
 }
 
 // Gig times (OPEN/START)
@@ -99,12 +112,6 @@ h4, h5, h6 {
   // margin-bottom: 1rem;
   padding-bottom: 8px
 }
-
-// act width in the header
-.artist {
-  width: 65%;
-}
-
 
 .band-info {
   width: 100%;
@@ -137,52 +144,55 @@ h4, h5, h6 {
   }
 }
 
-// Buttons at the bottom of the gig card
+// Favorite / Unfavorite wrapper
 .gig-actions {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 
-  .btn {
-    width: auto; /* Allow buttons to size based on content */
-    min-width: 150px; /* Give them a minimum width if desired */
-    padding: 8px 15px;
-    border-radius: 24px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    font-weight: bold;
-    text-decoration: none;
-    text-align: center;
+  // .btn {
+  //   width: auto; /* Allow buttons to size based on content */
+  //   min-width: 150px; /* Give them a minimum width if desired */
+  //   padding: 8px 15px;
+  //   border-radius: 24px;
+  //   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  //   font-weight: bold;
+  //   text-decoration: none;
+  //   text-align: center;
+  // }
+
   }
 
-  .gig-favorite-btn {
-    background-color: #B64F44; /* Dark red for Favorite */
-    color: black;
-    border: none;
-    &:hover {
-      background-color: darken(#B64F44, 10%);
-      color: black;
-    }
+// Favorite / Unfavorite button styles
+.gig-favorite-btn,
+.gig-unfavorite-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+
+  i {
+    font-size: 1.8rem;
+    color: #829B9D !important;
+    transition: color 0.3s ease;
   }
 
-  .gig-unfavorite-btn {
-    background-color: #C6C1B5; /* Grey for Unfavorite */
-    color: black;
-    border: none;
-    &:hover {
-      background-color: darken(#C6C1B5, 10%);
-      color: black;
-    }
+  &:hover i {
+    color: #5d7071 !important;
   }
+}
 
+// Prompt to log in
   .login-prompt {
     font-size: 0.9rem;
     .venue-link {
       font-weight: bold;
     }
   }
-}
 
+
+// back to gig button
 .gig-back-btn {
   background-color: #C6C1B5; /* Grey for back button */
   // color: black;
@@ -243,32 +253,14 @@ h4, h5, h6 {
   }
 }
 
-// Details collapse button (reused from _venues_show.scss)
-.venue-details-collapse-btn {
-  background-color: #C6C1B5;
-  color: black;
-  border-radius: 24px;
-  padding: 8px 15px;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.9rem;
-
-  &:hover {
-    background-color: darken(#C6C1B5, 10%);
-    color: black;
-
-  }
-}
-
 .label-space {
   margin-left: 10px;
 }
 
+// Sticky back button
 .sticky-buttons {
   position: fixed;
-  bottom: 80px;
+  bottom: 85px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
