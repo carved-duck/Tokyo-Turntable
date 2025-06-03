@@ -12,9 +12,9 @@
 }
 
 // Your existing .venue-show styles, adjusted
-.venue-show-page-content-wrapper { // Use the new wrapper class
-  // height: 100%; // Not needed here as min-height is on body, and content wrapper has flex-direction column.
-}
+// .venue-show-page-content-wrapper { // Use the new wrapper class
+//   // height: 100%; // Not needed here as min-height is on body, and content wrapper has flex-direction column.
+// }
 
 // Styles specific to the header section within its card
 .venue-header {
@@ -43,31 +43,32 @@
 }
 
 .venue-img {
-  width: 100px; /* Adjusted width for potentially better fit within card */
-  height: 100px; /* Make it square */
+  width: 120px; /* Adjusted width for potentially better fit within card */
+  height: 120px; /* Make it square */
   object-fit: cover; /* Ensure image covers the area */
   margin-top: 0;
   border-radius: 16%;
   flex-shrink: 0; /* Prevent it from shrinking */
 }
 
+// ----- moved to see_venue_details.scss -----
 // Details toggle button
-.venue-details-collapse-btn {
-  background-color: #C6C1B5; /* Match "Use my location" button */
-  color: black; /* Black text */
-  border-radius: 24px;
-  padding: 8px 15px;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.9rem;
+// .venue-details-collapse-btn {
+//   background-color: #C6C1B5; /* Match "Use my location" button */
+//   color: black; /* Black text */
+//   border-radius: 24px;
+//   padding: 8px 15px;
+//   border: none;
+//   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+//   text-decoration: none;
+//   display: inline-block;
+//   font-size: 0.9rem;
 
-  &:hover {
-    background-color: darken(#C6C1B5, 10%);
-    color: black;
-  }
-}
+//   &:hover {
+//     background-color: darken(#C6C1B5, 10%);
+//     color: black;
+//   }
+// }
 
 // Venue details table
 .venue-details {
@@ -126,9 +127,9 @@
 }
 
 // Upcoming show section
-.venue-body {
-  // Styles handled by main-content-card, and specific elements below
-}
+// .venue-body {
+//   // Styles handled by main-content-card, and specific elements below
+// }
 
 h4.body-header {
   color: black; /* Changed to black */
