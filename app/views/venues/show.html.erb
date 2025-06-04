@@ -19,10 +19,27 @@
     </div>
   </div>
 </div>
+<%# Schedule %>
+<div class="schedule mt-4">
+  <p class="text-center selected-year"><%= @selected_year %></p>
+  <div class="months-container">
+    <% if @selected_month == 1 %>
+      <a class="previous-month" href="/venues/<%= @venue.id %>?month=12&year=<%= @selected_year - 1 %>">12 <span>DEC</span></a>
+    <% else %>
+      <a class="previous-month" href="/venues/<%= @venue.id %>?month=<%= @selected_month - 1 %>&year=<%= @selected_year %>"><%= @selected_month - 1 %> <span><%= @previous_month_text %></span></a>
+    <% end %>
+    <p class="selected-month"><%= @selected_month %><span><%= @selected_month_text %></span></p>
+    <% if @selected_month > 11 %>
+      <a class="next-month" href="/venues/<%= @venue.id %>?month=1&year=<%= @selected_year + 1 %>">1 <span>JAN</span></a>
+    <% else %>
+      <a class="next-month" href="/venues/<%= @venue.id %>?month=<%= @selected_month + 1 %>&year=<%= @selected_year %>"><%= @selected_month + 1 %> <span><%= @next_month_text %></span></a>
+    <% end %>
+  </div>
+</div>
 <%# Upcoming Show Section %>
-<h4 class="body-header mb-3 mt-3">Upcoming</h4>
-<% if @venue.gigs.any? %>
-  <% @venue.gigs.each do |gig| %>
+<h4 class="body-header mb-3 mt-3 ms-5 text-start">Upcoming</h4>
+<% if @gigs.any? %>
+  <% @gigs.each do |gig| %>
     <div class="venue-body main-content-card mb-4 mt-0" style="width: 400px;"> <%# Applied main-content-card here %>
       <table class="gig-table mb-3"> <%# Added mb-3 for spacing between gig tables %>
         <tr>
@@ -52,7 +69,7 @@
     </div>
   <% end %>
 <% else %>
-  <p class="text-black">No upcoming gigs for this venue.</p>
+  <p class="text-black ms-5">No upcoming gigs for this venue.</p>
   <%# Added text-black for visibility %>
 <% end %>
 </div>
