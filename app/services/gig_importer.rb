@@ -97,7 +97,7 @@ class GigImporter
             open_time: gig_open_time,
             venue: venue # Associate the found/created venue
           ) do |g|
-            g.start_time = "30 after open_time" # Consider parsing this into a real time
+            g.start_time = gig_attributes['start_time']
             g.price = price_string
             g.user = user
             # Add any other gig attributes here
