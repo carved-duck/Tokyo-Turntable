@@ -1,5 +1,4 @@
 .venue-index-header {
-  background-color: $cream;
   border-radius: 9px;
   padding: 16px;
   margin-bottom: 16px;
@@ -7,6 +6,8 @@
   .search-form-wrapper {
     flex: 1;
     max-width: 400px;
+    position: relative;
+    width: 100%;
   }
 
   h3 {
@@ -17,12 +18,83 @@
   }
 }
 
-.index-btn {
-  z-index: 101;
-  background: $brick-red;
-  border: 1px solid $brick-red;
-  box-shadow: 0 2px 6px #00000026;
-  border-radius: 9px;
+.search-form-wrapper {
+  max-width: 400px;
+}
+
+.search-input {
+  color: black;
+  background-color: transparent;
+  width: 100%;
+  padding: 16px 60px 16px 20px;
+  padding-right: 60px; // ボタン分の余白
+  border-radius: 50px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  border: 2px solid $cream;
+
+  &::placeholder {
+    color: $cream !important;
+    opacity: 1;                // Safari対応
+  }
+
+  &:focus {
+    background-color:rgba(246, 242, 230, 0.5); // color changes when texting
+    color: #000;               // ← 文字を見やすく（任意）
+  }
+
+}
+
+
+// .search-icon {
+//   position: absolute;
+//   top: 50%;
+//   left: 20px;
+//   transform: translateY(-50%);
+//   color: #aaa;
+//   font-size: 16px;
+//   pointer-events: none; // クリックできないように
+// }
+
+// .search-button {
+//   background-color: $cream;
+//   border: none;
+//   width: 50px;
+//   height: 50px;
+//   border-radius: 50%;
+// }
+
+
+// search icon
+.search-button {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  background-color: $cream;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  i {
+    font-size: 20px;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  &:hover {
+    background-color: darken($cream, 10%);
+  }
+
+  &:hover i {
+    color: #000; // icon color
+    transform: scale(1.2); // icon becomes bigger
+  }
 }
 
 #query {
