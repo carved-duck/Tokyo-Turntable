@@ -113,6 +113,42 @@
       <% end %>
     </p>
     <%# --- END NEW SECTION --- %>
+    <!-- ────────── Add Spotify widget(s) here ────────── -->
+    <% if @artist_ids.any? %>
+      <hr class="my-4">
+      <%# Styled collapse-toggle button (as before) %>
+      <button
+        class="btn btn-outline-primary w-100 mb-2"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#spotifyDropdown"
+        aria-expanded="false"
+        aria-controls="spotifyDropdown">
+        Listen on Spotify
+      </button>
+      <div class="collapse" id="spotifyDropdown">
+        <div class="spotify-cards-container">
+          <% @artist_ids.each do |artist_id| %>
+            <div class="spotify-card mb-2">
+              <div class="spotify-embed-container">
+                <%# Embed each artist as a 152px-tall horizontal bar %>
+                <iframe
+                  src="https://open.spotify.com/embed/artist/<%= artist_id %>"
+                  width="100%"
+                  height="152"
+                  frameborder="0"
+                  allowtransparency="true"
+                  allow="encrypted-media"
+                ></iframe>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <p class="text-muted">No Spotify widget available for these bands.</p>
+    <% end %>
+    <!-- ──────────────────────────────────────────────── -->
   </div>
   <%# favorite action %>
   <div class="gig-actions mb-0">
