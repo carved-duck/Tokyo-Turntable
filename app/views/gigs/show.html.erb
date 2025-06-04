@@ -40,7 +40,7 @@
     </div>
     <div style="display: flex; justify-content: flex-start;"> <%# New wrapper for times %>
       <p class="gig-times mt-3 gap-0">
-        <strong>OPEN/START:</strong><span class="label-space"><%= @gig.open_time.to_datetime.strftime("%H:%M") %>/<%= @gig.start_time.to_datetime.strftime("%H:%M") %></span>
+        <strong>OPEN/START:</strong><span class="label-space"><%= @gig.open_time%>/<%= @gig.start_time %></span>
       </p>
     </div>
     <%# price start here %>
