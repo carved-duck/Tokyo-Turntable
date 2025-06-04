@@ -5,12 +5,12 @@
     <div class="col-4 p-2">
       <% if gig.venue.photo.attached? %>
         <%= cl_image_tag gig.venue.photo.key,
-              class: "img-fluid rounded-start",
-              style: "height: 100%; object-fit: cover;" %>
+          class: "img-fluid rounded-start",
+          style: "height: 100%; object-fit: cover;" %>
       <% else %>
         <%= image_tag "https://via.placeholder.com/150x150?text=No+Image",
-              class: "img-fluid rounded-start",
-              style: "height: 100%; object-fit: cover;" %>
+          class: "img-fluid rounded-start",
+          style: "height: 100%; object-fit: cover;" %>
       <% end %>
     </div>
     <!-- Right column: text info -->
