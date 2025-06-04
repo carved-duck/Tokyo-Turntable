@@ -13,9 +13,10 @@
         <%= image_tag("venue_image.jpg", class: "gig-img", width: "130", height: "auto") %>
       </div>
     </div>
+    <hr class="my-4">
     <%# Artist %>
     <div class="artist mb-2" style="text-align: left; width: 100%;">
-      <h5 class="artist-header mt-3 mb-2">Act</h5>
+      <h5 class="artist-header mt-0 mb-2">Act:</h5>
       <ul class="ps-0 list-unstyled"> <%# Removed ps-0, added list-unstyled %>
         <% @gig.bands.each do |band| %>
           <li class="band-info mb-2"> <%# Added mb-2 for spacing between bands %>
@@ -29,8 +30,9 @@
         <% end %>
       </ul>
     </div>
+    <hr class="my-4">
     <%# Gig Info Section %>
-    <div class="event-details-bottom mt-5 text-start">
+    <div class="event-details-bottom mt-0 text-start">
       <p class="gig-venue"><strong>VENUE:</strong><span class="label-space"><%= @venue.name %></span></p>
       <div class="text-start">
         <%# render venue Details Toggle Section%>
@@ -41,7 +43,40 @@
         <strong>OPEN/START:</strong><span class="label-space"><%= @gig.open_time.to_datetime.strftime("%H:%M") %>/<%= @gig.start_time.to_datetime.strftime("%H:%M") %></span>
       </p>
     </div>
-    <p class="gig-price"><strong>PRICE:</strong><span class="label-space">¥<%= @gig.price %></span></p>
+    <%# price start here %>
+    <p class="gig-price">
+      <strong>PRICE:</strong>
+      <span class="label-space">
+        <%= begin
+    prices = @gig.price.to_s
+      .gsub(/[¥￥]+/, '')
+      .gsub(/\s*(JPY|yen)\s*/i, '')
+      .split('/')
+      .map(&:strip)
+
+    if prices.size == 1
+      # one price
+      p = prices.first
+      num_part_match = p.match(/[\d,]+/)
+      num_part = num_part_match ? num_part_match[0].gsub(',', '') : '0'
+      formatted_num = num_part.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+      non_num_part = p.sub(/[\d,]+/, '').strip
+      "¥#{formatted_num}#{non_num_part.empty? ? '' : ' ' + non_num_part}"
+    else
+      # two prices(xxx / xxx) add "ADV and DOOR"
+      prices.map.with_index do |p, i|
+        num_part_match = p.match(/[\d,]+/)
+        num_part = num_part_match ? num_part_match[0].gsub(',', '') : '0'
+        formatted_num = num_part.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+        non_num_part = p.sub(/[\d,]+/, '').strip
+        label = i == 0 ? 'ADV' : 'DOOR'
+        "#{label} ¥#{formatted_num}#{non_num_part.empty? ? '' : ' ' + non_num_part}"
+      end.join(' / ')
+    end
+  end %>
+      </span>
+    </p>
+    <%# price end here%>
     <p class="gig-genre"><strong>GENRE:</strong><span class="label-space"><%= @gig.bands.first.genre %></span></p>
     <%# --- START NEW SECTION: ATTENDING USERS WITH MINI PHOTOS --- %>
     <%
@@ -100,7 +135,7 @@
       <% end %>
     <% else %>
       <%# If not signed in, prompt them to log in %>
-      <p class="login-prompt text-center mt-3" style="margin-bottom: 0; !important;">
+      <p class="login-prompt mt-3">
         <%= link_to "Log in to favorite this gig", new_user_session_path, class: "venue-link" %>
       </p>
       <%# Added classes %>
