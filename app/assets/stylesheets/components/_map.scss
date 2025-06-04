@@ -9,3 +9,38 @@
 body {
   background-color: #829B9D;
 }
+
+.label-only-popup .mapboxgl-popup-content {
+  background: transparent;     /* no white box */
+  box-shadow: none;            /* remove drop shadow */
+  padding: 0;                  /* no extra padding around text */
+}
+
+/* Hide the “close” button just in case (though closeButton: false should remove it) */
+.label-only-popup .mapboxgl-popup-close-button {
+  display: none;
+}
+
+/* Remove that triangular pointer (the “tip”). */
+.label-only-popup .mapboxgl-popup-tip {
+  display: none;
+}
+
+/* Style the text itself: you can adjust color, font-weight, etc. */
+.label-only-popup .mapboxgl-popup-content {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* Optionally, nudge the text slightly left/right if needed */
+.label-only-popup .mapboxgl-popup-content {
+  transform: translateX(-50%);
+  margin-left: 0px; /* tweak as needed */
+}
+
+/* Ensure the popup is horizontally centered above the pin */
+.label-only-popup {
+  text-align: center;
+}
