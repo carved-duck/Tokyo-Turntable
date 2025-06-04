@@ -8,9 +8,8 @@ class GigsController < ApplicationController
     @gigs = filter_by_date(@gigs)
     @gigs = filter_by_genre(@gigs)
 
-    # remove exact‐duplicate markers (round lat/lng to 5 decimals, for example)
+    # removes duplicate markers(round lat/lng to 5 decimals)
     @gigs = @gigs.uniq { |g| [ g.venue.latitude&.round(5), g.venue.longitude&.round(5) ] }
-
     # build @markers for Mapbox, pulling lat/lng out of each gig’s venue
     @markers = @gigs.map { |gig| marker_data_for(gig) }
   end
@@ -22,6 +21,17 @@ class GigsController < ApplicationController
     # --- END CHANGE ---
     @venue = Venue.find(@gig.venue_id)
     authorize @gig
+    # ─── NEW: fetch Spotify artist IDs for every band on this gig ───
+    spotify_service = SpotifyService.new
+    # For each band, prefer a hard-coded spotify_artist_url (if you added that), otherwise auto-search:
+    @artist_ids = @gig.bands.map do |band|
+      if band.respond_to?(:spotify_artist_url) && band.spotify_artist_url.present?
+        # extract ID from the stored URL
+        URI.parse(band.spotify_artist_url).path.split('/').last
+      else
+        spotify_service.search_artist(band.name)
+      end
+    end.compact
   end
 
   def edit
