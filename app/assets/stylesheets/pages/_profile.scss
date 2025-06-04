@@ -111,6 +111,7 @@
   border: none;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   text-decoration: none;
+  font-weight: bold;
   font-size: 0.95rem; /* Slightly larger font */
   display: inline-block;
   flex-grow: 1; /* Allow button to grow to fill space */
@@ -154,7 +155,7 @@
 }
 // Style for the "Follow" button on the index page
 .gig-favorite-btn { /* Reusing gig-favorite-btn for "Follow" */
-  background-color: #B64F44; /* Red color for follow */
+  background-color: #EC9259; /* Red color for follow */
   color: black;
   border-radius: 24px;
   padding: 8px 15px; /* Adjusted padding for a larger button */
@@ -169,14 +170,14 @@
   margin: 0 5px; /* Add some horizontal margin between buttons */
 
   &:hover {
-    background-color: darken(#B64F44, 10%);
+    background-color: darken(#EC9259, 10%);
     color: black;
   }
 }
 
 // Style for the "Unfollow" button on the index page
 .gig-unfavorite-btn { /* Reusing gig-unfavorite-btn for "Unfollow" */
-  background-color: #B64F44; /* Red color for unfollow */
+  background-color: #C6C1B5; /* Red color for unfollow */
   color: black;
   border-radius: 24px;
   padding: 8px 15px; /* Adjusted padding for a larger button */
@@ -191,7 +192,7 @@
   margin: 0 5px; /* Add some horizontal margin between buttons */
 
   &:hover {
-    background-color: darken(#B64F44, 10%);
+    background-color: darken(#C6C1B5, 10%);
     color: black;
   }
 }
