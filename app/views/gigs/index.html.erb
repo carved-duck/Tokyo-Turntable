@@ -56,7 +56,7 @@
       <div class="row row-cols-1 g-3">
         <% @gigs.each do |gig| %>
           <div class="col">
-            <%= link_to gig_path(gig), class: "text-decoration-none text-dark d-block" do %>
+            <%= link_to gig_path(gig, request.query_parameters), class: "text-decoration-none text-dark d-block" do %>
               <%= render "card", gig: gig %>
             <% end %>
           </div>

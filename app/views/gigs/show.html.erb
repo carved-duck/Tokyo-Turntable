@@ -180,7 +180,7 @@
   <%# <hr class="my-4"> Added margin for hr %>
 </div>
 <div class="sticky-buttons"> <%# Centered back button %>
-  <%= link_to "< Back to gigs", gigs_path, class: "btn gig-back-btn" %> <%# Added gig-back-btn class %>
+  <%= link_to "< Back to gigs", gigs_path(request.query_parameters), class: "btn gig-back-btn" %> <%# Added gig-back-btn class %>
 </div>
 <%# End of .gig-show-page-content-wrapper %>
 </div>
