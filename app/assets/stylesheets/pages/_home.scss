@@ -61,3 +61,11 @@
   /* margin-top: auto; *//* If you want it pushed to the bottom of the section */
   color: #333; /* Dark gray for input labels/placeholders */
 }
+
+.home-tagline {
+  font-size: 26px;
+}
+
+.search-fields-container .flatpickr-input {
+  color: black; // Force the text in the datepicker input to black
+}

@@ -1,11 +1,11 @@
 <div id="search-container" class="container py-4 position-relative">
-  <%= simple_form_for :search, url: gigs_path, method: :get, html: { class: "row", id: "location-form-container", data: { controller: "genre-filter"} } do |f| %>
+  <%= simple_form_for :search, url: gigs_path, method: :get, html: { class: "row", id: "location-form-container", data: { controller: "gig-count"} } do |f| %>
     <%= f.input :select_a_date,
             as: :string,
             label_html: { class: "form-label-black" },
             input_html: {
               value: params.dig(:search, :select_a_date),
-              data: { controller: "datepicker" }
+              data: { controller: "datepicker", action: "change->gig-count#getGigCount", gig_count_target: "dateInput" }
               } %>
     <label class="form-label text-white select required form-label-black" for="search_genre-ts-control" id="search_genre-ts-label">
       Choose some genres <br>
@@ -20,14 +20,23 @@
                 multiple: true,
                 data: {
                   controller: "tom-select",
-                  tom_select_options_value: Band.distinct.pluck(:genre).index_with { |g| g }.to_json
+                  tom_select_options_value: Band.distinct.pluck(:genre).index_with { |g| g }.to_json,
+                  action: "change->gig-count#getGigCount",
+                  gig_count_target: "genreSelect"
                 },
                 class: "form-input-black" # ADDED class for select input
               } %>
-    <div class="mt-2">
-      <button type="submit" class="btn d-flex discover-button-rounded">
-        <p class="discover-text-black" id="find">Search</p>
-      </button>
-    </div>
+
+    <turbo-frame id="results">
+      <div class="col-auto mt-2">
+        <p data-gig-count-target="totalGigs">Shows found: <%= @count %> </p>
+        <button type="submit" class="btn d-flex discover-button-rounded"> <%# ADDED new class here for button styling %>
+          <%# <i class="fa-solid fa-record-vinyl text-white"></i> %>
+          <p class="discover-text-black" id="find">Search</p>
+          <%# ADDED new class here for p tag text %>
+        </button>
+      </div>
+    </turbo-frame>
+
   <% end %>
 </div>

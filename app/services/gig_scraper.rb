@@ -4,6 +4,7 @@ class GigScraper
   require 'ferrum' # Required for headless browser automation
   require 'uri'    # Required for URI.join if needed, and parsing URLs
   require 'fileutils' # Required for FileUtils.mkdir_p for debug folder
+  require 'date'   # REQUIRED: For DateTime.parse and time arithmetic
 
   BASE_URL = "https://www.tokyogigguide.com"
   GIGS_BASE_LIST_URL = "#{BASE_URL}/en/gigs" # Base URL for gigs list
@@ -39,12 +40,6 @@ class GigScraper
           page_html_doc = Nokogiri::HTML.parse(browser.body)
           puts "  Successfully fetched and parsed page content via headless browser."
 
-          # Optional: Save debug HTML for each page if needed
-          # debug_filepath = Rails.root.join("tmp", "debug_gig_list_page_#{start_param}.html")
-          # FileUtils.mkdir_p(File.dirname(debug_filepath)) unless File.directory?(File.dirname(debug_filepath))
-          # File.open(debug_filepath, "w") { |f| f.write(browser.body) }
-          # puts "  Saved current browser HTML to: #{debug_filepath} for inspection."
-
           gig_list_items = page_html_doc.search('.eventlist li')
 
           if gig_list_items.empty?
@@ -63,17 +58,42 @@ class GigScraper
             # Extract info from title attributes
             gig_card.search('.jem-event-info').each do |info_item|
               info_string = info_item.attribute("title").value
-              key, value = info_string.split(': ')
+              # IMPORTANT: Use limit 2 to handle values that might contain colons (e.g., a time in 'Price')
+              key, value = info_string.split(': ', 2)
 
               # Handle date and time specifically
-              # The regex expects format like "May 28 (Wed)18.30"
+              # The regex expects format like "May 28 (Wed)18.30" from the title attribute
               date_time_match = value.scan(/(\w{3} \d{1,2}) \(\w{3}\)(\d{2}\.\d{2})/).flatten
               if date_time_match.any? # If date and time pattern matches
                 gig_data['date'] = date_time_match[0] unless date_time_match[0].nil?
-                gig_data['open_time'] = date_time_match[1] unless date_time_match[1].nil?
+
+                if date_time_match[1] # Check if the time part was captured
+                  gig_data['open_time'] = date_time_match[1].gsub('.', ':')
+
+                  begin
+                    dummy_date_str = "2000-01-01"
+                    parsed_open_time_str = "#{dummy_date_str} #{gig_data['open_time']}"
+                    open_datetime = DateTime.parse(parsed_open_time_str)
+
+                    # Add 30 minutes
+                    start_datetime_calculated = open_datetime + (30.to_f / (24 * 60)) # 30 minutes in days
+
+                    # Format back to string "HH:MM" for the model
+                    gig_data['start_time'] = start_datetime_calculated.strftime('%H:%M')
+                  rescue ArgumentError => e
+                    puts "  WARNING: Could not parse or calculate start_time for open_time: #{gig_data['open_time']}. Error: #{e.message}"
+                    gig_data['start_time'] = nil # Set to nil if parsing/calculation fails
+                  end
+                else
+                  # If open_time part was not captured by regex, set both to nil or default
+                  gig_data['open_time'] = nil
+                  gig_data['start_time'] = nil
+                end
+
               else
-                # For other key-value pairs (Live House, Area, Price, Category)
-                gig_data[key.downcase.gsub(/\W+/, '_')] = value
+
+                processed_key = key.downcase.gsub(/\W+/, '_').chomp('_') # Clean key format
+                gig_data[processed_key] = value
               end
             end
             all_gigs << gig_data
@@ -89,13 +109,12 @@ class GigScraper
           puts "  ERROR: An unexpected error occurred while scraping #{page_url}: #{e.message}. Skipping this page."
           puts e.backtrace.join("\n")
         end
-      end # End of pagination loop
+      end
 
       puts "\n--- Finished scraping gig list links across all pages ---"
       puts "Total gigs found (before uniqueness filter): #{all_gigs.count}"
 
-      # Filter for uniqueness. You might need a more robust uniqueness check
-      # if gig 'name' alone isn't unique enough (e.g., combine name, date, venue).
+
       unique_gigs = all_gigs.uniq { |gig| [gig['name'], gig['date'], gig['live_house']] }
       puts "Total unique gigs found: #{unique_gigs.count}"
 
@@ -118,50 +137,3 @@ class GigScraper
     end
   end
 end
-
-# old scraper below to be deleted after top works.
-
-# class GigScraper
-#   #require 'open-uri'
-#   require 'nokogiri'
-#   require 'json'
-
-#   def scrape_tokyo_venues
-#     # Getting gigs just from the first page
-#     gigs_url = "https://www.tokyogigguide.com/en/gigs"
-
-#     puts "starting scrape"
-#     # page_html_file = URI.parse(gigs_url).read
-#     page_html_file = File.open("./db/data/gigRawData1.html").read
-#     page_html_doc = Nokogiri::HTML.parse(page_html_file)
-
-#     gigs = page_html_doc.search('.eventlist li').map do |gig_card|
-#       gig_data = {}
-#       gig_data['name'] = gig_card.search('.jem-event-details h4').text.strip
-#       gig_card.search('.jem-event-info').each do |info_item|
-#         info_string = info_item.attribute("title").value
-#         key, value = info_string.split(': ')
-#         date, time = value.scan(/(\w{3} \d{1,2}) \(\w{3}\)(\d{2}\.\d{2})/).flatten
-#         if date || time
-#           gig_data['open_time'] = time unless time.nil?
-#           gig_data['date'] = date unless date.nil?
-#         else
-#           gig_data[key.downcase.gsub(/\W+/, '_')] = value
-#         end
-#       end
-#       gig_data
-#     end
-#     puts "saving scrape"
-
-#     old_data = File.open("./db/data/gigs.json")
-#     old_gigs = JSON.parse(old_data)["data"] || []
-
-#     gigs += old_gigs
-
-#     # saving to a json file
-#     filepath = "./db/data/gigs.json"
-#     File.open(filepath, "wb") do |file|
-#       file.write(JSON.generate({data: gigs.uniq}))
-#     end
-#   end
-# end
