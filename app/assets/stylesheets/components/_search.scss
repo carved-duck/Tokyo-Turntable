@@ -18,6 +18,14 @@
   }
 }
 
+.index-btn {
+  z-index: 101;
+  background: $soft-orange;
+  border: 1px solid $soft-orange;
+  box-shadow: 0 2px 6px #00000026;
+  border-radius: 9px;
+}
+
 .search-form-wrapper {
   max-width: 400px;
 }
@@ -95,8 +103,9 @@
     color: #000; // icon color
     transform: scale(1.2); // icon becomes bigger
   }
+
 }
 
 #query {
-  color: black;
+  color: rgb(74, 67, 67);
 }

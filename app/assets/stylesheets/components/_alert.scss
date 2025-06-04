@@ -27,7 +27,7 @@
 
 // Specific styling for 'alert' flash messages (errors, warnings)
 .main-alert-card.flash-alert {
-  background-color: #B64F44; /* Your custom dark red for alerts */
+  background-color: $soft-orange; /* Your custom dark red for alerts */
   color: white; /* White text for contrast */
 }
 
