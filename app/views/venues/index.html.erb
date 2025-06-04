@@ -4,9 +4,11 @@
     <div class="venue-index-header-text">
     </div>
     <div class="search-form-wrapper">
-      <%= form_with url: venues_path, method: :get, local: true, class: "d-flex" do %>
-        <%= text_field_tag :query, params[:query], class: "form-control me-2", placeholder: "Search" %>
-        <%= submit_tag "Search", class: "index-btn btn btn-primary" %>
+      <%= form_with url: venues_path, method: :get, local: true, class: "search-bar d-flex" do %>
+        <%= text_field_tag :query, params[:query], class: "form-control search-input", placeholder: "Search..." %>
+        <%= button_tag type: "submit", class: "search-button" do %>
+          <i class="fas fa-search"></i>
+        <% end %>
       <% end %>
     </div>
   </div>
