@@ -1,14 +1,93 @@
 <%# app/views/users/index.html.erb %>
 <%# This wrapper ensures consistent centering and max-width for the cards %>
 <div class="profile-page-content-wrapper">
+  <%# --- NEW / MODIFIED SECTION FOR GIGS OTHER USERS ARE ATTENDING --- %>
+  <div class="main-content-card mb-4">          <%# <--- RE-ADDED THIS DIV %>
+    <div class="card-body">                     <%# <--- RE-ADDED THIS DIV %>
+      <p class="mb-0 text-center">
+        <a class="btn profile-collapse-btn" data-bs-toggle="collapse" href="#popularGigsCollapse" role="button" aria-expanded="false" aria-controls="popularGigsCollapse">
+          Shows other users are attending
+        </a>
+      </p>
+      <div class="collapse mt-3" id="popularGigsCollapse">
+        <% if @popular_gigs.any? %>
+          <div class="row g-2 text-dark">
+            <% @popular_gigs.each_with_index do |gig, index| %>
+              <div class="col-12">
+                <div class="d-flex justify-content-between align-items-start py-1">
+                  <div class="flex-grow-1 me-2">
+                    <a href="<%= gig_path(gig) %>" class="text-decoration-none text-dark">
+                      <% if gig.bands.any? %>
+                        <p class="mb-0"><strong><%= gig.bands.first.name %></strong></p>
+                      <% else %>
+                        <p class="mb-0"><small class="text-muted">No band listed.</small></p>
+                      <% end %>
+                    </a>
+                    <%# Display favorite count and users %>
+                    <%
+                    # Ensure favoriting_users only contains User objects (not nil)
+                    favoriting_users = gig.favorites.map(&:user).compact.uniq
+                    favoriting_count = favoriting_users.count
+                  %>
+                    <p class="mb-0 mt-1">
+                      <small class="text-muted">
+                        <%= pluralize(favoriting_count, 'person') %> attending:
+                        <% if favoriting_users.any? %>
+                          <%# Loop through favoriting_users to display photo and name %>
+                          <div class="d-flex flex-wrap align-items-center mt-1"> <%# Use flex-wrap for multiple users %>
+                            <% favoriting_users.each do |favoritor_user| %>
+                              <div class="d-flex align-items-center me-2 mb-1"> <%# margin for spacing between users %>
+                                <div class="mini-profile-image-container me-1"> <%# Container for the small circle photo %>
+                                  <% if favoritor_user&.photo.attached? %>
+                                    <%= image_tag favoritor_user.photo, class: "mini-profile-image", alt: favoritor_user.username %>
+                                  <% else %>
+                                    <span class="mini-default-profile-icon">👤</span>
+                                  <% end %>
+                                </div>
+                                <%= link_to favoritor_user.username.capitalize, user_path(favoritor_user), class: "text-dark text-decoration-none" %>
+                              </div>
+                            <% end %>
+                          </div>
+                        <% else %>
+                          (No users listed)
+                        <% end %>
+                      </small>
+                    </p>
+                  </div>
+                  <%# Unfavorite button for current_user if they have favorited this gig %>
+                  <% if user_signed_in? && current_user.favorited?(gig) %>
+                    <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
+                    <% if favorite_record_id.present? %>
+                      <div class="flex-shrink-0">
+                        <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
+                          data-turbo-method="delete" data-turbo-confirm="Remove from favorites?"
+                          class="btn btn-sm btn-outline-dark compact-unfavorite-btn">Unfavorite</a>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <% unless index == @popular_gigs.length - 1 %>
+                <hr class="my-1 border-dark">
+              <% end %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-dark mt-3 text-center">No gigs have been favorited by other users yet.</p>
+        <% end %>
+      </div>
+    </div>
+                                    <%# <--- RE-ADDED THIS DIV %>
+  </div>
+                                      <%# <--- RE-ADDED THIS DIV %>
+  <%# --- END OF NEW / MODIFIED SECTION --- %>
+  <%# Existing User Listing Section (rest of your original code) %>
   <div class="row row-cols-1 g-3">
     <% @users.each do |user| %>
       <div class="col">
-        <div class="main-content-card"> <%# This class provides the consistent width/border/shadow %>
-          <%# Changed card-body to flex-column to stack content vertically %>
+        <div class="main-content-card">
           <div class="card-body d-flex flex-column text-dark">
-            <%# Top section: Image and Username %>
-            <div class="d-flex align-items-center mb-3"> <%# mb-3 for spacing before buttons/bottom section %>
+            <div class="d-flex align-items-center mb-3">
               <div class="me-3">
                 <div class="rounded-circle bg-secondary index-profile-image-container">
                   <% if user&.photo.attached? %>
@@ -20,37 +99,27 @@
               </div>
               <div>
                 <p class="mb-0"><strong>Username:</strong> <%= user&.username&.capitalize %></p>
- <%# mb-0 for compactness %>
               </div>
             </div>
-            <%# Bottom section: Buttons - pushed to the bottom using flexbox %>
-            <%# This div will contain both buttons and be centered horizontally %>
-            <div class="d-flex justify-content-around align-items-center mt-auto pt-3 border-top border-dark"> <%# mt-auto pushes it down, pt-3 adds padding, border-top adds a line %>
-              <%# View Details Button %>
-              <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">View Details</a> <%# Removed btn-sm as it's now a full-width button %>
-              <%# Follow/Unfollow Button %>
+            <div class="d-flex justify-content-around align-items-center mt-auto pt-3 border-top border-dark">
+              <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">View Details</a>
               <% if user_signed_in? %>
                 <% if current_user.favorited?(user) %>
                   <%= link_to "Unfollow", user_favorite_path(user, current_user.favorites.find_by(favoritable: user).id),
                     data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" },
-                    class: "btn gig-unfavorite-btn" %> <%# Use gig-unfavorite-btn for consistency %>
+                    class: "btn gig-unfavorite-btn" %>
                 <% else %>
                   <%= link_to "Follow", user_favorites_path(user),
                        data: { turbo_method: :post },
-                        class: "btn gig-favorite-btn" %> <%# Use gig-favorite-btn for consistency %>
+                        class: "btn gig-favorite-btn" %>
                 <% end %>
               <% else %>
                 <small class="text-muted">Sign in to follow</small>
               <% end %>
             </div>
           </div>
- <%# Close card-body %>
         </div>
- <%# Close main-content-card %>
       </div>
- <%# Close col %>
-    <% end %> <%# Close @users.each %>
+    <% end %>
   </div>
- <%# Close row %>
 </div>
- <%# Close profile-page-content-wrapper %>
