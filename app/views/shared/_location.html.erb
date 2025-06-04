@@ -12,6 +12,7 @@
       (up to 3) <abbr title="required">*</abbr>
     </label>
     <%= f.input :genre,
+              as: :select,
               label: false,
               label_html: { class: "form-label-black" },
               collection: Band.distinct.pluck(:genre),
@@ -19,6 +20,7 @@
                 multiple: true,
                 data: {
                   controller: "tom-select",
+                  tom_select_options_value: Band.distinct.pluck(:genre).index_with { |g| g }.to_json
                 },
                 class: "form-input-black" # ADDED class for select input
               } %>
