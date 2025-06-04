@@ -1,7 +1,7 @@
 /* app/assets/stylesheets/tokyo-navbar.scss */
 
 .tokyo-navbar {
-  height: 70px;
+  height: 80px;
   width: 100%;
   background-color: #F6F2E6; /* Cream color from image */
   // opacity: 0.95;
@@ -12,6 +12,7 @@
   z-index: 1000;
   box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
   border-radius: 0;
+  margin-top: 8px;
 }
 
 .navbar-flex {
@@ -28,7 +29,8 @@
   vertical-align: middle;
   color: #829B9D; /* Dark grey/brown from image */
   text-decoration: none;
-  margin-bottom: 4px;
+  margin-top: 8px;
+  margin-bottom: 10px;
 
   p {
     color: #829B9D;
