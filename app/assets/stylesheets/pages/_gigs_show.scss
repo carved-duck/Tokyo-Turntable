@@ -4,8 +4,7 @@
 .gig-show-page-content-wrapper {
   display: flex;
   flex-direction: column;
-
-  align-items: center; /* Centers the main-content-cards horizontally */
+  // align-items: center; /* Centers the main-content-cards horizontally */
   width: 100%;
   box-sizing: border-box;
   padding-bottom: 70px; /* Add padding at the bottom to account for the fixed navbar */
@@ -72,15 +71,15 @@ p.neighborhood {
 
 // page title
 .gig-show-page-content-wrapper .page-title {
-  color: #000000 !important; //
+  color: #000000 !important;
   width: 100%;
   text-align: center;
-  position: sticky;
-  top: 0; /* スクロール時に画面上部に固定 */
+  // position: sticky;
+  top: 0;
   background-color: #829B9D; /* 背景をつけて下の内容と重ならないように */
-  z-index: 10; /* 他要素より前面に出す */
+  z-index: 10;
   padding: 0.9rem 2rem; /* 必要に応じて調整 */
-  border-bottom: 1px solid #ccc; /*
+  border-bottom: 1px solid #ccc;
 }
 
 h4, h5, h6 {
@@ -107,9 +106,10 @@ h4, h5, h6 {
 // Artist / Band Info
 .artist-header {
   // color: #B64F44 !important; /* Use your dark red for the header */
-  font-weight: bold;
-  border-bottom: 1px solid #C6C1B5;
+  // font-weight: bold;
+  // border-bottom: 1px solid #C6C1B5;
   // margin-bottom: 1rem;
+  font-size: 1.3rem;
   padding-bottom: 8px
 }
 
@@ -133,9 +133,9 @@ h4, h5, h6 {
   }
 
   .band-name {
-    font-weight: bold !important;
+    // font-weight: bold !important;
     margin-bottom: 0;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     }
 
   .band-website {
@@ -186,6 +186,10 @@ h4, h5, h6 {
 // Prompt to log in
   .login-prompt {
     font-size: 0.9rem;
+    text-align: left;
+    align-self: flex-start;
+    width: 100%;
+    margin-bottom:0 !important;
     .venue-link {
       font-weight: bold;
     }
@@ -261,7 +265,7 @@ h4, h5, h6 {
 .sticky-buttons {
   position: fixed;
   bottom: 90px;
-  right: 20px;
+  right: 12px;
   text-align: right;
   z-index: 1000;
   color: #333 !important;

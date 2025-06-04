@@ -13,9 +13,10 @@
         <%= image_tag("venue_image.jpg", class: "gig-img", width: "130", height: "auto") %>
       </div>
     </div>
+    <hr class="my-4">
     <%# Artist %>
     <div class="artist mb-2" style="text-align: left; width: 100%;">
-      <h5 class="artist-header mt-3 mb-2">Act</h5>
+      <h5 class="artist-header mt-0 mb-2">Act:</h5>
       <ul class="ps-0 list-unstyled"> <%# Removed ps-0, added list-unstyled %>
         <% @gig.bands.each do |band| %>
           <li class="band-info mb-2"> <%# Added mb-2 for spacing between bands %>
@@ -29,8 +30,9 @@
         <% end %>
       </ul>
     </div>
+    <hr class="my-4">
     <%# Gig Info Section %>
-    <div class="event-details-bottom mt-5 text-start">
+    <div class="event-details-bottom mt-0 text-start">
       <p class="gig-venue"><strong>VENUE:</strong><span class="label-space"><%= @venue.name %></span></p>
       <div class="text-start">
         <%# render venue Details Toggle Section%>
@@ -98,7 +100,7 @@
       <% end %>
     <% else %>
       <%# If not signed in, prompt them to log in %>
-      <p class="login-prompt text-center mt-3" style="margin-bottom: 0; !important;">
+      <p class="login-prompt mt-3">
         <%= link_to "Log in to favorite this gig", new_user_session_path, class: "venue-link" %>
       </p>
       <%# Added classes %>
