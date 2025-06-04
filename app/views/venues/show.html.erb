@@ -9,8 +9,12 @@
         <%# Wrapped neighborhood in span for styling if needed %>
       </div>
       <div class="venue-header-img ps-2">
-        <%# Consider using @venue.photo.attached? and image_tag @venue.photo if you have attached images %>
-        <%= image_tag ("venue_image.jpg"), class: "venue-img" %>
+        <% if @venue.photo.attached? %>
+          <%= image_tag @venue.photo, class: "gig-img", width: "130", height: "auto" %>
+        <% else %>
+          <%= image_tag "https://via.placeholder.com/130xauto?text=No+Image",
+          class: "gig-img", width: "130", height: "auto" %>
+        <% end %>
       </div>
     </div>
     <div class="text-start">

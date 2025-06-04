@@ -10,7 +10,14 @@
         <p class="neighborhood mb-0 text-start"><span><%= @venue.neighborhood %></span>, Tokyo </p>
       </div>
       <div class="d-flex align-items-end ps-2">
-        <%= image_tag("venue_image.jpg", class: "gig-img", width: "130", height: "auto") %>
+        <div class="d-flex align-items-end ps-2">
+          <% if @gig.venue.photo.attached? %>
+            <%= cl_image_tag @gig.venue.photo.key, class: "gig-img", width: "130", height: "auto" %>
+          <% else %>
+            <%= image_tag "https://via.placeholder.com/130x130?text=No+Image",
+        class: "gig-img", width: "130", height: "auto" %>
+          <% end %>
+        </div>
       </div>
     </div>
     <hr class="my-4">
