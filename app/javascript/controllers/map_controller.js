@@ -52,13 +52,20 @@ export default class extends Controller {
   }
 
   _addMarker(marker) {
-    const el = document.createElement('div')
-    el.innerHTML = marker.marker_html
-    const mbMarker = new mapboxgl.Marker({ element: el, color: "#B64F44" })
-    .setLngLat([marker.lng, marker.lat])
-    .addTo(this.map)
+    const defaultPin = new mapboxgl.Marker()
+      .setLngLat([marker.lng, marker.lat])
+      .addTo(this.map)
+      const popup = new mapboxgl.Popup({
+        offset: [0, -30],
+        closeButton: false,
+        closeOnClick: false,
+        className: "label-only-popup"
+      })
+      .setLngLat([marker.lng, marker.lat])
+      .setText(marker.neighborhood)
+      .addTo(this.map)
 
-    mbMarker.getElement().addEventListener("click", () => {
+    defaultPin.getElement().addEventListener("click", () => {
       const tpl = document.getElementById(`gig-sheet-${marker.id}`)
       document.getElementById("gigDetailsContent").innerHTML = tpl.innerHTML
       new Offcanvas(document.getElementById("gigDetailsSheet")).show()
@@ -68,7 +75,7 @@ export default class extends Controller {
   // Modified _fitMapToMarkers to accept markers as an argument
   _fitMapToMarkers(markers) {
     const bounds = new mapboxgl.LngLatBounds()
-    markers.forEach(m => bounds.extend([m.lng, m.lat])) // Use the passed markers
+    markers.forEach(m => bounds.extend([m.lng, m.lat]))
     this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 })
   }
 }

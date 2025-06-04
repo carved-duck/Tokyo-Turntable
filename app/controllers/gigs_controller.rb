@@ -96,7 +96,7 @@ class GigsController < ApplicationController
         lat: gig.venue.latitude,
         lng: gig.venue.longitude,
         info_window_html: render_to_string(partial: "gigs/info_window", locals: { gig: gig }),
-        marker_html: render_to_string(partial: "gigs/marker", locals: { gig: gig })
+        neighborhood: gig.venue.neighborhood
       }
     end
 end
