@@ -1,33 +1,48 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= f.error_notification %>
-  <div class="form-inputs">
-    <%= f.input :email, required: true, autofocus: true %>
-    <%= f.input :username, required: true, autofocus: true %>
-    <%= f.input :address, required: true, autofocus: true %>
-    <%= f.input :bio, autofocus: true %>
-    <%= f.input :photo, as: :file, autofocus: true %>
-    <%= f.input :discogs_link, autofocus: true %>
-    <%= f.input :spotify_link, autofocus: true %>
-    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-      <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+<%# app/views/devise/registrations/edit.html.erb %>
+<%# ADDED: Outer container for margin around the whole page content %>
+<div class="container">
+  <div class="edit-user-page-wrapper">
+    <h2>Edit <%= resource_name.to_s.humanize %></h2>
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= f.error_notification %>
+      <div class="form-inputs">
+        <%= f.input :email, required: true, autofocus: true %>
+        <%= f.input :username, required: true, autofocus: true %>
+        <%= f.input :address, required: true, autofocus: true %>
+        <%= f.input :bio, autofocus: true %>
+        <%= f.input :photo, as: :file, autofocus: true %>
+        <%= f.input :discogs_link, autofocus: true %>
+        <%= f.input :spotify_link, autofocus: true %>
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+        <% end %>
+        <%= f.input :password,
+                    hint: "leave it blank if you don't want to change it",
+                    required: false,
+                    input_html: { autocomplete: "new-password" } %>
+        <%= f.input :password_confirmation,
+                    required: false,
+                    input_html: { autocomplete: "new-password" } %>
+        <%= f.input :current_password,
+                    hint: "we need your current password to confirm your changes",
+                    required: true,
+                    input_html: { autocomplete: "current-password" } %>
+      </div>
+      <%# Update button: Now left-justified (removed justify-content-center) %>
+      <div class="form-actions mt-4 d-flex"> <%# Removed justify-content-center %>
+        <%= f.button :submit, "Update", class: "index-btn btn btn-sm btn-primary" %>
+      </div>
     <% end %>
-    <%= f.input :password,
-                hint: "leave it blank if you don't want to change it",
-                required: false,
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                required: false,
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :current_password,
-                hint: "we need your current password to confirm your changes",
-                required: true,
-                input_html: { autocomplete: "current-password" } %>
+    <%# Cancel Account button: Now left-justified (removed justify-content-center) %>
+    <div class="mt-3 d-flex"> <%# Removed justify-content-center %>
+      <%= button_to "Cancel my account", registration_path(resource_name),
+                    data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" },
+                    method: :delete,
+                    class: "btn profile-collapse-btn" %>
+    </div>
+    <%# Back link: Now left-justified (removed justify-content-center) %>
+    <div class="mt-2 mb-5 d-flex"> <%# Removed justify-content-center %>
+      <%= link_to "Back", :back, class: "btn profile-collapse-btn" %>
+    </div>
   </div>
-  <div class="form-actions">
-    <%= f.button :submit, "Update" %>
-  </div>
-<% end %>
-<h3>Cancel my account</h3>
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-<%= link_to "Back", :back %>
+</div>

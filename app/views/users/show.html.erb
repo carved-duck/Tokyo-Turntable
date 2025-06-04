@@ -28,11 +28,7 @@
           <h3>Private Details</h3>
           <p>Email: <%= @user.email %></p>
           <p>Address: <%= @user.address %></p>
-
           <hr class="my-1 border-dark">
-
-         
-
           <%# Add any other private details here, e.g., %>
         </div>
       <% end %>
@@ -90,7 +86,7 @@
                     <div class="flex-shrink-0">
                       <a href="<%= user_favorite_path(user, favorite_record_id) %>"
                           data-turbo-method="delete" data-turbo-confirm="Unfollow this user?"
-                          class="btn btn-sm btn-outline-dark compact-unfavorite-btn">Unfollow</a>
+                          class="btn profile-collapse-btn">Unfollow</a>
                     </div>
                   <% end %>
                 </div>
@@ -134,7 +130,7 @@
                     <div class="flex-shrink-0">
                       <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
                           data-turbo-method="delete" data-turbo-confirm="Remove from favorites?"
-                          class="btn btn-sm btn-outline-dark compact-unfavorite-btn">Unfavorite</a>
+                          class="btn profile-collapse-btn">Unfavorite</a>
                     </div>
                   <% end %>
                 </div>
