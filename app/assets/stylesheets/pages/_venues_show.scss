@@ -7,7 +7,7 @@
   align-items: center; /* Centers the main-content-cards horizontally */
   width: 100%;
   box-sizing: border-box;
-  padding-bottom: 70px; /* Add padding at the bottom to account for the fixed navbar */
+  // padding-bottom: 70px; /* Add padding at the bottom to account for the fixed navbar */
   background-color: #829B9D;
 }
 
@@ -149,4 +149,39 @@ h4.body-header {
   font-size: 0.9rem;
   vertical-align: middle;
   color: black; /* Ensure gig text is black */
+}
+
+// schedule
+.months-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.selected-year {
+  color: $cream;
+  margin-bottom: 15px;
+}
+
+.selected-month {
+  margin-right: 30px !important;
+  margin-left: 30px !important;
+  font-size: 2.2rem;
+}
+
+.next-month, .previous-month {
+  font-size: 1.4rem;
+}
+
+.next-month, .selected-month, .previous-month {
+  color: $cream;
+  // margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  span {
+    font-size: 1rem;
+  }
 }
