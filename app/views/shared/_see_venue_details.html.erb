@@ -1,3 +1,4 @@
+<%# app/views/shared/_see_venue_details.html.erb %>
 <%# Venue Details Toggle Section (reusing venue-details class from venue show) %>
 <a class="btn venue-details-collapse-btn" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
   + See venue details
@@ -8,19 +9,30 @@
     <div>
       <div class="d-flex mb-2">
         <i class="fa-solid fa-location-dot me-3 pt-1"></i>
-        <span><%= @venue.address %></span>
+        <span><%= venue.address %></span>
+      </div>
+      <%# "Open in Google Maps" link using address %>
+      <% safe_address = URI.encode_www_form_component(venue.address) %>
+      <div class="d-flex mb-2">
+        <i class="fa-solid fa-map-location-dot me-3 pt-1"></i>
+        <span>
+          <a href="https://www.google.com/maps/search/?api=1&query=<%= safe_address %>" target="_blank" rel="noopener" class="venue-link">
+            Open in Google Maps
+          </a>
+        </span>
       </div>
       <div class="d-flex mb-2">
         <i class="fa-solid fa-globe me-3 pt-1"></i>
         <span>
-          <a href="<%= @venue.website %>" target="_blank" class="venue-link"><%= @venue.website %></a>
+          <a href="<%= venue.website %>" target="_blank" class="venue-link"><%= venue.website %></a>
         </span>
       </div>
       <div class="d-flex mb-2">
         <i class="fa-solid fa-envelope me-3 pt-1"></i>
         <span>
-          <a href="mailto:<%= @venue.email %>" class="venue-link"><%= @venue.email %></a>
+          <a href="mailto:<%= venue.email %>" class="venue-link"><%= venue.email %></a>
         </span>
       </div>
     </div>
   </div>
+</div>
