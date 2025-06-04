@@ -12,6 +12,7 @@ class Gig < ApplicationRecord
   validates :start_time, presence: true
   validates :price, presence: true
 
+  has_many :favorites, as: :favoritable, dependent: :destroy # This explicitly defines the inverse association
   acts_as_favoritable # Means that this model can be favourited
 
   def formatted_start_time
