@@ -43,6 +43,41 @@
     </div>
     <p class="gig-price"><strong>PRICE:</strong><span class="label-space">¥<%= @gig.price %></span></p>
     <p class="gig-genre"><strong>GENRE:</strong><span class="label-space"><%= @gig.bands.first.genre %></span></p>
+    <%# --- START NEW SECTION: ATTENDING USERS WITH MINI PHOTOS --- %>
+    <%
+      # Get unique users who favorited this gig (these are the 'attending' users)
+      # .compact ensures no nil users if favorite.user was somehow nil
+      attending_users = @gig.favorites.map(&:user).compact.uniq #
+      attending_count = attending_users.count #
+      max_display_users = 10 # Define the maximum number of users to display
+    %>
+    <p class="mb-0 mt-3"> <%# mb-0 for no bottom margin, mt-3 for top spacing %>
+      <strong>ATTENDING:</strong>
+      <% if attending_users.any? %>
+        <div class="d-flex align-items-center flex-wrap"> <%# Use flex-wrap to allow photos/names to wrap to next line %>
+          <% attending_users.first(max_display_users).each do |user| %>
+            <div class="d-flex align-items-center me-2 mb-1"> <%# This div provides spacing between user entries %>
+              <%# Wrap the photo container with link_to %>
+              <%= link_to user_path(user), class: "text-decoration-none" do %>
+                <div class="mini-profile-image-container"> <%# Removed 'me-1' here, as the outer div handles spacing %>
+                  <% if user&.photo.attached? %>
+                    <%= image_tag user.photo, class: "mini-profile-image", alt: user.username %>
+                  <% else %>
+                    <span class="mini-default-profile-icon">👤</span>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+          <% if attending_count > max_display_users %>
+            <span class="text-muted ms-2">+<%= attending_count - max_display_users %></span>
+          <% end %>
+        </div>
+      <% else %>
+        <span class="text-muted">No one attending yet.</span>
+      <% end %>
+    </p>
+    <%# --- END NEW SECTION --- %>
   </div>
   <%# favorite action %>
   <div class="gig-actions mb-0">

@@ -1,8 +1,9 @@
+# app/controllers/gigs_controller.rb
+
 class GigsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
-    # @gigs = Gig.all
     @gigs = policy_scope(Gig)
     @gigs = filter_by_date(@gigs)
     @gigs = filter_by_genre(@gigs)
@@ -15,7 +16,10 @@ class GigsController < ApplicationController
   end
 
   def show
-    @gig = Gig.find(params[:id])
+    # --- START CHANGE ---
+    # Eager load favorites and the associated user to avoid N+1 queries in the view
+    @gig = Gig.includes(favorites: :user).find(params[:id]) #
+    # --- END CHANGE ---
     @venue = Venue.find(@gig.venue_id)
     authorize @gig
   end
