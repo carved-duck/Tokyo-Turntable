@@ -62,6 +62,14 @@ export default class extends Controller {
     this.tomSelect.addOption(this.masterOptions);
     this.tomSelect.refreshOptions(false);
 }
+ // ADD THIS DISCONNECT METHOD
+  disconnect() {
+    console.log("TomSelect Stimulus controller disconnected.");
+    if (this.tomSelect) {
+      this.tomSelect.destroy(); // Crucial: destroy the TomSelect instance
+      this.tomSelect = null; // Clear the reference
+    }
+  }
 
   clearInput(e) {
     console.log(e, "trigger")
