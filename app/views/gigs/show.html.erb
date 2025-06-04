@@ -41,7 +41,40 @@
         <strong>OPEN/START:</strong><span class="label-space"><%= @gig.open_time.to_datetime.strftime("%H:%M") %>/<%= @gig.start_time.to_datetime.strftime("%H:%M") %></span>
       </p>
     </div>
-    <p class="gig-price"><strong>PRICE:</strong><span class="label-space">¥<%= @gig.price %></span></p>
+    <%# price start here %>
+    <p class="gig-price">
+      <strong>PRICE:</strong>
+      <span class="label-space">
+        <%= begin
+    prices = @gig.price.to_s
+      .gsub(/[¥￥]+/, '')
+      .gsub(/\s*(JPY|yen)\s*/i, '')
+      .split('/')
+      .map(&:strip)
+
+    if prices.size == 1
+      # one price
+      p = prices.first
+      num_part_match = p.match(/[\d,]+/)
+      num_part = num_part_match ? num_part_match[0].gsub(',', '') : '0'
+      formatted_num = num_part.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+      non_num_part = p.sub(/[\d,]+/, '').strip
+      "¥#{formatted_num}#{non_num_part.empty? ? '' : ' ' + non_num_part}"
+    else
+      # two prices(xxx / xxx) add "ADV and DOOR"
+      prices.map.with_index do |p, i|
+        num_part_match = p.match(/[\d,]+/)
+        num_part = num_part_match ? num_part_match[0].gsub(',', '') : '0'
+        formatted_num = num_part.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+        non_num_part = p.sub(/[\d,]+/, '').strip
+        label = i == 0 ? 'ADV' : 'DOOR'
+        "#{label} ¥#{formatted_num}#{non_num_part.empty? ? '' : ' ' + non_num_part}"
+      end.join(' / ')
+    end
+  end %>
+      </span>
+    </p>
+    <%# price end here%>
     <p class="gig-genre"><strong>GENRE:</strong><span class="label-space"><%= @gig.bands.first.genre %></span></p>
   </div>
   <%# favorite action %>
