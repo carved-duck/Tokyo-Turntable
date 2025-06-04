@@ -68,7 +68,7 @@
   vertical-align: top;
   font-weight: bold;
   padding-right: 10px;
-  color: #B64F44; /* Use the dark red from your palette */
+  color: $soft-orange; /* Use the dark red from your palette */
   min-width: 70px; /* Ensure labels don't get too narrow */
 }
 
@@ -86,7 +86,7 @@
 }
 
 .venue-sheet-btn {
-  background-color: #B64F44; /* Your custom dark red for buttons */
+  background-color: $soft-orange; /* Your custom dark red for buttons */
   color: black; /* Black text for buttons */
   border-radius: 24px; /* Rounded corners to match your cards and other buttons */
   padding: 8px 15px;
@@ -98,7 +98,7 @@
   font-size: 1rem;
 
   &:hover {
-    background-color: darken(#B64F44, 10%);
+    background-color: darken($soft-orange, 10%);
     color: black;
   }
 }
@@ -133,13 +133,13 @@ h4.body-header {
   text-align: left;
   vertical-align: top;
   padding-right: 4px;
-  color: #B64F44; /* Use dark red for icon labels */
+  color: $soft-orange; /* Use dark red for icon labels */
 }
 
 .gig-table .icon {
   font-size: 18px; /* Adjusted icon size */
   margin-top: 0;
-  color: #B64F44; /* Use dark red for icons */
+  color: $soft-orange; /* Use dark red for icons */
   vertical-align: middle;
 }
 
