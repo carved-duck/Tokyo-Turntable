@@ -17,11 +17,13 @@
     <h2 class="mb-1"><%= @user&.username.capitalize %></h2>
     <% if user_signed_in? && @user != current_user %>
       <% if current_user.favorited?(@user) %>
-        <%= link_to "Unfollow", user_favorite_path(@user, current_user.favorites.find_by(favoritable: @user).id),
+        <%= link_to "Unfollow",
+            user_favorite_path(@user, current_user.favorites.find_by(favoritable: @user).id),
             data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" },
             class: "btn gig-unfavorite-btn" %>
       <% else %>
-        <%= link_to "Follow", user_favorites_path(@user),
+        <%= link_to "Follow",
+            user_favorites_path(@user),
             data: { turbo_method: :post },
             class: "btn gig-favorite-btn" %>
       <% end %>
@@ -53,12 +55,13 @@
         </a>
       <% end %>
     </div>
+    <hr class="my-3 border-dark"><!-- line under bio -->
     <% if @user == current_user %>
       <div class="user-details mb-3">
         <h3>Private Details</h3>
         <p>Email: <%= @user.email %></p>
         <p>Address: <%= @user.address %></p>
-        <hr class="my-1 border-dark">
+        <hr class="my-3 border-dark"><!-- line under private details -->
       </div>
     <% end %>
     <% if @user&.past_shows.present? %>
@@ -66,10 +69,24 @@
     <% end %>
   </div>
   <div class="d-flex justify-content-center gap-2 flex-nowrap overflow-auto px-2 mb-3" id="profileTabs" role="tablist">
-    <button class="profile-collapse-btn active" id="friends-tab" data-bs-toggle="tab" data-bs-target="#friends" type="button" role="tab" aria-controls="friends" aria-selected="true">
+    <button class="profile-collapse-btn active"
+            id="friends-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#friends"
+            type="button"
+            role="tab"
+            aria-controls="friends"
+            aria-selected="true">
       My Friends
     </button>
-    <button class="profile-collapse-btn" id="gigs-tab" data-bs-toggle="tab" data-bs-target="#gigs" type="button" role="tab" aria-controls="gigs" aria-selected="false">
+    <button class="profile-collapse-btn"
+            id="gigs-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#gigs"
+            type="button"
+            role="tab"
+            aria-controls="gigs"
+            aria-selected="false">
       My Favorite Gigs
     </button>
   </div>
@@ -93,7 +110,8 @@
                 <% if favorite_record_id.present? %>
                   <div class="flex-shrink-0">
                     <a href="<%= user_favorite_path(user, favorite_record_id) %>"
-                      data-turbo-method="delete" data-turbo-confirm="Unfollow this user?"
+                      data-turbo-method="delete"
+                      data-turbo-confirm="Unfollow this user?"
                       class="btn profile-collapse-btn">Unfollow</a>
                   </div>
                 <% end %>
@@ -127,7 +145,8 @@
                 <% if favorite_record_id.present? %>
                   <div class="flex-shrink-0">
                     <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
-                      data-turbo-method="delete" data-turbo-confirm="Remove from favorites?"
+                      data-turbo-method="delete"
+                      data-turbo-confirm="Remove from favorites?"
                       class="btn profile-collapse-btn">Unfavorite</a>
                   </div>
                 <% end %>
