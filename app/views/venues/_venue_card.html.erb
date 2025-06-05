@@ -1,43 +1,42 @@
 <%= link_to venue_path(venue), class: "text-decoration-none text-dark d-block" do %>
-  <div class="card venue-card mb-3 shadow-sm border-0 rounded-3 hover-shadow" style="max-width: 540px; transition: transform 0.2s ease;">
-    <div class="d-flex align-items-stretch">
-      <!-- Left: Image -->
-      <div class="p-2">
+  <div class="card venue-card mb-3 shadow-sm border-0 rounded-3 hover-shadow"
+       style="max-width: 540px; transition: transform 0.2s ease;">
+    <!-- Use Bootstrap’s row + g-0 so both columns always match height -->
+    <div class="row g-0">
+      <!-- Left column: always 4/12 (33%) of the width, image fills 100% height -->
+      <div class="col-4">
         <% if venue.photo.attached? %>
           <%= cl_image_tag venue.photo.key,
-                class: "venue-image",
-                style: "width: 150px; height: 150px; object-fit: cover;",
-                alt: venue.name %>
+          class: "img-fluid rounded-start",
+          style: "height: 100%; object-fit: cover;" %>
         <% else %>
           <%= image_tag "https://via.placeholder.com/150x150?text=No+Image",
-                class: "venue-image",
-                style: "width: 150px; height: 150px; object-fit: cover;",
-                alt: "No Image" %>
+          class: "img-fluid rounded-start",
+          style: "height: 100%; object-fit: cover;" %>
         <% end %>
       </div>
-      <!-- Right: Text -->
-      <div class="p-3 flex-grow-1 d-flex flex-column justify-content-center">
-        <h5 class="mb-1 fw-bold text-primary">
-          <%= truncate(venue.name, length: 30, omission: "...") %>
-        </h5>
-        <p class="mb-1 text-muted" style="font-size: 0.9rem;">
-          📍 <%= truncate(venue.neighborhood, length: 20, omission: "...") %>
-        </p>
-        <p class="mb-0 text-dark" style="font-size: 0.9rem;">
+      <!-- Right column: text takes remaining 8/12 -->
+      <div class="col-8">
+        <div class="card-body">
+          <h5 class="card-title mb-1 fw-bold text-black">
+            <%= truncate(venue.name, length: 30, omission: "...") %>
+          </h5>
+          <p class="mb-1 text-black" style="font-size: 0.9rem;">
+            📍 <%= truncate(venue.neighborhood, length: 20, omission: "...") %>
+          </p>
           <% next_show = venue.next_show %>
-          <% if next_show && next_show != @gig %>
-            <% genre = next_show.bands.first&.genre&.titleize || "Live show" %>
-            <strong>Next show:</strong>
-            <br>
-            <%= link_to gig_path(next_show), class: "text-decoration-none text-dark" do %>
-              <em>🎵 <%= genre %></em>
+          <p class="mb-1 text-dark" style="font-size: 0.9rem;">
+            <% if next_show %>
+              <% genre = next_show.bands.first&.genre&.capitalize || "Live show" %>
+              <strong>Next show:</strong><br>
+              <span class="text-secondary">
+                <%= next_show.date.strftime("%b %d, %Y") %>
+              </span>
+            <% else %>
+              <em>No upcoming shows.</em>
             <% end %>
-            <br>
-            <span class="text-secondary"><%= next_show.date.strftime("%b %d, %Y") %></span>
-          <% else %>
-            <em>No upcoming shows.</em>
-          <% end %>
-        </p>
+          </p>
+        </div>
       </div>
     </div>
   </div>
