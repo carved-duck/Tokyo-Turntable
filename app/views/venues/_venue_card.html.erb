@@ -21,13 +21,18 @@
           <%= truncate(venue.name, length: 30, omission: "...") %>
         </h5>
         <p class="mb-1 text-muted" style="font-size: 0.9rem;">
-          <%= truncate(venue.neighborhood, length: 20, omission: "...") %>
+          📍 <%= truncate(venue.neighborhood, length: 20, omission: "...") %>
         </p>
         <p class="mb-0 text-dark" style="font-size: 0.9rem;">
           <% next_show = venue.next_show %>
           <% if next_show && next_show != @gig %>
             <% genre = next_show.bands.first&.genre&.titleize || "Live show" %>
-            <strong>Next show:</strong> <em> <%= link_to genre, gig_path(next_show), class: "text-decoration-none text-dark" %></em><br>
+            <strong>Next show:</strong>
+            <br>
+            <%= link_to gig_path(next_show), class: "text-decoration-none text-dark" do %>
+              <em>🎵 <%= genre %></em>
+            <% end %>
+            <br>
             <span class="text-secondary"><%= next_show.date.strftime("%b %d, %Y") %></span>
           <% else %>
             <em>No upcoming shows.</em>
