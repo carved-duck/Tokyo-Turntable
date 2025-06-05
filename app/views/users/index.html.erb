@@ -48,7 +48,6 @@
                         %>
                         <div class="col-12">
                           <%# This is the main container for each gig item. It's a flex container. %>
-                          <%# Changed from justify-content-between/align-items-center to a simpler flex-column for vertical stacking %>
                           <div class="d-flex flex-column py-1">
                             <%# Gig details section %>
                             <div class="flex-grow-1">
@@ -72,7 +71,12 @@
                                       <% favoriting_users.each do |favoritor_user| %>
                                         <div class="d-flex align-items-center me-2 mb-1">
                                           <div class="mini-profile-image-container me-1">
-                                            <%= image_tag favoritor_user.photo, class: "mini-profile-image", alt: favoritor_user.username %>
+                                            <%# FIX: Added conditional check for favoritor_user.photo.attached? %>
+                                            <% if favoritor_user&.photo.attached? %>
+                                              <%= image_tag favoritor_user.photo, class: "mini-profile-image", alt: favoritor_user.username %>
+                                            <% else %>
+                                              <span class="mini-default-profile-icon">👤</span>
+                                            <% end %>
                                           </div>
                                           <%= link_to favoritor_user.username.capitalize, user_path(favoritor_user), class: "text-dark text-decoration-none" %>
                                         </div>
@@ -84,7 +88,7 @@
                                 </small>
                               </p>
                             </div>
-                            <%# Favorite/Unfavorite button - now moved BELOW attendee list, right-aligned %>
+                            <%# Favorite/Unfavorite button - moved below attendee list, right-aligned %>
                             <% if user_signed_in? %>
                               <div class="d-flex justify-content-end mt-2"> <%# Flex container to push button to the right %>
                                 <% if current_user.favorited?(gig) %>
