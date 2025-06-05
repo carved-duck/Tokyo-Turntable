@@ -16,7 +16,7 @@
   <div class="row">
     <% @venues.each do |venue| %>
       <div class="col-md-4 mb-3">
-        <%= render "venue_card", venue: venue %>
+        <%= render "venue_card", venue: venue, gig: @gig %>
       </div>
     <% end %>
     <% if @venues.empty? %>

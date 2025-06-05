@@ -21,9 +21,12 @@
         <h5 class="card-title mb-1 text-black">
           <%= truncate(band_names, length: 30, omission: "...") %>
         </h5>
+        <p class="mb-1 text-black" style="font-size: 0.9rem;">
+          📍 <%= truncate(gig.venue.neighborhood, length: 20, omission: "...") %>
+        </p>
         <%# Genre(s) (unique list) %>
         <% genres = gig.bands.map(&:genre).uniq.join(", ") %>
-        <p class="card-text mb-1 text-black" style="font-size: 0.9rem;">
+        <p class="card-text mb-0 text-black" style="font-size: 0.9rem;">
           <strong>Genre:</strong> <%= truncate(genres, length: 25, omission: "...") %>
         </p>
         <%# Date and start time %>
