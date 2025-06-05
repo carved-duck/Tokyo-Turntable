@@ -33,11 +33,13 @@
         </div>
       <% end %>
       <%# This content is correctly inside the card-body, after the conditional sections %>
-      <h3 class="card-title mb-3 text-dark">Other Details</h3>
+      <h3 class="card-title mb-3 text-dark">Socials</h3>
       <ul class="list-unstyled mb-0 text-dark">
         <% if @user&.spotify_link&.present? %>
           <li class="mb-2">
-            <strong>My Spotify:</strong> <a href="<%= @user&.spotify_link %>" target="_blank" class="text-dark text-decoration-none">Visit Spotify</a>
+            <a href="<%= @user.spotify_link %>" target="_blank" class="text-dark fs-4">
+              <i class="fa-brands fa-spotify"></i>
+            </a>
           </li>
         <% end %>
         <% if @user&.discogs_link&.present? %>

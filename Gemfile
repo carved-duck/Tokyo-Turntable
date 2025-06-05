@@ -91,3 +91,4 @@ gem "ferrum"
 gem 'acts_as_favoritor'
 gem "pg_search"
 gem "httparty"
+gem 'inline_svg'

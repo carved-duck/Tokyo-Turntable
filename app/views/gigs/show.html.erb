@@ -123,16 +123,13 @@
     <!-- ────────── Add Spotify widget(s) here ────────── -->
     <% if @artist_ids.any? %>
       <hr class="my-4">
-      <%# Styled collapse-toggle button (as before) %>
-      <button
-        class="btn btn-outline-primary w-100 mb-2"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#spotifyDropdown"
-        aria-expanded="false"
-        aria-controls="spotifyDropdown">
-        Listen on Spotify
-      </button>
+      <div class="text-center mb-3">
+        <div class="mb-3 d-flex align-items-center ms-0 me-auto">
+          <a href="#" data-bs-toggle="collapse" data-bs-target="#spotifyDropdown" aria-expanded="false" aria-controls="spotifyDropdown">
+            <%= image_tag "spotify_logo.svg", width: 160, height: "auto", alt: "Spotify", class: "spotify-svg-logo" %>
+          </a>
+        </div>
+      </div>
       <div class="collapse" id="spotifyDropdown">
         <div class="spotify-cards-container">
           <% @artist_ids.each do |artist_id| %>
