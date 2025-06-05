@@ -1,15 +1,31 @@
 <%# app/views/users/index.html.erb %>
 <%# This wrapper ensures consistent centering and max-width for the cards %>
 <div class="profile-page-content-wrapper">
-  <%# --- GIGS OTHER USERS ARE ATTENDING SECTION (REVERTED TO ORIGINAL STATE) --- %>
+  <%# --- NEW SEARCH BAR SECTION --- %>
+  <div class="container my-4">
+    <div class="venue-index-header d-flex justify-content-between align-items-center mb-3">
+      <div class="venue-index-header-text">
+        <%# You can add a title here if you want one for the search area, e.g., <h2>Find Users</h2> %>
+      </div>
+      <div class="search-form-wrapper">
+        <%= form_with url: users_path, method: :get, local: true, class: "search-bar d-flex" do %>
+          <%= text_field_tag :user_query, params[:user_query], class: "form-control search-input", placeholder: "Search users..." %>
+          <%= button_tag type: "submit", class: "search-button" do %>
+            <i class="fas fa-search"></i>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%# --- END NEW SEARCH BAR SECTION --- %>
+  <%# --- GIGS OTHER USERS ARE ATTENDING SECTION (FIXED: CONSISTENT WIDTH, NO HEIGHT SHRINK, CORRECT TEXT) --- %>
   <div class="row row-cols-1 g-3">
     <div class="col">
-      <%# REVERTED: This top card is now exactly as it was in your original code, no inline style added %>
       <div class="main-content-card mb-4">
         <div class="card-body">
           <p class="mb-0 text-center">
             <a class="btn profile-unfavorite-btn" data-bs-toggle="collapse" href="#popularGigsCollapse" role="button" aria-expanded="false" aria-controls="popularGigsCollapse">
-              Shows other users are attending
+              Popular Shows
             </a>
           </p>
           <div class="collapse mt-3" id="popularGigsCollapse">
@@ -28,7 +44,6 @@
                         </a>
                         <%# Display favorite count and users %>
                         <%
-                        # Ensure favoriting_users only contains User objects (not nil)
                         favoriting_users = gig.favorites.map(&:user).compact.uniq
                         favoriting_count = favoriting_users.count
                         %>
@@ -40,12 +55,10 @@
                                 <% favoriting_users.each do |favoritor_user| %>
                                   <div class="d-flex align-items-center me-2 mb-1">
                                     <div class="mini-profile-image-container me-1">
-                                      <% if favoritor_user&.photo.attached? %>
-                                        <%= image_tag favoritor_user.photo, class: "mini-profile-image", alt: favoritor_user.username %>
-                                      <% else %>
-                                        <span class="mini-default-profile-icon">👤</span>
-                                      <% end %>
+                                      <%# FIXED: image_tag attributes on a single line %>
+                                      <%= image_tag favoritor_user.photo, class: "mini-profile-image", alt: favoritor_user.username %>
                                     </div>
+                                    <%# FIXED: link_to attributes on a single line %>
                                     <%= link_to favoritor_user.username.capitalize, user_path(favoritor_user), class: "text-dark text-decoration-none" %>
                                   </div>
                                 <% end %>
@@ -92,62 +105,63 @@
     </div>
   </div>
   <%# --- END OF GIGS OTHER USERS ARE ATTENDING SECTION --- %>
-  <%# --- MY FRIENDS SECTION (MODIFIED FOR INDIVIDUAL CARDS TO MATCH TOP CARD WIDTH, NO COLLAPSE) --- %>
+  <%# --- MY FRIENDS SECTION --- %>
   <div class="row row-cols-1 g-3">
-    <div class="col-12 mt-4 text-center mb-3"> <%# Added mb-3 for space below header %>
+    <div class="col-12 mt-4 text-center mb-3">
       <h3 class="card-title text-dark">My Friends</h3>
     </div>
-    <% if user_signed_in? && @users.any? %>
-      <% @users.each do |user| %>
-        <div class="col-12">
-          <%# Individual friend card: enforcing width: 100% and margin: 0 auto to fill column and center %>
-          <div class="main-content-card mb-4" style="width: 100%; margin: 0 auto;">
-            <div class="card-body d-flex flex-column text-dark">
-              <div class="d-flex align-items-center mb-3">
-                <div class="me-3">
-                  <div class="rounded-circle bg-secondary index-profile-image-container">
-                    <% if user&.photo.attached? %>
-                      <%= image_tag user.photo, class: "index-profile-image", alt: user&.username %>
-                    <% else %>
-                      <span class="text-dark index-default-profile-icon">👤</span>
-                    <% end %>
+    <%# ONLY display friends list if NO search query is active in the URL %>
+    <% if !params[:user_query].present? %>
+      <% if user_signed_in? && @users.any? %>
+        <% @users.each do |user| %>
+          <div class="col-12">
+            <div class="main-content-card mb-4" style="width: 100%; margin: 0 auto;">
+              <div class="card-body d-flex flex-column text-dark">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="me-3">
+                    <div class="rounded-circle bg-secondary index-profile-image-container">
+                      <% if user&.photo.attached? %>
+                        <%= image_tag user.photo, class: "index-profile-image", alt: user&.username %>
+                      <% else %>
+                        <span class="text-dark index-default-profile-icon">👤</span>
+                      <% end %>
+                    </div>
+                  </div>
+                  <div>
+                    <%# FIXED: p tag content on a single line %>
+                    <p class="mb-0"><strong>Username:</strong> <%= user&.username&.capitalize %></p>
                   </div>
                 </div>
-                <div>
-                  <p class="mb-0"><strong>Username:</strong> <%= user&.username&.capitalize %></p>
+                <div class="d-flex justify-content-around align-items-center mt-auto pt-3 border-top border-dark">
+                  <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">View Details</a>
+                  <% if user_signed_in? %>
+                    <% if current_user.favorited?(user) %>
+                      <%# FIXED: link_to attributes on a single line %>
+                      <%= link_to "Unfollow", user_favorite_path(user, current_user.favorites.find_by(favoritable: user).id), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" }, class: "btn gig-unfavorite-btn" %>
+                    <% end %>
+                  <% end %>
                 </div>
               </div>
-              <div class="d-flex justify-content-around align-items-center mt-auto pt-3 border-top border-dark">
-                <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">View Details</a>
-                <%# Unfollow button for each friend %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="col-12">
+          <div class="main-content-card mb-4" style="width: 100%; margin: 0 auto;">
+            <div class="card-body">
+              <p class="text-dark mt-3 text-center">
                 <% if user_signed_in? %>
-                  <% if current_user.favorited?(user) %>
-                    <%= link_to "Unfollow", user_favorite_path(user, current_user.favorites.find_by(favoritable: user).id),
-                      data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" },
-                      class: "btn gig-unfavorite-btn" %>
-                  <% end %>
+                  You haven't followed any users yet. Start following people to see them here!
+                <% else %>
+                  Sign in to see your friends list.
                 <% end %>
-              </div>
+              </p>
             </div>
           </div>
         </div>
       <% end %>
-    <% else %>
-      <div class="col-12">
-        <%# Message card for no friends/not signed in, also consistent width %>
-        <div class="main-content-card mb-4" style="width: 100%; margin: 0 auto;">
-          <div class="card-body">
-            <p class="text-dark mt-3 text-center">
-              <% if user_signed_in? %>
-                You haven't followed any users yet. Start following people to see them here!
-              <% else %>
-                Sign in to see your friends list.
-              <% end %>
-            </p>
-          </div>
-        </div>
-      </div>
     <% end %>
   </div>
   <%# --- END OF MY FRIENDS SECTION --- %>
 </div>
+<%# This closing tag was the problematic one, now it's correctly closing the main wrapper %>

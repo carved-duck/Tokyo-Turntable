@@ -9,6 +9,36 @@ class UsersController < ApplicationController
   end
 
   def index
+    # This flag controls whether the "My Friends" section should show the actual friends list
+    # or be implicitly hidden during a search. Default to true.
+    @showing_friends_list = true
+    # Initialize @users to an empty policy-scoped collection by default to satisfy Pundit.
+    # This will be populated by friends list logic below if no search is active.
+    @users = policy_scope(User).none
+
+    # --- NEW SEARCH LOGIC ---
+    if params[:user_query].present?
+      # When a search query is present, we temporarily stop showing the default friends list
+      @showing_friends_list = false
+
+      found_user = User.find_by("username ILIKE ?", params[:user_query].strip)
+
+      if found_user
+        redirect_to user_path(found_user) and return # Redirect if user found
+      else
+        # --- CRITICAL FIX HERE: Use `flash` and `redirect_to` to clear the URL ---
+        flash[:alert] = "User '#{params[:user_query]}' not found."
+        redirect_to users_path and return # Redirect back to /users to clear query params
+      end
+    else
+      # --- Existing MODIFIED LOGIC for @users (Friends list) when no search query is present ---
+      # This block now ONLY executes if there is NO search query (clean URL).
+      if user_signed_in?
+        @users = policy_scope(User).where(id: current_user.favorites.where(favoritable_type: 'User').pluck(:favoritable_id))
+      end
+    end
+    # --- END MODIFIED LOGIC for @users ---
+
     # Original popular gigs logic remains untouched
     popular_gig_ids_ordered = Favorite.where(favoritable_type: 'Gig')
                                       .group(:favoritable_id)
@@ -23,22 +53,5 @@ class UsersController < ApplicationController
                          .where(id: popular_gig_ids_ordered)
                          .order(order_clause)
     end
-
-    # --- MODIFIED LOGIC for @users (Friends list) ---
-    # First, apply Pundit's policy scope to get all users the current_user is allowed to see.
-    all_viewable_users = policy_scope(User)
-
-    if user_signed_in?
-      # If signed in, get the IDs of users that the current_user has favorited (friends).
-      favorited_user_ids = current_user.favorites.where(favoritable_type: 'User').pluck(:favoritable_id)
-
-      # Filter the *policy-scoped* users by these favorited IDs.
-      @users = all_viewable_users.where(id: favorited_user_ids)
-    else
-      # If no user is signed in, show an empty list of users.
-      # Using .none on the policy-scoped collection ensures Pundit's checks are satisfied.
-      @users = all_viewable_users.none
-    end
-    # --- END MODIFIED LOGIC ---
   end
 end
