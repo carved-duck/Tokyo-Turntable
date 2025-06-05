@@ -50,18 +50,24 @@ p.neighborhood {
 
 
 // General text color within gig info (overrides global p rule)
-.gig-body p,
-.gig-body h5,
-.gig-body h6,
-.gig-body ul,
-.gig-body li,
-.gig-body div {
-  color: black !important; /* Ensure all text within the gig-body card is black */
-  font-weight: normal; /* Override previous bold */
-  font-size: 1rem; /* Adjust font size */
+// .gig-body p,
+// .gig-body h5,
+// .gig-body h6,
+// .gig-body ul,
+// .gig-body li,
+// .gig-body div {
+//   color: black !important; /* Ensure all text within the gig-body card is black */
+//   font-weight: normal; /* Override previous bold */
+//   font-size: 1rem; /* Adjust font size */
+// }
+
+p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
-// ----- commented out at this moment (only label is bold) -----
+
+// commented out at this moment (only label is bold)
 // .gig-body p.gig-venue,
 // .gig-body p.gig-times,
 // .gig-body p.gig-price,
@@ -69,7 +75,7 @@ p.neighborhood {
 //   font-weight: bold !important; /* Keep bold for price/genre if desired */
 // }
 
-// page title
+// ===== page title =====
 .gig-show-page-content-wrapper .page-title {
   color: #000000 !important;
   width: 100%;
@@ -79,7 +85,6 @@ p.neighborhood {
   background-color: #829B9D; /* 背景をつけて下の内容と重ならないように */
   z-index: 10;
   padding: 0.9rem 2rem; /* 必要に応じて調整 */
-  border-bottom: 1px solid #ccc;
 }
 
 h4, h5, h6 {
@@ -89,21 +94,65 @@ h4, h5, h6 {
 .body-header {
   color: black !important; /* Ensure this specific header is black */
   text-align: center;
+  font-family: sans-serif;
 }
 
-.event-details-bottom {
-  font-size: 17px; /* お好みのサイズに変更 */
+// ===== event bottom =====
+.gig-venue,
+.gig-times,
+.gig-price,
+.gig-genre,
+.gig-attending,
+.text-muted {
+  margin-bottom: 12px;
+  font-size: 0.9rem;
 }
 
-// Gig times (OPEN/START)
+.gig-venue strong,
+.gig-times strong,
+.gig-price strong,
+.gig-genre strong,
+.gig-attending strong {
+  margin-right: 10px;
+}
+
+.text-muted {
+  color: #b4afa4 !important;
+  font-style: italic;
+}
+
+.gig-show-page-content-wrapper p.text-muted {
+  color: #b4afa4 !important;
+  font-style: italic;
+}
+
+.gig-show-page-content-wrapper p {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+}
+
+// ===== Gig times (OPEN/START) =====
 .gig-times {
   display: flex;
   gap: 13px;
   justify-content: center; /* Center these paragraphs */
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
+  padding-top: 15px !important;
 }
 
-// Artist / Band Info
+// ===== Artist / Band Info =====
+.artist {
+  text-align: left;
+  width: 100%;
+}
+
+.gig-show-page-content-wrapper .artist {
+  h5, h2 {
+    font-family: Sora !important;
+  }
+}
+
+
 .artist-header {
   // color: #B64F44 !important; /* Use your dark red for the header */
   // font-weight: bold;
@@ -144,7 +193,7 @@ h4, h5, h6 {
   }
 }
 
-// Favorite / Unfavorite wrapper
+// ===== Favorite / Unfavorite wrapper =====
 .gig-actions {
   display: flex;
   justify-content: flex-end;
@@ -164,7 +213,7 @@ h4, h5, h6 {
 
   }
 
-// Favorite / Unfavorite button styles
+// ===== Favorite / Unfavorite button styles =====
 .gig-favorite-btn,
 .gig-unfavorite-btn {
   border: none;
@@ -183,7 +232,7 @@ h4, h5, h6 {
   }
 }
 
-// Prompt to log in
+// ===== Prompt to log in =====
   .login-prompt {
     font-size: 0.9rem;
     text-align: left;
@@ -196,17 +245,15 @@ h4, h5, h6 {
   }
 
 
-// back to gig button
+// ===== back to gig button =====
 .gig-back-btn {
   background-color: #C6C1B5; /* Grey for back button */
-  // color: black;
   color: #333333;
   border-radius: 24px;
   padding: 8px 15px;
   border: none;
   // box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-
   text-decoration: none;
   display: inline-block;
   font-weight: bold;
@@ -261,13 +308,12 @@ h4, h5, h6 {
   margin-left: 10px;
 }
 
-// Sticky back button
+// ===== Sticky back button =====
 .sticky-buttons {
   position: fixed;
-  bottom: 90px;
+  bottom: 95px;
   right: 12px;
   text-align: right;
   z-index: 1000;
   color: #333 !important;
-  // text-decoration: underline;
 }
