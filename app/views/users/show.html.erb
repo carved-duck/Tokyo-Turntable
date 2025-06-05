@@ -32,44 +32,45 @@
     <% end %>
   </div>
 </div>
-<div class="main-content-card mb-4">
-  <div class="card-body">
-    <% if @user.bio.present? %>
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="mb-0">Bio</h3>
-        <% if @user == current_user %>
-          <%= link_to "Edit Profile", edit_user_registration_path, class: "btn profile-collapse-btn" %>
+<div class="user-container">
+  <div class="main-content-card mb-4">
+    <div class="card-body">
+      <% if @user.bio.present? %>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="mb-0">Bio</h3>
+          <% if @user == current_user %>
+            <%= link_to "Edit Profile", edit_user_registration_path, class: "btn profile-collapse-btn" %>
+          <% end %>
+        </div>
+        <p><%= @user.bio %></p>
+      <% end %>
+      <div class="d-flex align-items-center mb-3">
+        <% if @user.spotify_link.present? %>
+          <a href="<%= @user.spotify_link %>" target="_blank" class="text-dark me-3 fs-3" title="Spotify">
+            <i class="fa-brands fa-spotify"></i>
+          </a>
+        <% end %>
+        <% if @user.discogs_link.present? %>
+          <a href="<%= @user.discogs_link %>" target="_blank" class="text-dark me-3" title="Discogs">
+            <%= image_tag "discogs.jpeg", alt: "Discogs", width: 32, height: 32, class: "discogs-logo align-middle" %>
+          </a>
         <% end %>
       </div>
-      <p><%= @user.bio %></p>
-    <% end %>
-    <div class="d-flex align-items-center mb-3">
-      <% if @user.spotify_link.present? %>
-        <a href="<%= @user.spotify_link %>" target="_blank" class="text-dark me-3 fs-3" title="Spotify">
-          <i class="fa-brands fa-spotify"></i>
-        </a>
+      <hr class="my-3 border-dark"><!-- line under bio -->
+      <% if @user == current_user %>
+        <div class="user-details mb-3">
+          <h3>Private Details</h3>
+          <p>Email: <%= @user.email %></p>
+          <p>Address: <%= @user.address %></p>
+          <hr class="my-3 border-dark"><!-- line under private details -->
+        </div>
       <% end %>
-      <% if @user.discogs_link.present? %>
-        <a href="<%= @user.discogs_link %>" target="_blank" class="text-dark me-3" title="Discogs">
-          <%= image_tag "discogs.jpeg", alt: "Discogs", width: 32, height: 32, class: "discogs-logo align-middle" %>
-        </a>
+      <% if @user&.past_shows.present? %>
+        <p class="mb-2"><strong>Past Shows:</strong> <%= @user.past_shows %></p>
       <% end %>
     </div>
-    <hr class="my-3 border-dark"><!-- line under bio -->
-    <% if @user == current_user %>
-      <div class="user-details mb-3">
-        <h3>Private Details</h3>
-        <p>Email: <%= @user.email %></p>
-        <p>Address: <%= @user.address %></p>
-        <hr class="my-3 border-dark"><!-- line under private details -->
-      </div>
-    <% end %>
-    <% if @user&.past_shows.present? %>
-      <p class="mb-2"><strong>Past Shows:</strong> <%= @user.past_shows %></p>
-    <% end %>
-  </div>
-  <div class="d-flex justify-content-center gap-2 flex-nowrap overflow-auto px-2 mb-3" id="profileTabs" role="tablist">
-    <button class="profile-collapse-btn active"
+    <div class="d-flex justify-content-center gap-2 flex-nowrap overflow-auto px-2 mb-3" id="profileTabs" role="tablist">
+      <button class="profile-collapse-btn active"
             id="friends-tab"
             data-bs-toggle="tab"
             data-bs-target="#friends"
@@ -77,9 +78,9 @@
             role="tab"
             aria-controls="friends"
             aria-selected="true">
-      My Friends
-    </button>
-    <button class="profile-collapse-btn"
+        My Friends
+      </button>
+      <button class="profile-collapse-btn"
             id="gigs-tab"
             data-bs-toggle="tab"
             data-bs-target="#gigs"
@@ -87,79 +88,80 @@
             role="tab"
             aria-controls="gigs"
             aria-selected="false">
-      My Favorite Gigs
-    </button>
-  </div>
-  <div class="tab-content p-3" id="profileTabsContent">
-    <div class="tab-pane fade show active" id="friends" role="tabpanel" aria-labelledby="friends-tab">
-      <% if @favorited_users.any? %>
-        <div class="row g-2 text-dark">
-          <% @favorited_users.each_with_index do |user, index| %>
-            <div class="col-12">
-              <div class="d-flex justify-content-between align-items-center py-1">
-                <div class="flex-grow-1 me-2">
-                  <a href="<%= user_path(user) %>" class="text-decoration-none text-dark">
-                    <% if user.username.present? %>
-                      <p class="mb-0"><strong><%= user&.username&.capitalize %></strong></p>
-                    <% else %>
-                      <p class="mb-0"><small class="text-muted">Username not available.</small></p>
-                    <% end %>
-                  </a>
-                </div>
-                <% favorite_record_id = current_user.favorites.find_by(favoritable: user)&.id %>
-                <% if favorite_record_id.present? %>
-                  <div class="flex-shrink-0">
-                    <a href="<%= user_favorite_path(user, favorite_record_id) %>"
+        My Favorite Gigs
+      </button>
+    </div>
+    <div class="tab-content p-3" id="profileTabsContent">
+      <div class="tab-pane fade show active" id="friends" role="tabpanel" aria-labelledby="friends-tab">
+        <% if @favorited_users.any? %>
+          <div class="row g-2 text-dark">
+            <% @favorited_users.each_with_index do |user, index| %>
+              <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center py-1">
+                  <div class="flex-grow-1 me-2">
+                    <a href="<%= user_path(user) %>" class="text-decoration-none text-dark">
+                      <% if user.username.present? %>
+                        <p class="mb-0"><strong><%= user&.username&.capitalize %></strong></p>
+                      <% else %>
+                        <p class="mb-0"><small class="text-muted">Username not available.</small></p>
+                      <% end %>
+                    </a>
+                  </div>
+                  <% favorite_record_id = current_user.favorites.find_by(favoritable: user)&.id %>
+                  <% if favorite_record_id.present? %>
+                    <div class="flex-shrink-0">
+                      <a href="<%= user_favorite_path(user, favorite_record_id) %>"
                       data-turbo-method="delete"
                       data-turbo-confirm="Unfollow this user?"
                       class="btn profile-collapse-btn">Unfollow</a>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-            <% unless index == @favorited_users.length - 1 %>
-              <hr class="my-1 border-dark">
-            <% end %>
-          <% end %>
-        </div>
-      <% else %>
-        <p class="text-dark mt-3 text-center">You have no friends yet.</p>
-      <% end %>
-    </div>
-    <div class="tab-pane fade" id="gigs" role="tabpanel" aria-labelledby="gigs-tab">
-      <% if @favorited_gigs.any? %>
-        <div class="row g-2 text-dark">
-          <% @favorited_gigs.each_with_index do |gig, index| %>
-            <div class="col-12">
-              <div class="d-flex justify-content-between align-items-center py-1">
-                <div class="flex-grow-1 me-2">
-                  <a href="<%= gig_path(gig) %>" class="text-decoration-none text-dark">
-                    <% if gig.bands.any? %>
-                      <p class="mb-0"><strong><%= gig.bands.first.name %></strong></p>
-                    <% else %>
-                      <p class="mb-0"><small class="text-muted">No band listed.</small></p>
-                    <% end %>
-                  </a>
+                    </div>
+                  <% end %>
                 </div>
-                <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
-                <% if favorite_record_id.present? %>
-                  <div class="flex-shrink-0">
-                    <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
+              </div>
+              <% unless index == @favorited_users.length - 1 %>
+                <hr class="my-1 border-dark">
+              <% end %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-dark mt-3 text-center">You have no friends yet.</p>
+        <% end %>
+      </div>
+      <div class="tab-pane fade" id="gigs" role="tabpanel" aria-labelledby="gigs-tab">
+        <% if @favorited_gigs.any? %>
+          <div class="row g-2 text-dark">
+            <% @favorited_gigs.each_with_index do |gig, index| %>
+              <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center py-1">
+                  <div class="flex-grow-1 me-2">
+                    <a href="<%= gig_path(gig) %>" class="text-decoration-none text-dark">
+                      <% if gig.bands.any? %>
+                        <p class="mb-0"><strong><%= gig.bands.first.name %></strong></p>
+                      <% else %>
+                        <p class="mb-0"><small class="text-muted">No band listed.</small></p>
+                      <% end %>
+                    </a>
+                  </div>
+                  <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
+                  <% if favorite_record_id.present? %>
+                    <div class="flex-shrink-0">
+                      <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
                       data-turbo-method="delete"
                       data-turbo-confirm="Remove from favorites?"
                       class="btn profile-collapse-btn">Unfavorite</a>
-                  </div>
-                <% end %>
+                    </div>
+                  <% end %>
+                </div>
               </div>
-            </div>
-            <% unless index == @favorited_gigs.length - 1 %>
-              <hr class="my-1 border-dark">
+              <% unless index == @favorited_gigs.length - 1 %>
+                <hr class="my-1 border-dark">
+              <% end %>
             <% end %>
-          <% end %>
-        </div>
-      <% else %>
-        <p class="text-dark mt-3 text-center">You haven't favorited any gigs yet.</p>
-      <% end %>
+          </div>
+        <% else %>
+          <p class="text-dark mt-3 text-center">You haven't favorited any gigs yet.</p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
