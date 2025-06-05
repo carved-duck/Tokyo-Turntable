@@ -1,8 +1,7 @@
 // Profile Image Container (inside a main-content-card)
 .index-profile-image-container {
-  // Use a smaller size for the image in the list view, as discussed for the left column
-  width: 75px;  /* <--- RECOMMENDED: Change this to 75px for list view */
-  height: 75px; /* <--- RECOMMENDED: Change this to 75px for list view */
+  width: 75px;
+  height: 75px;
   overflow: hidden;
   border-radius: 50%;
   border: 2px solid #C6C1B5; /* Adjust border if changing size */
@@ -29,5 +28,4 @@
     display: block;
     color: black;
   }
-
 }
