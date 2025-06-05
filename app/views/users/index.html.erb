@@ -71,9 +71,11 @@
                                       <% favoriting_users.each do |favoritor_user| %>
                                         <div class="d-flex align-items-center me-2 mb-1">
                                           <div class="mini-profile-image-container me-1">
-
-                                            <%= image_tag gig.venue.photo ? favoritor_user.photo.key : "https://via.placeholder.com/150x150?text=No+Image", class: "mini-profile-image", alt: favoritor_user.username %>
-
+                                            <% if favoritor_user.photo.attached? %>
+                                              <%= cl_image_tag favoritor_user.photo.key, class: "mini-profile-image", alt: favoritor_user.username %>
+                                            <% else %>
+                                              <%= image_tag "logo.png", class: "profile-image", alt: favoritor_user.username %>
+                                            <% end %>
                                           </div>
                                           <%= link_to favoritor_user.username.capitalize, user_path(favoritor_user), class: "text-dark text-decoration-none" %>
                                         </div>
