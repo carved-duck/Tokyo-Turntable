@@ -1,0 +1,19 @@
+.venue-card {
+    .show-link {
+      text-decoration: none;
+      color: $peach;
+      font-size: 20px;
+    }
+
+    .venue-image {
+      border-radius: 8px;
+    }
+
+    strong {
+      font-size: 16px;
+    }
+
+    .venue-name {
+      color: $brick-red;
+    }
+}

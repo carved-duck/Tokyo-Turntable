@@ -20,4 +20,8 @@ class Venue < ApplicationRecord
   using: {
     tsearch: { prefix: true }
   }
+
+  def next_show
+    gigs.where("date > ?", Time.current).order(:date).first
+  end
 end
