@@ -29,10 +29,10 @@
   </div>
   <%# --- END TAB BUTTONS SECTION --- %>
   <%# --- TAB CONTENT SECTION --- %>
-  <div class="tab-content p-3" id="indexTabsContent">
+  <div class="tab-content p-0" id="indexTabsContent">
     <%# Popular Shows Tab Pane %>
     <div class="tab-pane fade show active" id="popular-shows" role="tabpanel" aria-labelledby="popular-shows-tab">
-      <div class="row row-cols-1 g-3">
+      <div class="row row-cols-1 g-1">
         <div class="col">
           <%# Outer div for fixed width and centering of the Popular Shows card %>
           <div style="max-width: 400px; margin: 0 auto;">
@@ -146,7 +146,7 @@
                       </div>
                     </div>
                     <div class="d-flex justify-content-around align-items-center mt-auto pt-3 border-top border-dark">
-                      <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">View Details</a>
+                      <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">Details</a>
                       <% if user_signed_in? %>
                         <% if current_user.favorited?(user) %>
                           <%= link_to "Unfollow", user_favorite_path(user, current_user.favorites.find_by(favoritable: user).id), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" }, class: "btn gig-unfavorite-btn" %>
