@@ -1,4 +1,4 @@
-<div class="container my-4">
+<div class="container my-4 px-3">
   <!-- Search row -->
   <div class="venue-index-header d-flex justify-content-between align-items-center mb-3">
     <div class="venue-index-header-text">
@@ -13,7 +13,7 @@
     </div>
   </div>
   <!-- Cards -->
-  <div class="d-grid gap-3">
+  <div class="d-grid gap-3 mx-3">
     <% @venues.each do |venue| %>
       <%= render "venue_card", venue: venue %>
     <% end %>
