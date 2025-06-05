@@ -1,9 +1,9 @@
 <%# app/views/users/profile.html.erb %>
 <div class="profile-page-content-wrapper">
   <%# Profile Title Section %>
-  <div class="text-center mb-4 main-content-card"> <%# This is now one card for all three elements %>
+  <div class="text-center mb-4 main-content-card">
     <%# Profile Image Container %>
-    <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center profile-image-container mb-3"> <%# Added mb-3 for spacing below image %>
+    <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center profile-image-container mb-3">
       <% if @user.photo.attached? %>
         <%= image_tag @user.photo, class: "profile-image", alt: @user&.username %>
       <% else %>
@@ -12,27 +12,47 @@
     </div>
     <%# Profile Title (Username) %>
     <h2 class="mb-0"><%= "#{@user&.username.capitalize}'s Profile" %></h2>
+    <%# --- Friend/Unfriend Button Section (Transplanted from index.html.erb) --- %>
+    <% if user_signed_in? %>
+      <% if @user != current_user %> <%# Only show if viewing another user's profile %>
+        <div class="mt-3"> <%# Added margin for spacing below the profile title %>
+          <% if current_user.favorited?(@user) %>
+            <%= link_to "Unfollow", user_favorite_path(@user, current_user.favorites.find_by(favoritable: @user).id),
+              data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" },
+              class: "btn gig-unfavorite-btn" %>
+          <% else %>
+            <%= link_to "Follow", user_favorites_path(@user),
+              data: { turbo_method: :post },
+              class: "btn gig-favorite-btn" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <%# This block only executes if no user is signed in and viewing another's profile %>
+      <% if @user != current_user %>
+        <small class="text-muted mt-3 d-block">Sign in to follow this user</small>
+      <% end %>
+    <% end %>
+    <%# --- End Friend/Unfriend Button Section --- %>
   </div>
   <%# Other Details Card - All content within this card-body %>
   <div class="main-content-card mb-4">
-    <div class="card-body"> <%# This opens the content area for this card %>
+    <div class="card-body">
       <% if @user.bio.present? %>
-        <div class="user-bio mb-3"> <%# Added mb-3 for spacing %>
+        <div class="user-bio mb-3">
           <h3>Bio</h3>
           <p><%= @user.bio %></p>
         </div>
       <% end %>
       <hr class="my-1 border-dark">
       <% if @user == current_user %>
-        <div class="user-details mb-3"> <%# Added mb-3 for spacing %>
+        <div class="user-details mb-3">
           <h3>Private Details</h3>
           <p>Email: <%= @user.email %></p>
           <p>Address: <%= @user.address %></p>
           <hr class="my-1 border-dark">
-          <%# Add any other private details here, e.g., %>
         </div>
       <% end %>
-      <%# This content is correctly inside the card-body, after the conditional sections %>
       <h3 class="card-title mb-3 text-dark">Socials</h3>
       <ul class="list-unstyled mb-0 text-dark">
         <% if @user&.spotify_link&.present? %>
@@ -57,9 +77,7 @@
         <% end %>
       </ul>
     </div>
-    <%# closes card-body %>
   </div>
-  <%# closes main-content-card %>
   <%# My Friends Section - Overall Card with Centered Button and Collapsible List %>
   <div class="main-content-card mb-4">
     <div class="card-body">
@@ -71,25 +89,27 @@
       <div class="collapse mt-3" id="favoriteUsersCollapse">
         <% if @favorited_users.any? %>
           <div class="row g-2 text-dark">
-            <% @favorited_users.each_with_index do |user, index| %>
+            <% @favorited_users.each_with_index do |friend_user, index| %> <%# Changed 'user' to 'friend_user' for clarity %>
               <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center py-1">
                   <div class="flex-grow-1 me-2">
-                    <a href="<%= user_path(user) %>" class="text-decoration-none text-dark">
-                      <% if user.username.present? %>
-                        <p class="mb-0"><strong><%= user&.username&.capitalize %></strong></p>
+                    <a href="<%= user_path(friend_user) %>" class="text-decoration-none text-dark">
+                      <% if friend_user.username.present? %>
+                        <p class="mb-0"><strong><%= friend_user&.username&.capitalize %></strong></p>
                       <% else %>
                         <p class="mb-0"><small class="text-muted">Username not available.</small></p>
                       <% end %>
                     </a>
                   </div>
-                  <% favorite_record_id = current_user.favorites.find_by(favoritable: user)&.id %>
-                  <% if favorite_record_id.present? %>
-                    <div class="flex-shrink-0">
-                      <a href="<%= user_favorite_path(user, favorite_record_id) %>"
-                          data-turbo-method="delete" data-turbo-confirm="Unfollow this user?"
-                          class="btn profile-collapse-btn">Unfollow</a>
-                    </div>
+                  <% if current_user.present? %> <%# Ensure current_user exists before trying to find favorite %>
+                    <% favorite_record_id = current_user.favorites.find_by(favoritable: friend_user)&.id %>
+                    <% if favorite_record_id.present? %>
+                      <div class="flex-shrink-0">
+                        <a href="<%= user_favorite_path(friend_user, favorite_record_id) %>"
+                            data-turbo-method="delete" data-turbo-confirm="Unfollow this user?"
+                            class="btn profile-collapse-btn">Unfollow</a>
+                      </div>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
@@ -127,13 +147,15 @@
                       <% end %>
                     </a>
                   </div>
-                  <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
-                  <% if favorite_record_id.present? %>
-                    <div class="flex-shrink-0">
-                      <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
-                          data-turbo-method="delete" data-turbo-confirm="Remove from favorites?"
-                          class="btn profile-collapse-btn">Unfavorite</a>
-                    </div>
+                  <% if current_user.present? %>
+                    <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
+                    <% if favorite_record_id.present? %>
+                      <div class="flex-shrink-0">
+                        <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
+                            data: { turbo_method: :delete, turbo_confirm: "Remove from favorites?" },
+                            class: "btn profile-collapse-btn">Unfavorite</a>
+                      </div>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
