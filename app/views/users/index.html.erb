@@ -1,10 +1,10 @@
 <%# app/views/users/index.html.erb %>
 <%# This wrapper ensures consistent centering and max-width for the cards %>
 <div class="profile-page-content-wrapper">
-  <%# --- NEW / MODIFIED SECTION FOR GIGS OTHER USERS ARE ATTENDING --- %>
-  <%# ADDED: row and col wrappers to match the user card structure below %>
+  <%# --- GIGS OTHER USERS ARE ATTENDING SECTION (REVERTED TO ORIGINAL STATE) --- %>
   <div class="row row-cols-1 g-3">
     <div class="col">
+      <%# REVERTED: This top card is now exactly as it was in your original code, no inline style added %>
       <div class="main-content-card mb-4">
         <div class="card-body">
           <p class="mb-0 text-center">
@@ -91,46 +91,63 @@
       </div>
     </div>
   </div>
-  <%# --- END OF NEW / MODIFIED SECTION --- %>
-  <%# Existing User Listing Section (rest of your original code) %>
+  <%# --- END OF GIGS OTHER USERS ARE ATTENDING SECTION --- %>
+  <%# --- MY FRIENDS SECTION (MODIFIED FOR INDIVIDUAL CARDS TO MATCH TOP CARD WIDTH, NO COLLAPSE) --- %>
   <div class="row row-cols-1 g-3">
-    <% @users.each do |user| %>
-      <div class="col">
-        <div class="main-content-card">
-          <div class="card-body d-flex flex-column text-dark">
-            <div class="d-flex align-items-center mb-3">
-              <div class="me-3">
-                <div class="rounded-circle bg-secondary index-profile-image-container">
-                  <% if user&.photo.attached? %>
-                    <%= image_tag user.photo, class: "index-profile-image", alt: user&.username %>
-                  <% else %>
-                    <span class="text-dark index-default-profile-icon">👤</span>
-                  <% end %>
+    <div class="col-12 mt-4 text-center mb-3"> <%# Added mb-3 for space below header %>
+      <h3 class="card-title text-dark">My Friends</h3>
+    </div>
+    <% if user_signed_in? && @users.any? %>
+      <% @users.each do |user| %>
+        <div class="col-12">
+          <%# Individual friend card: enforcing width: 100% and margin: 0 auto to fill column and center %>
+          <div class="main-content-card mb-4" style="width: 100%; margin: 0 auto;">
+            <div class="card-body d-flex flex-column text-dark">
+              <div class="d-flex align-items-center mb-3">
+                <div class="me-3">
+                  <div class="rounded-circle bg-secondary index-profile-image-container">
+                    <% if user&.photo.attached? %>
+                      <%= image_tag user.photo, class: "index-profile-image", alt: user&.username %>
+                    <% else %>
+                      <span class="text-dark index-default-profile-icon">👤</span>
+                    <% end %>
+                  </div>
+                </div>
+                <div>
+                  <p class="mb-0"><strong>Username:</strong> <%= user&.username&.capitalize %></p>
                 </div>
               </div>
-              <div>
-                <p class="mb-0"><strong>Username:</strong> <%= user&.username&.capitalize %></p>
+              <div class="d-flex justify-content-around align-items-center mt-auto pt-3 border-top border-dark">
+                <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">View Details</a>
+                <%# Unfollow button for each friend %>
+                <% if user_signed_in? %>
+                  <% if current_user.favorited?(user) %>
+                    <%= link_to "Unfollow", user_favorite_path(user, current_user.favorites.find_by(favoritable: user).id),
+                      data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" },
+                      class: "btn gig-unfavorite-btn" %>
+                  <% end %>
+                <% end %>
               </div>
             </div>
-            <div class="d-flex justify-content-around align-items-center mt-auto pt-3 border-top border-dark">
-              <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">View Details</a>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-12">
+        <%# Message card for no friends/not signed in, also consistent width %>
+        <div class="main-content-card mb-4" style="width: 100%; margin: 0 auto;">
+          <div class="card-body">
+            <p class="text-dark mt-3 text-center">
               <% if user_signed_in? %>
-                <% if current_user.favorited?(user) %>
-                  <%= link_to "Unfollow", user_favorite_path(user, current_user.favorites.find_by(favoritable: user).id),
-                    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" },
-                    class: "btn gig-unfavorite-btn" %>
-                <% else %>
-                  <%= link_to "Follow", user_favorites_path(user),
-                      data: { turbo_method: :post },
-                      class: "btn gig-favorite-btn" %>
-                <% end %>
+                You haven't followed any users yet. Start following people to see them here!
               <% else %>
-                <small class="text-muted">Sign in to follow</small>
+                Sign in to see your friends list.
               <% end %>
-            </div>
+            </p>
           </div>
         </div>
       </div>
     <% end %>
   </div>
+  <%# --- END OF MY FRIENDS SECTION --- %>
 </div>

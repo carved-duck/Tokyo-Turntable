@@ -9,29 +9,36 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = policy_scope(User)
-
-    # Step 1: Find the IDs of the top N most favorited gigs
-    # This query runs against the `favorites` table.
+    # Original popular gigs logic remains untouched
     popular_gig_ids_ordered = Favorite.where(favoritable_type: 'Gig')
-                                      .group(:favoritable_id) # Group by the ID of the gig
-                                      .order('COUNT(favorites.id) DESC') # Order by favorite count (most popular first)
-                                      .limit(10) # Get the top 10 (adjust as needed)
-                                      .pluck(:favoritable_id) # Extract only the gig IDs in that order
+                                      .group(:favoritable_id)
+                                      .order('COUNT(favorites.id) DESC')
+                                      .limit(10)
+                                      .pluck(:favoritable_id)
 
-    # Initialize @popular_gigs as an empty array if no gigs are found (important for view)
     @popular_gigs = []
-
     if popular_gig_ids_ordered.any?
-      # Step 2: Fetch the actual Gig objects using the IDs obtained in Step 1.
-      # Now we can use `includes` without the GROUP BY conflict, as we are querying Gig directly by ID.
-      # We also ensure the order matches the popularity ranking from Step 1.
-      # Arel.sql is used for PostgreSQL to order by a specific list of IDs.
       order_clause = Arel.sql("CASE gigs.id #{popular_gig_ids_ordered.map.with_index { |id, i| "WHEN #{id} THEN #{i}" }.join(' ')} END")
-
-      @popular_gigs = Gig.includes(favorites: :user) # Eager load favorites and their associated users
-                         .where(id: popular_gig_ids_ordered) # Filter by the top N gig IDs
-                         .order(order_clause) # Apply the custom order to maintain popularity ranking
+      @popular_gigs = Gig.includes(favorites: :user)
+                         .where(id: popular_gig_ids_ordered)
+                         .order(order_clause)
     end
+
+    # --- MODIFIED LOGIC for @users (Friends list) ---
+    # First, apply Pundit's policy scope to get all users the current_user is allowed to see.
+    all_viewable_users = policy_scope(User)
+
+    if user_signed_in?
+      # If signed in, get the IDs of users that the current_user has favorited (friends).
+      favorited_user_ids = current_user.favorites.where(favoritable_type: 'User').pluck(:favoritable_id)
+
+      # Filter the *policy-scoped* users by these favorited IDs.
+      @users = all_viewable_users.where(id: favorited_user_ids)
+    else
+      # If no user is signed in, show an empty list of users.
+      # Using .none on the policy-scoped collection ensures Pundit's checks are satisfied.
+      @users = all_viewable_users.none
+    end
+    # --- END MODIFIED LOGIC ---
   end
 end
