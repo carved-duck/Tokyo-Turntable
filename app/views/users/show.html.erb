@@ -1,5 +1,5 @@
 <div class="profile-header d-flex justify-content-between align-items-center p-4">
-  <div>
+  <div class="profile-image-container">
     <% if @user.photo.attached? %>
       <%= image_tag @user.photo,
             class: "profile-image",
