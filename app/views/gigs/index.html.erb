@@ -1,7 +1,6 @@
 <!-- Start of the toggle -->
 <div class="container px-3 pt-3 gig-container" data-controller="view-toggle">
   <div class="gig-index-header d-flex gap-3 justify-content-space-around align-items-center">
-
     <div class="gig-index-header-text">
       <h3>
         Shows happening
@@ -53,16 +52,14 @@
   </div>
   <!-- LIST PANEL (initially visible) -->
   <div id="list-panel" data-view-toggle-target="list">
-    <div class="container-card py-2">
-      <div class="row row-cols-1 g-3">
-        <% @gigs.each do |gig| %>
-          <div class="col">
-            <%= link_to gig_path(gig, request.query_parameters), class: "text-decoration-none text-dark d-block" do %>
-              <%= render "card", gig: gig %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
+    <div class="row-cols-1 g-3">
+      <% @gigs.each do |gig| %>
+        <div class="col">
+          <%= link_to gig_path(gig, request.query_parameters), class: "text-decoration-none text-dark d-block" do %>
+            <%= render "card", gig: gig %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
