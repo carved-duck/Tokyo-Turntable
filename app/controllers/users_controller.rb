@@ -9,10 +9,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    # Initialize @users for Pundit, default to empty
-    @users = policy_scope(User).none
-
-    # --- SEARCH LOGIC ---
+    # --- SEARCH LOGIC: This section determines if we're processing a search. ---
     if params[:user_query].present?
       found_user = User.find_by("username ILIKE ?", params[:user_query].strip)
 
@@ -22,15 +19,19 @@ class UsersController < ApplicationController
         flash[:alert] = "User '#{params[:user_query]}' not found."
         redirect_to users_path and return
       end
-    else
-      # --- Friends list logic when NO search query is present ---
-      if user_signed_in?
-        @users = policy_scope(User).where(id: current_user.favorites.where(favoritable_type: 'User').pluck(:favoritable_id))
-      end
     end
-    # --- END MODIFIED LOGIC for @users ---
+    # --- END SEARCH LOGIC ---
 
-    # Original popular gigs logic remains untouched
+    # --- POPULATING @users for Friends List: This block only runs if NOT in an active search state. ---
+    if user_signed_in?
+      favorited_user_ids = current_user.favorites.where(favoritable_type: 'User').pluck(:favoritable_id)
+      @users = policy_scope(User).where(id: favorited_user_ids)
+    else
+      @users = policy_scope(User).none
+    end
+    # --- END @users POPULATION ---
+
+    # --- Popular Gigs Logic (MODIFIED to filter by future/current date) ---
     popular_gig_ids_ordered = Favorite.where(favoritable_type: 'Gig')
                                       .group(:favoritable_id)
                                       .order('COUNT(favorites.id) DESC')
@@ -40,9 +41,13 @@ class UsersController < ApplicationController
     @popular_gigs = []
     if popular_gig_ids_ordered.any?
       order_clause = Arel.sql("CASE gigs.id #{popular_gig_ids_ordered.map.with_index { |id, i| "WHEN #{id} THEN #{i}" }.join(' ')} END")
+
+      # CRUCIAL ADDITION: Filter gigs by date to only show future/current shows
       @popular_gigs = Gig.includes(favorites: :user)
                          .where(id: popular_gig_ids_ordered)
+                         .where('date >= ?', Date.current) # Filter by current date or future
                          .order(order_clause)
     end
+    # --- END Popular Gigs Logic ---
   end
 end
