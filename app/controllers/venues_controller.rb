@@ -10,9 +10,9 @@ class VenuesController < ApplicationController
 
   def show
     @venue = Venue.find(params[:id])
-    @selected_year = params[:year].to_i || Date.today.year
-    @selected_month = params[:month].to_i || Date.today.month
-    months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG","SEP","OCT","NOV","DEC"]
+    @selected_year = params[:year].to_i.zero? || params[:year].to_i < 2020 ? Date.today.year : params[:year].to_i
+    @selected_month = params[:month].to_i.zero? || params[:month].to_i > 12 ? Date.today.month : params[:month].to_i
+    months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
     @selected_month_text = months[@selected_month - 1]
     @previous_month_text = months[@selected_month - 2]
     @next_month_text = months[@selected_month]
