@@ -29,10 +29,10 @@
   </div>
   <%# --- END TAB BUTTONS SECTION --- %>
   <%# --- TAB CONTENT SECTION --- %>
-  <div class="tab-content p-3" id="indexTabsContent">
+  <div class="tab-content p-0" id="indexTabsContent">
     <%# Popular Shows Tab Pane %>
     <div class="tab-pane fade show active" id="popular-shows" role="tabpanel" aria-labelledby="popular-shows-tab">
-      <div class="row row-cols-1 g-3">
+      <div class="row row-cols-1 g-1">
         <div class="col">
           <%# Outer div for fixed width and centering of the Popular Shows card %>
           <div style="max-width: 400px; margin: 0 auto;">
@@ -48,7 +48,6 @@
                         %>
                         <div class="col-12">
                           <%# This is the main container for each gig item. It's a flex container. %>
-                          <%# Changed from justify-content-between/align-items-center to a simpler flex-column for vertical stacking %>
                           <div class="d-flex flex-column py-1">
                             <%# Gig details section %>
                             <div class="flex-grow-1">
@@ -72,7 +71,9 @@
                                       <% favoriting_users.each do |favoritor_user| %>
                                         <div class="d-flex align-items-center me-2 mb-1">
                                           <div class="mini-profile-image-container me-1">
+
                                             <%= image_tag gig.venue.photo ? favoritor_user.photo.key : "https://via.placeholder.com/150x150?text=No+Image", class: "mini-profile-image", alt: favoritor_user.username %>
+
                                           </div>
                                           <%= link_to favoritor_user.username.capitalize, user_path(favoritor_user), class: "text-dark text-decoration-none" %>
                                         </div>
@@ -84,7 +85,7 @@
                                 </small>
                               </p>
                             </div>
-                            <%# Favorite/Unfavorite button - now moved BELOW attendee list, right-aligned %>
+                            <%# Favorite/Unfavorite button - moved below attendee list, right-aligned %>
                             <% if user_signed_in? %>
                               <div class="d-flex justify-content-end mt-2"> <%# Flex container to push button to the right %>
                                 <% if current_user.favorited?(gig) %>
@@ -146,7 +147,7 @@
                       </div>
                     </div>
                     <div class="d-flex justify-content-around align-items-center mt-auto pt-3 border-top border-dark">
-                      <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">View Details</a>
+                      <a href="<%= user_path(user) %>" class="btn profile-unfavorite-btn">Details</a>
                       <% if user_signed_in? %>
                         <% if current_user.favorited?(user) %>
                           <%= link_to "Unfollow", user_favorite_path(user, current_user.favorites.find_by(favoritable: user).id), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfollow this user?" }, class: "btn gig-unfavorite-btn" %>
