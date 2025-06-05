@@ -2,7 +2,7 @@
 <div class="gig-show-page-content-wrapper"> <%# New wrapper for centering all content %>
   <div class="page-title h4 mb-0">Event Details</div>
   <%# Gig Header Section %>
-  <div class="main-content-card mb-2" style="width: 400px"> <%# Applied main-content-card here %>
+  <div class="main-content-card mb-2 mt-0" style="width: 400px"> <%# Applied main-content-card here %>
     <%# Event details top %>
     <div class="event-details-top d-flex justify-content-between mb-4">
       <div class="gig-top-text">
@@ -22,7 +22,7 @@
     </div>
     <hr class="my-4">
     <%# Artist %>
-    <div class="artist mb-2" style="text-align: left; width: 100%;">
+    <div class="artist mb-2">
       <h5 class="artist-header mt-0 mb-2">Act:</h5>
       <ul class="ps-0 list-unstyled"> <%# Removed ps-0, added list-unstyled %>
         <% @gig.bands.each do |band| %>
@@ -40,21 +40,20 @@
     <hr class="my-4">
     <%# Gig Info Section %>
     <div class="event-details-bottom mt-0 text-start">
-      <p class="gig-venue"><strong>VENUE:</strong><span class="label-space"><%= @venue.name %></span></p>
+      <p class="gig-venue"><strong>VENUE:</strong><%= @venue.name %></p>
       <div class="text-start">
         <%# render venue Details Toggle Section%>
         <%= render partial: "shared/see_venue_details", locals: { venue: @venue } %></div>
     </div>
     <div style="display: flex; justify-content: flex-start;"> <%# New wrapper for times %>
-      <p class="gig-times mt-3 gap-0">
-        <strong>OPEN/START:</strong><span class="label-space"><%= @gig.open_time%>/<%= @gig.start_time %></span>
+      <p class="gig-times gap-0">
+        <strong>OPEN/START:</strong><%= @gig.open_time%>/<%= @gig.start_time %>
       </p>
     </div>
     <%# price start here %>
     <p class="gig-price">
       <strong>PRICE:</strong>
-      <span class="label-space">
-        <%= begin
+      <%= begin
     prices = @gig.price.to_s
       .gsub(/[¥￥]+/, '')
       .gsub(/\s*(JPY|yen)\s*/i, '')
@@ -81,62 +80,67 @@
       end.join(' / ')
     end
   end %>
-      </span>
-    </p>
-    <%# price end here%>
-    <p class="gig-genre"><strong>GENRE:</strong><span class="label-space"><%= @gig.bands.first.genre %></span></p>
-    <%# --- START NEW SECTION: ATTENDING USERS WITH MINI PHOTOS --- %>
-    <%
+    </span>
+  </p>
+  <%# price end here%>
+  <p class="gig-genre"><strong>GENRE:</strong><%= @gig.bands.first.genre %></p>
+  <%# --- START NEW SECTION: ATTENDING USERS WITH MINI PHOTOS --- %>
+  <%
       # Get unique users who favorited this gig (these are the 'attending' users)
       # .compact ensures no nil users if favorite.user was somehow nil
       attending_users = @gig.favorites.map(&:user).compact.uniq #
       attending_count = attending_users.count #
       max_display_users = 10 # Define the maximum number of users to display
     %>
-    <p class="mb-0 mt-3"> <%# mb-0 for no bottom margin, mt-3 for top spacing %>
-      <strong>ATTENDING:</strong>
-      <% if attending_users.any? %>
-        <div class="d-flex align-items-center flex-wrap"> <%# Use flex-wrap to allow photos/names to wrap to next line %>
-          <% attending_users.first(max_display_users).each do |user| %>
-            <div class="d-flex align-items-center me-2 mb-1"> <%# This div provides spacing between user entries %>
-              <%# Wrap the photo container with link_to %>
-              <%= link_to user_path(user), class: "text-decoration-none" do %>
-                <div class="mini-profile-image-container"> <%# Removed 'me-1' here, as the outer div handles spacing %>
-                  <% if user&.photo.attached? %>
-                    <%= image_tag user.photo, class: "mini-profile-image", alt: user.username %>
-                  <% else %>
-                    <span class="mini-default-profile-icon">👤</span>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-          <% if attending_count > max_display_users %>
-            <span class="text-muted ms-2">+<%= attending_count - max_display_users %></span>
-          <% end %>
-        </div>
-      <% else %>
-        <span class="text-muted">No one attending yet.</span>
-      <% end %>
-    </p>
-    <%# --- END NEW SECTION --- %>
-    <!-- ────────── Add Spotify widget(s) here ────────── -->
-    <% if @artist_ids.any? %>
-      <hr class="my-4">
-      <div class="text-center mb-3">
-        <div class="mb-3 d-flex align-items-center ms-0 me-auto">
-          <a href="#" data-bs-toggle="collapse" data-bs-target="#spotifyDropdown" aria-expanded="false" aria-controls="spotifyDropdown">
-            <%= image_tag "spotify_logo.svg", width: 160, height: "auto", alt: "Spotify", class: "spotify-svg-logo" %>
-          </a>
-        </div>
+
+  <p class="gig-attending mb-0"> <%# mb-0 for no bottom margin, mt-3 for top spacing %>
+    <strong>ATTENDING:</strong>
+    <% if attending_users.any? %>
+      <div class="d-flex align-items-center flex-wrap"> <%# Use flex-wrap to allow photos/names to wrap to next line %>
+        <% attending_users.first(max_display_users).each do |user| %>
+          <div class="d-flex align-items-center me-2 mb-1"> <%# This div provides spacing between user entries %>
+            <%# Wrap the photo container with link_to %>
+            <%= link_to user_path(user), class: "text-decoration-none" do %>
+              <div class="mini-profile-image-container"> <%# Removed 'me-1' here, as the outer div handles spacing %>
+                <% if user&.photo.attached? %>
+                  <%= image_tag user.photo, class: "mini-profile-image", alt: user.username %>
+                <% else %>
+                  <span class="mini-default-profile-icon">👤</span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <% if attending_count > max_display_users %>
+          <span class="text-muted ms-2">+<%= attending_count - max_display_users %></span>
+        <% end %>
       </div>
-      <div class="collapse" id="spotifyDropdown">
-        <div class="spotify-cards-container">
-          <% @artist_ids.each do |artist_id| %>
-            <div class="spotify-card mb-2">
-              <div class="spotify-embed-container">
-                <%# Embed each artist as a 152px-tall horizontal bar %>
-                <iframe
+    <% else %>
+      <span class="text-muted">No one attending yet.</span>
+    <% end %>
+  </p>
+  <%# --- END NEW SECTION --- %>
+  <!-- ────────── Add Spotify widget(s) here ────────── -->
+  <% if @artist_ids.any? %>
+    <hr class="my-4">
+    <%# Styled collapse-toggle button (as before) %>
+    <button
+        class="btn btn-outline-primary w-100 mb-2"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#spotifyDropdown"
+        aria-expanded="false"
+        aria-controls="spotifyDropdown">
+      Listen on Spotify
+    </button>
+    <div class="collapse" id="spotifyDropdown">
+      <div class="spotify-cards-container">
+        <% @artist_ids.each do |artist_id| %>
+          <div class="spotify-card mb-2">
+            <div class="spotify-embed-container">
+              <%# Embed each artist as a 152px-tall horizontal bar %>
+              <iframe
+
                   src="https://open.spotify.com/embed/artist/<%= artist_id %>"
                   width="100%"
                   height="152"
@@ -144,44 +148,45 @@
                   allowtransparency="true"
                   allow="encrypted-media"
                 ></iframe>
-              </div>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
-    <% else %>
-      <p class="text-muted">No Spotify widget available for these bands.</p>
-    <% end %>
-    <!-- ──────────────────────────────────────────────── -->
-  </div>
-  <%# favorite action %>
-  <div class="gig-actions mb-0">
-    <% if user_signed_in? %>
-      <%# Check if the current user has favorited this gig %>
-      <% if current_user.favorited?(@gig) %>
-        <%# If already favorited, show an Unfavorite button %>
-        <%= link_to gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
+    </div>
+  <% else %>
+    <hr class="my-4">
+    <p class="text-muted">No Spotify widget available for these bands.</p>
+  <% end %>
+  <!-- ──────────────────────────────────────────────── -->
+</div>
+<%# favorite action %>
+<div class="gig-actions mb-0">
+  <% if user_signed_in? %>
+    <%# Check if the current user has favorited this gig %>
+    <% if current_user.favorited?(@gig) %>
+      <%# If already favorited, show an Unfavorite button %>
+      <%= link_to gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
       data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
       class: "gig-unfavorite-btn", title: "Unfavorite" do %> <%# Updated class %>
-          <i class="fa-solid fa-star"></i>
-        <% end %>
-      <% else %>
-        <%# If not favorited, show a Favorite button %>
-        <%= link_to gig_favorites_path(@gig),
-            data: { turbo_method: :post },
-            class: "gig-favorite-btn", title: "Favorite" do %> <%# Updated class %>
-          <i class="fa-regular fa-star"></i>
-        <% end %>
+        <i class="fa-solid fa-star"></i>
       <% end %>
     <% else %>
-      <%# If not signed in, prompt them to log in %>
-      <p class="login-prompt mt-3">
-        <%= link_to "Log in to favorite this gig", new_user_session_path, class: "venue-link" %>
-      </p>
-      <%# Added classes %>
+      <%# If not favorited, show a Favorite button %>
+      <%= link_to gig_favorites_path(@gig),
+            data: { turbo_method: :post },
+            class: "gig-favorite-btn", title: "Favorite" do %> <%# Updated class %>
+        <i class="fa-regular fa-star"></i>
+      <% end %>
     <% end %>
-  </div>
-  <%# <hr class="my-4"> Added margin for hr %>
+  <% else %>
+    <%# If not signed in, prompt them to log in %>
+    <p class="login-prompt mt-3">
+      <%= link_to "Log in to favorite this gig", new_user_session_path, class: "venue-link" %>
+    </p>
+    <%# Added classes %>
+  <% end %>
+</div>
+<%# <hr class="my-4"> Added margin for hr %>
 </div>
 <div class="sticky-buttons"> <%# Centered back button %>
   <%= link_to "< Back to gigs", gigs_path(request.query_parameters), class: "btn gig-back-btn" %> <%# Added gig-back-btn class %>

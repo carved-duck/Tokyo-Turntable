@@ -7,7 +7,7 @@
   align-items: center; /* Centers the main-content-cards horizontally */
   width: 100%;
   box-sizing: border-box;
-  // padding-bottom: 70px; /* Add padding at the bottom to account for the fixed navbar */
+  padding-bottom: 80px; /* Add padding at the bottom to account for the fixed navbar */
   background-color: #829B9D;
 }
 
@@ -20,11 +20,14 @@
 .venue-header {
   height: auto; /* Changed from 25vh to auto to be more flexible within card */
   padding: 0 0 12px; /* Adjust padding as main-content-card has its own padding */
-  text-align: center; /* Center content within header if space allows */
+  text-align: left; /* Center content within header if space allows */
+  background-color: #F6F2E6;
+  width: 100%;
 
   h1 {
     color: black; /* Changed to black for card background */
     margin-bottom: 0.2rem; /* Reduce default h1 margin */
+    font-family: sans-serif;
   }
 
   p.neighborhood {
@@ -108,9 +111,17 @@
 //   // Styles handled by main-content-card, and specific elements below
 // }
 
+.upcoming-wrapper {
+width: 100%;
+}
+
 h4.body-header {
   color: black; /* Changed to black */
-  text-align: center;
+  text-align: left;
+}
+
+.upcoming-text {
+  font-size: 1rem;
 }
 
 // Gig table
@@ -155,22 +166,25 @@ h4.body-header {
 .months-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .selected-year {
   color: $cream;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .selected-month {
   margin-right: 30px !important;
   margin-left: 30px !important;
-  font-size: 2.2rem;
+  font-size: 1.9rem;
+  span {
+    border-bottom: solid 1.5px;
+  }
 }
 
 .next-month, .previous-month {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
 .next-month, .selected-month, .previous-month {
@@ -179,8 +193,9 @@ h4.body-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
   text-decoration: none;
+  margin-bottom: 0;
   span {
     font-size: 1rem;
   }

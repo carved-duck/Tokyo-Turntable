@@ -14,7 +14,8 @@
     </div>
   </div>
   <!-- Cards -->
-  <div class="d-grid gap-3 mx-3">
+  <div class="d-grid gap-1">
+
     <% @venues.each do |venue| %>
       <%= render "venue_card", venue: venue %>
     <% end %>
