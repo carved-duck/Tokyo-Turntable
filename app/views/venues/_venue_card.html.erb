@@ -1,10 +1,8 @@
 <%= link_to venue_path(venue), class: "text-decoration-none text-dark d-block" do %>
-  <div class="card venue-card mb-3 shadow-sm border-0 rounded-3 hover-shadow"
-       style="max-width: 540px; transition: transform 0.2s ease;">
-    <!-- Use Bootstrap’s row + g-0 so both columns always match height -->
+  <div class="card gig-card mb-3 gig-card-hover" style="max-width: 540px;">
     <div class="row g-0">
       <!-- Left column: always 4/12 (33%) of the width, image fills 100% height -->
-      <div class="col-4">
+      <div class="col-4 p-2">
         <% if venue.photo.attached? %>
           <%= cl_image_tag venue.photo.key,
           class: "img-fluid rounded-start",
