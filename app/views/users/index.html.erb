@@ -71,12 +71,9 @@
                                       <% favoriting_users.each do |favoritor_user| %>
                                         <div class="d-flex align-items-center me-2 mb-1">
                                           <div class="mini-profile-image-container me-1">
-                                            <%# FIX: Added conditional check for favoritor_user.photo.attached? %>
-                                            <% if favoritor_user&.photo.attached? %>
-                                              <%= image_tag favoritor_user.photo, class: "mini-profile-image", alt: favoritor_user.username %>
-                                            <% else %>
-                                              <span class="mini-default-profile-icon">👤</span>
-                                            <% end %>
+
+                                            <%= image_tag gig.venue.photo ? favoritor_user.photo.key : "https://via.placeholder.com/150x150?text=No+Image", class: "mini-profile-image", alt: favoritor_user.username %>
+
                                           </div>
                                           <%= link_to favoritor_user.username.capitalize, user_path(favoritor_user), class: "text-dark text-decoration-none" %>
                                         </div>
