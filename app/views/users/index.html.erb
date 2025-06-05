@@ -8,7 +8,7 @@
       <div class="main-content-card mb-4">
         <div class="card-body">
           <p class="mb-0 text-center">
-            <a class="btn profile-collapse-btn" data-bs-toggle="collapse" href="#popularGigsCollapse" role="button" aria-expanded="false" aria-controls="popularGigsCollapse">
+            <a class="btn profile-unfavorite-btn" data-bs-toggle="collapse" href="#popularGigsCollapse" role="button" aria-expanded="false" aria-controls="popularGigsCollapse">
               Shows other users are attending
             </a>
           </p>
@@ -31,12 +31,11 @@
                         # Ensure favoriting_users only contains User objects (not nil)
                         favoriting_users = gig.favorites.map(&:user).compact.uniq
                         favoriting_count = favoriting_users.count
-                      %>
+                        %>
                         <p class="mb-0 mt-1">
                           <small class="text-muted">
                             <%= pluralize(favoriting_count, 'person') %> attending:
                             <% if favoriting_users.any? %>
-                              <%# Loop through favoriting_users to display photo and name %>
                               <div class="d-flex flex-wrap align-items-center mt-1">
                                 <% favoriting_users.each do |favoritor_user| %>
                                   <div class="d-flex align-items-center me-2 mb-1">
@@ -57,17 +56,26 @@
                           </small>
                         </p>
                       </div>
-                      <%# Unfavorite button for current_user if they have favorited this gig %>
-                      <% if user_signed_in? && current_user.favorited?(gig) %>
-                        <% favorite_record_id = current_user.favorites.find_by(favoritable: gig)&.id %>
-                        <% if favorite_record_id.present? %>
-                          <div class="flex-shrink-0">
-                            <a href="<%= gig_favorite_path(gig, favorite_record_id) %>"
-                              data-turbo-method="delete" data-turbo-confirm="Remove from favorites?"
-                              class="btn profile-unfavorite-btn">Unfavorite</a>
-                          </div>
+                      <%# Favorite/Unfavorite button for current_user %>
+                      <div class="flex-shrink-0">
+                        <% if user_signed_in? %>
+                          <% if current_user.favorited?(gig) %>
+                            <%# Unfavorite button %>
+                            <%= link_to gig_favorite_path(gig, current_user.favorites.find_by(favoritable: gig).id),
+                                data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
+                                class: "gig-unfavorite-btn", title: "Unfavorite" do %>
+                              <i class="fa-solid fa-star"></i>
+                            <% end %>
+                          <% else %>
+                            <%# Favorite button %>
+                            <%= link_to gig_favorites_path(gig),
+                                data: { turbo_method: :post },
+                                class: "gig-favorite-btn", title: "Favorite" do %>
+                              <i class="fa-regular fa-star"></i>
+                            <% end %>
+                          <% end %>
                         <% end %>
-                      <% end %>
+                      </div>
                     </div>
                   </div>
                   <% unless index == @popular_gigs.length - 1 %>
@@ -113,8 +121,8 @@
                     class: "btn gig-unfavorite-btn" %>
                 <% else %>
                   <%= link_to "Follow", user_favorites_path(user),
-                       data: { turbo_method: :post },
-                        class: "btn gig-favorite-btn" %>
+                      data: { turbo_method: :post },
+                      class: "btn gig-favorite-btn" %>
                 <% end %>
               <% else %>
                 <small class="text-muted">Sign in to follow</small>
