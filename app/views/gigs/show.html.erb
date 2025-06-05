@@ -92,6 +92,7 @@
       attending_count = attending_users.count #
       max_display_users = 10 # Define the maximum number of users to display
     %>
+
   <p class="gig-attending mb-0"> <%# mb-0 for no bottom margin, mt-3 for top spacing %>
     <strong>ATTENDING:</strong>
     <% if attending_users.any? %>
@@ -139,6 +140,7 @@
             <div class="spotify-embed-container">
               <%# Embed each artist as a 152px-tall horizontal bar %>
               <iframe
+
                   src="https://open.spotify.com/embed/artist/<%= artist_id %>"
                   width="100%"
                   height="152"

@@ -2,6 +2,7 @@
   <%= simple_form_for :search, url: gigs_path, method: :get, html: { class: "row", id: "location-form-container", data: { controller: "gig-count"} } do |f| %>
     <%= f.input :select_a_date,
             as: :string,
+            label: "When are you free?",
             label_html: { class: "form-label-black" },
             input_html: {
               value: params.dig(:search, :select_a_date),

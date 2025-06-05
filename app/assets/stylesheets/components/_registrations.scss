@@ -1,3 +1,33 @@
 .edit-user-page-wrapper {
   padding-bottom: 120px; /* Add 80px of padding to the bottom */
 }
+
+.login-page-wrapper {
+  padding: 2rem;          // gives 2rem of padding on all sides
+  padding-bottom: 120px;  // if you want extra bottom‐spacing like before
+
+  .btn.profile-collapse-btn[type="submit"] {
+    background-color: #ec9259;
+    color: #fff;
+    border: none;
+
+    &:hover {
+      background-color: darken(#ec9259, 10%);
+      color: #fff;
+    }
+  }
+  a[href*="password/new"] {
+    color: #F6F2E6 !important;
+    &:hover {
+      color: darken(#F6F2E6, 10%) !important;
+    }
+  }
+
+  // “Sign up” link (Devise URL contains "/sign_up")
+  a[href*="sign_up"] {
+    color: #F6F2E6 !important;
+    &:hover {
+      color: darken(#F6F2E6, 10%) !important;
+    }
+  }
+}
