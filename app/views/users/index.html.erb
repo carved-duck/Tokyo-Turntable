@@ -42,21 +42,28 @@
                   <% if @popular_gigs.any? %>
                     <div class="row g-2 text-dark">
                       <% @popular_gigs.each_with_index do |gig, index| %>
+                        <%
+                        favoriting_users = gig.favorites.map(&:user).compact.uniq
+                        favoriting_count = favoriting_users.count
+                        %>
                         <div class="col-12">
-                          <div class="d-flex justify-content-between align-items-start py-1">
-                            <div class="flex-grow-1 me-2">
+                          <%# This is the main container for each gig item. It's a flex container. %>
+                          <%# Changed from justify-content-between/align-items-center to a simpler flex-column for vertical stacking %>
+                          <div class="d-flex flex-column py-1">
+                            <%# Gig details section %>
+                            <div class="flex-grow-1">
                               <a href="<%= gig_path(gig) %>" class="text-decoration-none text-dark">
                                 <% if gig.bands.any? %>
                                   <p class="mb-0"><strong><%= gig.bands.first.name %></strong></p>
                                 <% else %>
                                   <p class="mb-0"><small class="text-muted">No band listed.</small></p>
                                 <% end %>
+                                <%# Gig Date on one line %>
+                                <% if gig.date.present? %>
+                                  <p class="mb-0 text-truncate"><small class="text-muted"><%= gig.date.strftime("%A, %B %d, %Y") %></small></p>
+                                <% end %>
                               </a>
                               <%# Display favorite count and users %>
-                              <%
-                              favoriting_users = gig.favorites.map(&:user).compact.uniq
-                              favoriting_count = favoriting_users.count
-                              %>
                               <p class="mb-0 mt-1">
                                 <small class="text-muted">
                                   <%= pluralize(favoriting_count, 'person') %> attending:
@@ -77,26 +84,24 @@
                                 </small>
                               </p>
                             </div>
-                            <%# Favorite/Unfavorite button for current_user %>
-                            <div class="flex-shrink-0">
-                              <% if user_signed_in? %>
+                            <%# Favorite/Unfavorite button - now moved BELOW attendee list, right-aligned %>
+                            <% if user_signed_in? %>
+                              <div class="d-flex justify-content-end mt-2"> <%# Flex container to push button to the right %>
                                 <% if current_user.favorited?(gig) %>
-                                  <%# Unfavorite button %>
                                   <%= link_to gig_favorite_path(gig, current_user.favorites.find_by(favoritable: gig).id),
                                       data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
-                                      class: "gig-unfavorite-btn", title: "Unfavorite" do %>
+                                      class: "gig-unfavorite-btn d-flex align-items-center justify-content-center", title: "Unfavorite" do %>
                                     <i class="fa-solid fa-star"></i>
                                   <% end %>
                                 <% else %>
-                                  <%# Favorite button %>
                                   <%= link_to gig_favorites_path(gig),
                                       data: { turbo_method: :post },
-                                      class: "gig-favorite-btn", title: "Favorite" do %>
+                                      class: "gig-favorite-btn d-flex align-items-center justify-content-center", title: "Favorite" do %>
                                     <i class="fa-regular fa-star"></i>
                                   <% end %>
                                 <% end %>
-                              <% end %>
-                            </div>
+                              </div>
+                            <% end %>
                           </div>
                         </div>
                         <% unless index == @popular_gigs.length - 1 %>
