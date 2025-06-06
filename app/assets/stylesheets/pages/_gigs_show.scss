@@ -17,12 +17,35 @@
   .gig-actions {
     margin-top: 0;
     height: 10px;
-    .gig-unfavorite-btn,
-    .gig-favorite-btn {
+
+    // ===== Favorite / Unfavorite button styles =====
+    .gig-favorite-btn i {
+      color: #829B9D;
+    }
+
+    .gig-unfavorite-btn i {
+      color: $soft-orange;
+    }
+
+    .gig-favorite-btn,
+    .gig-unfavorite-btn {
       background-color: transparent;
       box-shadow: none;
       text-align: end;
       padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      i {
+        font-size: 1.8rem;
+
+        transition: color 0.3s ease;
+      }
+
+      &:hover i {
+        color: #5d7071 !important;
+      }
     }
   }
 }
@@ -232,24 +255,7 @@ h4, h5, h6 {
 
   }
 
-// ===== Favorite / Unfavorite button styles =====
-.gig-favorite-btn,
-.gig-unfavorite-btn {
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
 
-  i {
-    font-size: 1.8rem;
-    color: #829B9D !important;
-    transition: color 0.3s ease;
-  }
-
-  &:hover i {
-    color: #5d7071 !important;
-  }
-}
 
 // ===== Prompt to log in =====
   .login-prompt {

@@ -29,3 +29,40 @@
     color: black;
   }
 }
+
+.profile-page-content-wrapper {
+  .gig-actions {
+    margin-top: 0;
+    height: 0px;
+
+    // ===== Favorite / Unfavorite button styles =====
+    .gig-favorite-btn i {
+      color: #829B9D;
+    }
+
+    .gig-unfavorite-btn i {
+      color: $soft-orange;
+    }
+
+    .gig-favorite-btn,
+    .gig-unfavorite-btn {
+      background-color: transparent;
+      box-shadow: none;
+      text-align: end;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      i {
+        font-size: 1.8rem;
+
+        transition: color 0.3s ease;
+      }
+
+      &:hover i {
+        color: #5d7071 !important;
+      }
+    }
+  }
+}
