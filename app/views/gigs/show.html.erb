@@ -122,34 +122,40 @@
   <!-- ────────── Add Spotify widget(s) here ────────── -->
   <% if @artist_ids.any? %>
     <hr class="my-4">
-    <%# Styled collapse-toggle button (as before) %>
-    <button
-        class="btn btn-outline-primary w-100 mb-2"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#spotifyDropdown"
-        aria-expanded="false"
-        aria-controls="spotifyDropdown">
-      Listen on Spotify
-    </button>
-    <div class="collapse" id="spotifyDropdown">
-      <div class="spotify-cards-container">
-        <% @artist_ids.each do |artist_id| %>
-          <div class="spotify-card mb-2">
-            <div class="spotify-embed-container">
-              <%# Embed each artist as a 152px-tall horizontal bar %>
-              <iframe
-
-                  src="https://open.spotify.com/embed/artist/<%= artist_id %>"
-                  width="100%"
-                  height="152"
-                  frameborder="0"
-                  allowtransparency="true"
-                  allow="encrypted-media"
-                ></iframe>
+    <div class="accordion accordion-flush" id="spotifyAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="spotifyHeading">
+          <button
+          class="accordion-button collapsed p-2"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#spotifyCollapse"
+          aria-expanded="false"
+          aria-controls="spotifyCollapse">
+            <span class="me-2" style="font-size: 18px;">Listen on</span>
+            <%= image_tag "spotify_logo.svg", alt: "Spotify", width: 100, height: 100, class: "spotify-svg-logo align-middle" %>
+          </button>
+        </h2>
+        <div id="spotifyCollapse" class="accordion-collapse collapse mt-1" aria-labelledby="spotifyHeading" data-bs-parent="#spotifyAccordion">
+          <div class="accordion-body p-0">
+            <div class="spotify-cards-container">
+              <% @artist_ids.each do |artist_id| %>
+                <div class="spotify-card mb-2">
+                  <div class="spotify-embed-container">
+                    <iframe
+                      src="https://open.spotify.com/embed/artist/<%= artist_id %>"
+                      width="100%"
+                      height="152"
+                      frameborder="0"
+                      allowtransparency="false"
+                      allow="encrypted-media"
+                    ></iframe>
+                  </div>
+                </div>
+              <% end %>
             </div>
           </div>
-        <% end %>
+        </div>
       </div>
     </div>
   <% else %>

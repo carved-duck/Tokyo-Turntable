@@ -56,3 +56,8 @@ button[data-bs-toggle="collapse"][data-bs-target="#spotifyDropdown"] {
     padding: 0;
   }
 }
+
+.accordion {
+	--bs-accordion-btn-bg: #F6F2E6;
+	--bs-accordion-active-bg: #F6F2E6;
+}
