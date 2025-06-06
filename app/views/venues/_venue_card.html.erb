@@ -1,39 +1,39 @@
 <%= link_to venue_path(venue), class: "text-decoration-none text-dark d-block" do %>
   <div class="card gig-card mb-3 gig-card-hover" style="max-width: 540px;">
-    <div class="row g-0">
+    <div class="row g-0 h-100">
       <!-- Left column: always 4/12 (33%) of the width, image fills 100% height -->
-      <div class="col-4 p-2">
+      <div class="col-5 p-2">
         <% if venue.photo.attached? %>
           <%= cl_image_tag venue.photo.key,
-          class: "img-fluid rounded-start",
-          style: "height: 100%; object-fit: cover;" %>
+          class: "img-fluid rounded-start" %>
         <% else %>
           <%= image_tag "https://via.placeholder.com/150x150?text=No+Image",
-          class: "img-fluid rounded-start",
-          style: "height: 100%; object-fit: cover;" %>
+          class: "img-fluid rounded-start" %>
         <% end %>
       </div>
       <!-- Right column: text takes remaining 8/12 -->
-      <div class="col-8">
-        <div class="card-body">
+      <div class="col-7">
+        <div class="card-body h-100 d-flex flex-column">
           <h5 class="card-title mb-1 fw-bold text-black">
             <%= truncate(venue.name, length: 30, omission: "...") %>
           </h5>
-          <p class="mb-1 text-black" style="font-size: 0.9rem;">
-            📍 <%= truncate(venue.neighborhood, length: 20, omission: "...") %>
+          <p class="mb-3 text-black" style="font-size: 0.9rem;">
+            <i class="fa-solid fa-location-dot"></i> <%= truncate(venue.neighborhood, length: 20, omission: "...") %>
           </p>
           <% next_show = venue.next_show %>
-          <p class="mb-1 text-dark" style="font-size: 0.9rem;">
-            <% if next_show %>
-              <% genre = next_show.bands.first&.genre&.capitalize || "Live show" %>
-              <strong>Next show:</strong><br>
-              <span class="text-secondary">
-                <%= next_show.date.strftime("%b %d, %Y") %>
-              </span>
-            <% else %>
+          <% if next_show %>
+            <% genre = next_show.bands.first&.genre&.capitalize || "Live show" %>
+            <p class="next-show-title">
+              <strong>Next show:</strong>
+            </p>
+            <p class="next-show">
+              <%= next_show.date.strftime("%b %d, %Y") %>
+            </p>
+          <% else %>
+            <p class="mb-1 text-dark flex-grow-1 align-content-end" style="font-size: 0.9rem;">
               <em>No upcoming shows.</em>
-            <% end %>
-          </p>
+            </p>
+          <% end %>
         </div>
       </div>
     </div>
