@@ -2,7 +2,10 @@
 
 A web based app used to help people find shows and venues in Tokyo
 
-_DROP SCREENSHOT HERE_
+![IMG_7754](https://github.com/user-attachments/assets/bbbb6dbb-4748-4735-be62-4998a24cdcbb)
+![IMG_7755](https://github.com/user-attachments/assets/c8aa888b-e6d1-4995-94ab-913700b56adc)
+
+
 <br>
 App home: tokyoturntable.com
    
