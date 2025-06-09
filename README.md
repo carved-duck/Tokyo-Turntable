@@ -1,10 +1,8 @@
 # 📚 Tokyo Turntable
 
 A web based app used to help people find shows and venues in Tokyo
-
-![IMG_7754](https://github.com/user-attachments/assets/bbbb6dbb-4748-4735-be62-4998a24cdcbb)
-![IMG_7755](https://github.com/user-attachments/assets/c8aa888b-e6d1-4995-94ab-913700b56adc)
-
+![IMG_7754](https://github.com/user-attachments/assets/94530789-2281-419f-99d2-00dd5ee572ab)
+![IMG_7755](https://github.com/user-attachments/assets/5ccbc90f-31b8-48a0-9820-fe3f813c860d)
 
 <br>
 App home: tokyoturntable.com
