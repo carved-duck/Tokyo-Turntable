@@ -1,4 +1,4 @@
-# 📚 Tokyo Turntable
+# 🎧 Tokyo Turntable
 
 A Ruby on Rails application which helps users find live shows around Tokyo which suit their music preferences.
 
