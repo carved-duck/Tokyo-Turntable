@@ -89,7 +89,7 @@
               <td class="gig-text">OPEN: <%= gig.open_time %> / START: <%= gig.formatted_start_time %></td>
             </tr>
             <tr>
-              <td class="label"><i class="fa-solid fa-yen-sign icon"></i></td>
+              <td class="label"><i class="fa-solid fa-ticket"></i></td>
               <td class="gig-text">
                 <% if gig.price.to_s =~ /\d/ %>
                   ¥<%= gig.price.to_s.gsub(/(¥|\s*JPY|\s*yen)/i, '').strip %>

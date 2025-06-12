@@ -22,7 +22,7 @@
           <%= truncate(band_names, length: 30, omission: "...") %>
         </h5>
         <p class="mb-1 text-black" style="font-size: 0.9rem;">
-          📍 <%= truncate(gig.venue.neighborhood, length: 20, omission: "...") %>
+          <i class="fa-solid fa-location-dot"></i> <%= truncate(gig.venue.neighborhood, length: 20, omission: "...") %>
         </p>
         <%# Genre(s) (unique list) %>
         <% genres = gig.bands.map(&:genre).uniq.join(", ") %>

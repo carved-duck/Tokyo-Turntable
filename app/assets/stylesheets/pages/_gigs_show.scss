@@ -9,6 +9,45 @@
   box-sizing: border-box;
   padding-bottom: 100px; /* Add padding at the bottom to account for the fixed navbar */
   background-color: #829B9D;
+
+  .main-content-card {
+    margin-top: 15px;
+  }
+
+  .gig-actions {
+    margin-top: 0;
+    height: 10px;
+
+    // ===== Favorite / Unfavorite button styles =====
+    .gig-favorite-btn i {
+      color: #829B9D;
+    }
+
+    .gig-unfavorite-btn i {
+      color: $soft-orange;
+    }
+
+    .gig-favorite-btn,
+    .gig-unfavorite-btn {
+      background-color: transparent;
+      box-shadow: none;
+      text-align: end;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      i {
+        font-size: 1.8rem;
+
+        transition: color 0.3s ease;
+      }
+
+      &:hover i {
+        color: #5d7071 !important;
+      }
+    }
+  }
 }
 
 // Styles specific to the header section within its card
@@ -27,6 +66,12 @@
     margin-bottom: 0.2rem;
   }
 
+}
+
+.gig-date {
+  font-family: "League Gothic", sans-serif;
+  font-size: 4.5rem;
+  line-height: 1;
 }
 
 p.neighborhood {
@@ -149,29 +194,15 @@ h4, h5, h6 {
   width: 100%;
 }
 
-// .gig-show-page-content-wrapper .artist {
-//   h5, h2 {
-//     font-family: Sora !important;
-//   }
-// }
-
-
 .artist-header {
-  // color: #B64F44 !important; /* Use your dark red for the header */
-  // font-weight: bold;
-  // border-bottom: 1px solid #C6C1B5;
-  // margin-bottom: 1rem;
   font-size: 1.3rem;
-  padding-bottom: 8px
+  text-align: end;
+  font-family: "Comfortaa", sans-serif;
 }
 
-.band-info {
+.artist {
   width: 100%;
-  display: flex;
-  justify-content: space-between; /* Spacing for band name and website */
-  align-items: center;
   // padding: 5px 0; /* Add some padding */
-  // border-bottom: 1px solid #e0e0e0; /* Subtle separator */
 
   &:last-child {
     border-bottom: none; /* No border for the last item */
@@ -179,16 +210,7 @@ h4, h5, h6 {
 
   .band-info-text {
     flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
   }
-
-  .band-name {
-    // font-weight: bold !important;
-    margin-bottom: 0;
-    font-size: 1.3rem;
-    }
 
   .band-website {
     font-size: 0.9rem;
@@ -196,8 +218,21 @@ h4, h5, h6 {
   }
 }
 
+.band-name {
+  font-family: "League Gothic", sans-serif;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+  text-align: end;
+  // font-size: 1.3rem;
+  }
+
 .icon {
   margin-right: 10px;
+}
+
+.attending-number {
+  font-size: 0.9rem;
 }
 
 // ===== Favorite / Unfavorite wrapper =====
@@ -220,24 +255,7 @@ h4, h5, h6 {
 
   }
 
-// ===== Favorite / Unfavorite button styles =====
-.gig-favorite-btn,
-.gig-unfavorite-btn {
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
 
-  i {
-    font-size: 1.8rem;
-    color: #829B9D !important;
-    transition: color 0.3s ease;
-  }
-
-  &:hover i {
-    color: #5d7071 !important;
-  }
-}
 
 // ===== Prompt to log in =====
   .login-prompt {
