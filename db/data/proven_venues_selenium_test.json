@@ -1,0 +1,453 @@
+[
+  {
+    "title": "【CREAM】",
+    "date": "2025-07-05",
+    "time": "DAY\n\n                            07/\n                            05\n                                                        SAT",
+    "artists": "春ねむり / heaven in her arms",
+    "venue": "Antiknock",
+    "source_url": "https://antiknock.net",
+    "raw_text": "DAY\n\n                            07/\n                            05\n                                                        SAT\n                        \n                    \n                    \n                        shinjuku ANTIKNOCK presents \n                        【CREAM】\n                        \n                        \n                            春ねむり / heaven in her arms"
+  },
+  {
+    "title": "熱烈峻厳Vol.6",
+    "date": "2025-06-12",
+    "time": "2025-06-12[thu.]",
+    "artists": "2025-06-12[thu.]",
+    "venue": "Milkyway",
+    "source_url": "https://www.shibuyamilkyway.com",
+    "raw_text": "2025-06-12[thu.]\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t熱烈峻厳Vol.6\n\t\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n    \t\t\t\t\t\tOPEN / START18:00    \t\t\t\t\t\t\n    \t\t\t18:30        \t\t\t\t\t\n    \t\t\t\t\t\t\n    \t\t\t\t\t\tADV / DAY\n    \t\t\t￥3200  \n    \t\t\t\t\t\t\n    \t\t\t (+1D ORDER)        \t\t\t\t\t\n                                                        \n    \n    \t\t\t\t\t\t\n    \t\t\t\t\t\t\tCAST\n    \t\t\tqlaria\n梵\nDIVE TO THE 2ND\nネコロジック\nリフの惑星"
+  },
+  {
+    "title": "[thu.] 熱烈峻厳Vol.6 OPEN / START18:00 18:30 ADV / DAY ￥3200 (+1D ORDER) CAST qlaria 梵 DIVE TO THE 2ND ネコロジック リフの惑星",
+    "date": "2025-06-12",
+    "venue": "Milkyway",
+    "source_url": "https://shibuyamilkyway.com/schedule/schedule/on/2025/06/12/",
+    "extraction_strategy": "text_pattern_matching"
+  },
+  {
+    "title": "2025-06-12[thu.]",
+    "date": "2025-06-12",
+    "time": "2025-06-12[thu.]",
+    "artists": "2025-06-12[thu.]",
+    "venue": "Milkyway",
+    "source_url": "https://www.shibuyamilkyway.com",
+    "raw_text": "TODAY'S EVENT\n                              \n                  2025-06-12[thu.]\n                  熱烈峻厳Vol.6\n                  OPEN / START 18:00 / 18:30                    \n                  ADV / TODAY ￥3200  (+1D ORDER) \n                  CAST:\n                  qlaria\n梵\nDIVE TO THE 2ND\nネコロジック\nリフの惑星\n                             \n              \n             \n             \n              \n                ACCESS \n              ←Move left→Move right↑Move up↓Move down+Zoom in-Zoom outHomeJump left by 75%EndJump right by 75%Page UpJump up by 75%Page DownJump down by 75%To navigate, press the arrow keys.MapTerrainSatelliteLabelsStyled MapKeyboard shortcutsMap DataMap data ©2025 GoogleMap data ©2025 Google100 m Click to toggle between metric and imperial unitsTermsReport a map error \n              \n             \n             \n             \n              \n              STREAM"
+  },
+  {
+    "title": "Satellite",
+    "date": "2025-06-14",
+    "time": "Satellite",
+    "artists": "Satellite",
+    "venue": "Milkyway",
+    "source_url": "https://www.shibuyamilkyway.com",
+    "raw_text": "SatelliteLabels"
+  },
+  {
+    "title": "TODAY'S EVENT [thu.] 熱烈峻厳Vol.6 OPEN / START 18:00 / 18:30    ADV / TODAY ￥3200  (+1D ORDER)  CAST: qlaria 梵 DIVE TO THE 2ND ネコロジック リフの惑星  ",
+    "date": "2025-06-12",
+    "venue": "Milkyway",
+    "source_url": "https://www.shibuyamilkyway.com",
+    "extraction_strategy": "text_pattern_matching"
+  },
+  {
+    "title": "[thu.]",
+    "date": "2025-06-12",
+    "venue": "Milkyway",
+    "source_url": "https://www.shibuyamilkyway.com",
+    "extraction_strategy": "text_pattern_matching"
+  },
+  {
+    "title": "SatelliteLabels",
+    "date": "2025-06-14",
+    "venue": "Milkyway",
+    "source_url": "https://www.shibuyamilkyway.com",
+    "extraction_strategy": "text_pattern_matching"
+  },
+  {
+    "title": "M!LK H.I.P.　(問)H.I.P. 03-3475-9999",
+    "date": "2025-06-14",
+    "time": "17：00",
+    "artists": "14(土)",
+    "venue": "Yokohama Arena",
+    "source_url": "https://www.yokohama-arena.co.jp",
+    "raw_text": "14(土)M!LK H.I.P.　(問)H.I.P. 03-3475-9999\n\n16：0017：00"
+  },
+  {
+    "title": "M!LK H.I.P.　(問)H.I.P. 03-3475-9999",
+    "date": "2025-06-15",
+    "time": "15：00",
+    "artists": "15(日)",
+    "venue": "Yokohama Arena",
+    "source_url": "https://www.yokohama-arena.co.jp",
+    "raw_text": "15(日)M!LK H.I.P.　(問)H.I.P. 03-3475-9999\n\n14：0015：00"
+  },
+  {
+    "title": "アンジュルムオデッセー03-4426-6303 月水金13:00〜17:00 ※祝日除く",
+    "date": "2025-06-18",
+    "time": "18:00",
+    "artists": "18(水)",
+    "venue": "Yokohama Arena",
+    "source_url": "https://www.yokohama-arena.co.jp",
+    "raw_text": "18(水)アンジュルムオデッセー03-4426-6303 月水金13:00〜17:00 ※祝日除く17:0018:00"
+  },
+  {
+    "title": "Suchmos HOT STUFF PROMOTION　050-5211-6077（Weekday,12:00〜18:00）",
+    "date": "2025-06-21",
+    "time": "18:00",
+    "artists": "21(土)",
+    "venue": "Yokohama Arena",
+    "source_url": "https://www.yokohama-arena.co.jp",
+    "raw_text": "21(土)Suchmos HOT STUFF PROMOTION　050-5211-6077（Weekday,12:00〜18:00）17:0018:00"
+  },
+  {
+    "title": "Suchmos HOT STUFF PROMOTION　050-5211-6077（Weekday,12:00〜18:00）",
+    "date": "2025-06-22",
+    "time": "17:00",
+    "artists": "22(日)",
+    "venue": "Yokohama Arena",
+    "source_url": "https://www.yokohama-arena.co.jp",
+    "raw_text": "22(日)Suchmos HOT STUFF PROMOTION　050-5211-6077（Weekday,12:00〜18:00）16:0017:00"
+  },
+  {
+    "title": "KEIJU キョードー東京　0570-550-799（平日11時～18時　土日祝10時～18時）",
+    "date": "2025-06-25",
+    "time": "19:00",
+    "artists": "25(水)",
+    "venue": "Yokohama Arena",
+    "source_url": "https://www.yokohama-arena.co.jp",
+    "raw_text": "25(水)KEIJU キョードー東京　0570-550-799（平日11時～18時　土日祝10時～18時）18:0019:00"
+  },
+  {
+    "title": "横浜アリーナBIGフリーマーケット 東京リサイクル運動市民の会　03-3384-6666",
+    "date": "2025-06-29",
+    "time": "10:00",
+    "artists": "29(日)",
+    "venue": "Yokohama Arena",
+    "source_url": "https://www.yokohama-arena.co.jp",
+    "raw_text": "29(日)横浜アリーナBIGフリーマーケット 東京リサイクル運動市民の会　03-3384-666610:0010:0016:00"
+  },
+  {
+    "title": "12 THU.",
+    "date": "2025-06-12",
+    "time": "12\n                                                THU.",
+    "artists": "12 THU.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "12\n                                                THU."
+  },
+  {
+    "title": "THU.",
+    "date": "2025-06-12",
+    "time": "THU.",
+    "artists": "THU.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "12\n                                                THU."
+  },
+  {
+    "title": "13 FRI.",
+    "date": "2025-06-13",
+    "time": "13\n                                                FRI.",
+    "artists": "13 FRI.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "13\n                                                FRI."
+  },
+  {
+    "title": "FRI.",
+    "date": "2025-06-13",
+    "time": "FRI.",
+    "artists": "FRI.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "13\n                                                FRI."
+  },
+  {
+    "title": "14 SAT.",
+    "date": "2025-06-14",
+    "time": "14\n                                                SAT.",
+    "artists": "14 SAT.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "14\n                                                SAT."
+  },
+  {
+    "title": "SAT.",
+    "date": "2025-06-14",
+    "time": "SAT.",
+    "artists": "SAT.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "14\n                                                SAT."
+  },
+  {
+    "title": "15 SUN.",
+    "date": "2025-06-15",
+    "time": "15\n                                                SUN.",
+    "artists": "15 SUN.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "15\n                                                SUN."
+  },
+  {
+    "title": "SUN.",
+    "date": "2025-06-15",
+    "time": "SUN.",
+    "artists": "SUN.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "15\n                                                SUN."
+  },
+  {
+    "title": "16 MON.",
+    "date": "2025-06-16",
+    "time": "16\n                                                MON.",
+    "artists": "16 MON.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "16\n                                                MON."
+  },
+  {
+    "title": "MON.",
+    "date": "2025-06-16",
+    "time": "MON.",
+    "artists": "MON.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "16\n                                                MON."
+  },
+  {
+    "title": "17 TUE.",
+    "date": "2025-06-17",
+    "time": "17\n                                                TUE.",
+    "artists": "17 TUE.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "17\n                                                TUE."
+  },
+  {
+    "title": "TUE.",
+    "date": "2025-06-17",
+    "time": "TUE.",
+    "artists": "TUE.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "17\n                                                TUE."
+  },
+  {
+    "title": "18 WED.",
+    "date": "2025-06-18",
+    "time": "18\n                                                WED.",
+    "artists": "18 WED.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "18\n                                                WED."
+  },
+  {
+    "title": "WED.",
+    "date": "2025-06-18",
+    "time": "WED.",
+    "artists": "WED.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "18\n                                                WED."
+  },
+  {
+    "title": "19 THU.",
+    "date": "2025-06-19",
+    "time": "19\n                                                THU.",
+    "artists": "19 THU.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "19\n                                                THU."
+  },
+  {
+    "title": "THU.",
+    "date": "2025-06-19",
+    "time": "THU.",
+    "artists": "THU.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "19\n                                                THU."
+  },
+  {
+    "title": "20 FRI.",
+    "date": "2025-06-20",
+    "time": "20\n                                                FRI.",
+    "artists": "20 FRI.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "20\n                                                FRI."
+  },
+  {
+    "title": "FRI.",
+    "date": "2025-06-20",
+    "time": "FRI.",
+    "artists": "FRI.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "20\n                                                FRI."
+  },
+  {
+    "title": "21 SAT.",
+    "date": "2025-06-21",
+    "time": "21\n                                                SAT.",
+    "artists": "21 SAT.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "21\n                                                SAT."
+  },
+  {
+    "title": "SAT.",
+    "date": "2025-06-21",
+    "time": "SAT.",
+    "artists": "SAT.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "21\n                                                SAT."
+  },
+  {
+    "title": "22 SUN.",
+    "date": "2025-06-22",
+    "time": "22\n                                                SUN.",
+    "artists": "22 SUN.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "22\n                                                SUN."
+  },
+  {
+    "title": "SUN.",
+    "date": "2025-06-22",
+    "time": "SUN.",
+    "artists": "SUN.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "22\n                                                SUN."
+  },
+  {
+    "title": "24 TUE.",
+    "date": "2025-06-24",
+    "time": "24\n                                                TUE.",
+    "artists": "24 TUE.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "24\n                                                TUE."
+  },
+  {
+    "title": "TUE.",
+    "date": "2025-06-24",
+    "time": "TUE.",
+    "artists": "TUE.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "24\n                                                TUE."
+  },
+  {
+    "title": "25 WED.",
+    "date": "2025-06-25",
+    "time": "25\n                                                WED.",
+    "artists": "25 WED.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "25\n                                                WED."
+  },
+  {
+    "title": "WED.",
+    "date": "2025-06-25",
+    "time": "WED.",
+    "artists": "WED.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "25\n                                                WED."
+  },
+  {
+    "title": "26 THU.",
+    "date": "2025-06-26",
+    "time": "26\n                                                THU.",
+    "artists": "26 THU.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "26\n                                                THU."
+  },
+  {
+    "title": "THU.",
+    "date": "2025-06-26",
+    "time": "THU.",
+    "artists": "THU.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "26\n                                                THU."
+  },
+  {
+    "title": "27 FRI.",
+    "date": "2025-06-27",
+    "time": "27\n                                                FRI.",
+    "artists": "27 FRI.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "27\n                                                FRI."
+  },
+  {
+    "title": "FRI.",
+    "date": "2025-06-27",
+    "time": "FRI.",
+    "artists": "FRI.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "27\n                                                FRI."
+  },
+  {
+    "title": "28 SAT.",
+    "date": "2025-06-28",
+    "time": "28\n                                                SAT.",
+    "artists": "28 SAT.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "28\n                                                SAT."
+  },
+  {
+    "title": "SAT.",
+    "date": "2025-06-28",
+    "time": "SAT.",
+    "artists": "SAT.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "28\n                                                SAT."
+  },
+  {
+    "title": "29 SUN.",
+    "date": "2025-06-29",
+    "time": "29\n                                                SUN.",
+    "artists": "29 SUN.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "29\n                                                SUN."
+  },
+  {
+    "title": "SUN.",
+    "date": "2025-06-29",
+    "time": "SUN.",
+    "artists": "SUN.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "29\n                                                SUN."
+  },
+  {
+    "title": "30 MON.",
+    "date": "2025-06-30",
+    "time": "30\n                                                MON.",
+    "artists": "30 MON.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "30\n                                                MON."
+  },
+  {
+    "title": "MON.",
+    "date": "2025-06-30",
+    "time": "MON.",
+    "artists": "MON.",
+    "venue": "Club Quattro Shibuya",
+    "source_url": "https://www.club-quattro.com/shibuya/",
+    "raw_text": "30\n                                                MON."
+  }
+]

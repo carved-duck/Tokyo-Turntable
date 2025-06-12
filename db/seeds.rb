@@ -47,8 +47,17 @@ users = [
 
 ]
 
-VenueScraper.new.generate_venues
-GigImporter.new.import_gigs_from_json
+# Use enhanced scrapers for seeding data
+puts "Generating venues..."
+enhanced_venue_scraper = EnhancedVenueScraper.new
+enhanced_venue_scraper.scrape_venues
+
+puts "Importing gigs..."
+enhanced_gig_scraper = EnhancedGigScraper.new
+enhanced_gig_scraper.scrape_gigs
+
+puts "Seeding completed!"
+
 # Create Users
 # users = 10.times.map do
 #   User.create!(
