@@ -1,31 +1,36 @@
 <%# app/views/gigs/show.html.erb %>
 <div class="gig-show-page-content-wrapper"> <%# New wrapper for centering all content %>
-  <div class="page-title h4 mb-0">Event Details</div>
+  <%# <div class="page-title h4 mb-0">Event Details</div> %>
   <%# Gig Header Section %>
-  <div class="main-content-card mb-2 mt-0" style="width: 400px"> <%# Applied main-content-card here %>
+  <div class="main-content-card mb-2" style="width: 400px"> <%# Applied main-content-card here %>
     <%# Event details top %>
     <div class="event-details-top d-flex justify-content-between mb-4">
       <div class="gig-top-text d-flex justify-content-between flex-column">
         <div>
-          <h4 class="body-header my-2 text-start"><%= @gig.date.strftime("%B %d, %Y") %></h4>
+          <h4 class="body-header mb-0 text-start gig-date"><%= @gig.date.strftime("%b %d") %></h4>
           <p class="neighborhood text-start"><span><%= @venue.neighborhood %></span>, Tokyo </p>
         </div>
         <strong>
-          <span class="gig-genre"><%= @gig.bands.first.genre %></span>
+
+          <span class="gig-genre">
+            <% if @gig.bands.any? %>
+              <%= @gig.bands.first.genre %>
+            <% else %>
+              Live Show
+            <% end %>
+          </span>
+
         </strong>
       </div>
-      <div class="d-flex align-items-end ps-2">
-        <div class="d-flex align-items-end ps-2">
-          <% if @gig.venue.photo.attached? %>
-            <%= cl_image_tag @gig.venue.photo.key, class: "gig-img", width: "130", height: "auto" %>
-          <% else %>
-            <%= image_tag "https://via.placeholder.com/130x130?text=No+Image",
+      <div class="d-flex align-items-top ps-2">
+        <% if @gig.venue.photo.attached? %>
+          <%= cl_image_tag @gig.venue.photo.key, class: "gig-img", width: "130", height: "auto" %>
+        <% else %>
+          <%= image_tag "https://via.placeholder.com/130x130?text=No+Image",
         class: "gig-img", width: "130", height: "auto" %>
-          <% end %>
-        </div>
+        <% end %>
       </div>
     </div>
-    <hr class="my-4">
     <%# Artist %>
     <div class="artist mb-2">
       <h6 class="artist-header mt-0 mb-2"><%= @gig.bands.count > 1 ? "Artists" : "Artist" %></h6>
@@ -38,7 +43,34 @@
         </div>
       <% end %>
     </div>
-    <hr class="my-4">
+    <hr class="mt-4 mb-3">
+    <%# favorite action %>
+    <div class="gig-actions mb-0">
+      <% if user_signed_in? %>
+        <%# Check if the current user has favorited this gig %>
+        <% if current_user.favorited?(@gig) %>
+          <%# If already favorited, show an Unfavorite button %>
+          <%= link_to gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
+      data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
+      class: "gig-unfavorite-btn", title: "Unfavorite" do %> <%# Updated class %>
+            <i class="fa-solid fa-star"></i>
+          <% end %>
+        <% else %>
+          <%# If not favorited, show a Favorite button %>
+          <%= link_to gig_favorites_path(@gig),
+            data: { turbo_method: :post },
+            class: "gig-favorite-btn", title: "Favorite" do %> <%# Updated class %>
+            <i class="fa-regular fa-star"></i>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%# If not signed in, prompt them to log in %>
+        <p class="login-prompt">
+          <i class="fa-solid fa-right-to-bracket"></i><%= link_to "Log in to favorite this gig", new_user_session_path, class: "venue-link" %>
+        </p>
+        <%# Added classes %>
+      <% end %>
+    </div>
     <%# Gig Info Section %>
     <div class="event-details-bottom mt-0 text-start">
       <p class="gig-venue"><i class="fa-solid fa-martini-glass icon"></i><%= @venue.name %></p>
@@ -93,8 +125,8 @@
       max_display_users = 10 # Define the maximum number of users to display
     %>
   <p class="gig-attending mb-0"> <%# mb-0 for no bottom margin, mt-3 for top spacing %>
-    <i class="fa-solid fa-person icon"></i>
     <% if attending_users.any? %>
+      <p><i class="fa-solid fa-person icon"></i><span class="attending-number"><%= attending_count %> going</span></p>
       <div class="d-flex align-items-center flex-wrap"> <%# Use flex-wrap to allow photos/names to wrap to next line %>
         <% attending_users.first(max_display_users).each do |user| %>
           <div class="d-flex align-items-center me-2 mb-1"> <%# This div provides spacing between user entries %>
@@ -115,6 +147,7 @@
         <% end %>
       </div>
     <% else %>
+      <i class="fa-solid fa-person icon"></i>
       <span class="text-muted">No one attending yet.</span>
     <% end %>
   </p>
@@ -164,33 +197,6 @@
   <% end %>
   <!-- ──────────────────────────────────────────────── -->
   <%# </div> %>
-  <%# favorite action %>
-  <div class="gig-actions mb-0">
-    <% if user_signed_in? %>
-      <%# Check if the current user has favorited this gig %>
-      <% if current_user.favorited?(@gig) %>
-        <%# If already favorited, show an Unfavorite button %>
-        <%= link_to gig_favorite_path(@gig, current_user.favorites.find_by(favoritable: @gig).id),
-      data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to unfavorite this gig?" },
-      class: "gig-unfavorite-btn", title: "Unfavorite" do %> <%# Updated class %>
-          <i class="fa-solid fa-star"></i>
-        <% end %>
-      <% else %>
-        <%# If not favorited, show a Favorite button %>
-        <%= link_to gig_favorites_path(@gig),
-            data: { turbo_method: :post },
-            class: "gig-favorite-btn", title: "Favorite" do %> <%# Updated class %>
-          <i class="fa-regular fa-star"></i>
-        <% end %>
-      <% end %>
-    <% else %>
-      <%# If not signed in, prompt them to log in %>
-      <p class="login-prompt">
-        <i class="fa-solid fa-right-to-bracket"></i><%= link_to "Log in to favorite this gig", new_user_session_path, class: "venue-link" %>
-      </p>
-      <%# Added classes %>
-    <% end %>
-  </div>
 </div>
 <%# <hr class="my-4"> Added margin for hr %>
 </div>

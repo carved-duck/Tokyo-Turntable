@@ -1,0 +1,49 @@
+{
+  "tested_venues": [
+    "CATFISH Tokyo",
+    "Zu Bar",
+    "翠月 (MITSUKI)",
+    "虎子食堂 (Toranoko Shokudo)",
+    "ムンド不二 (Mundo Fuji)",
+    "げによい (GENIYOI)",
+    "路地と人 (rojitohito)"
+  ],
+  "successful_venues": 3,
+  "total_gigs": 52,
+  "improvements": [
+    {
+      "venue": "CATFISH Tokyo",
+      "gigs": 33,
+      "improvement": "Fixed filtering"
+    },
+    {
+      "venue": "Zu Bar",
+      "gigs": 18,
+      "improvement": "Fixed filtering"
+    },
+    {
+      "venue": "虎子食堂 (Toranoko Shokudo)",
+      "gigs": 1,
+      "improvement": "Fixed filtering"
+    }
+  ],
+  "failures": [
+    {
+      "venue": "翠月 (MITSUKI)",
+      "reason": "Improved filtering still rejected all gigs"
+    },
+    {
+      "venue": "ムンド不二 (Mundo Fuji)",
+      "reason": "Improved filtering still rejected all gigs"
+    },
+    {
+      "venue": "げによい (GENIYOI)",
+      "reason": "Improved filtering still rejected all gigs"
+    },
+    {
+      "venue": "路地と人 (rojitohito)",
+      "reason": "Improved filtering still rejected all gigs"
+    }
+  ],
+  "test_duration": 35.11
+}

@@ -7,6 +7,34 @@
         <h1><%= @venue.name %></h1>
         <p class="neighborhood mt-2 mb-3"><span><%= @venue.neighborhood %></span>, Tokyo </p>
         <%# Wrapped neighborhood in span for styling if needed %>
+        <%# Social Media Notice %>
+        <% if @venue.website.present? %>
+          <% social_media_patterns = [/facebook\.com/i, /instagram\.com/i, /twitter\.com/i, /tiktok\.com/i, /youtube\.com/i] %>
+          <% is_social_media = social_media_patterns.any? { |pattern| @venue.website.match?(pattern) } %>
+          <div class="venue-website mb-2">
+            <a href="<%= @venue.website %>" target="_blank" class="website-link">
+              <% if is_social_media %>
+                📱 Visit Social Media for Gig Schedule
+              <% else %>
+                🌐 Visit Website
+              <% end %>
+            </a>
+          </div>
+          <% if is_social_media && @venue.gigs.empty? %>
+            <div class="social-media-notice">
+              <p class="text-muted small">
+                ℹ️ This venue uses social media to announce gigs.
+                Please check their <strong>
+                  <% if @venue.website.match?(/facebook/i) %>Facebook page<% end %>
+                  <% if @venue.website.match?(/instagram/i) %>Instagram<% end %>
+                  <% if @venue.website.match?(/twitter/i) %>Twitter<% end %>
+                  <% if @venue.website.match?(/tiktok/i) %>TikTok<% end %>
+                  <% if @venue.website.match?(/youtube/i) %>YouTube<% end %>
+                </strong> for the latest event updates.
+              </p>
+            </div>
+          <% end %>
+        <% end %>
       </div>
       <div class="venue-header-img ps-2">
         <% if @venue.photo.attached? %>
@@ -61,7 +89,7 @@
               <td class="gig-text">OPEN: <%= gig.open_time %> / START: <%= gig.formatted_start_time %></td>
             </tr>
             <tr>
-              <td class="label"><i class="fa-solid fa-yen-sign icon"></i></td>
+              <td class="label"><i class="fa-solid fa-ticket"></i></td>
               <td class="gig-text">
                 <% if gig.price.to_s =~ /\d/ %>
                   ¥<%= gig.price.to_s.gsub(/(¥|\s*JPY|\s*yen)/i, '').strip %>

@@ -39,8 +39,6 @@
   // Styles for the HR separator within the main-content-card
   hr.border-dark {
     border-top: 1px solid #ddd; /* A lighter line for subtlety */
-    margin-top: 0.5rem !important; /* Control spacing above the line */
-    margin-bottom: 0.5rem !important; /* Control spacing below the line */
   }
 }
 
@@ -250,4 +248,8 @@
 // Override Bootstrap's default card-body padding if needed to match homepage card padding
 .main-content-card .card-body {
   padding: 20px;
+}
+
+.user-details {
+  font-size: .8rem;
 }
