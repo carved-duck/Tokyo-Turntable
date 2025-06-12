@@ -1,0 +1,25 @@
+# production:
+#   periodic_cleanup:
+#     class: CleanSoftDeletedRecordsJob
+#     queue: background
+#     args: [ 1000, { batch_size: 500 } ]
+#     schedule: every hour
+#   periodic_command:
+#     command: "SoftDeletedRecord.due.delete_all"
+#     priority: 2
+#     schedule: at 5am every day
+
+production:
+  venue_scraping_every_3_days:
+    class: VenueScrapingJob
+    queue: default
+    schedule: at 6am every 3 days
+    args: []
+
+development:
+  # Test venue scraping every 30 minutes (for testing)
+  test_venue_scraping:
+    class: VenueScrapingJob
+    queue: default
+    schedule: every 30 minutes
+    args: []
