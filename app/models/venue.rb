@@ -49,6 +49,19 @@ class Venue < ApplicationRecord
     end
   end
 
+  acts_as_favoritable # Allows gigs to be followed/favorited by others
+
+  include PgSearch::Model
+  pg_search_scope :global_search,
+  against: [ :name, :address, :neighborhood ],
+  using: {
+    tsearch: { prefix: true }
+  }
+
+  def next_show
+    gigs.where("date > ?", Time.current).order(:date).first
+  end
+
   private
 
   def coordinates_in_japan?
@@ -150,18 +163,5 @@ class Venue < ApplicationRecord
 
     # Default to Tokyo center
     neighborhood_map['Tokyo']
-  end
-
-  acts_as_favoritable # Allows gigs to be followed/favorited by others
-
-  include PgSearch::Model
-  pg_search_scope :global_search,
-  against: [ :name, :address, :neighborhood ],
-  using: {
-    tsearch: { prefix: true }
-  }
-
-  def next_show
-    gigs.where("date > ?", Time.current).order(:date).first
   end
 end

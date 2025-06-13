@@ -5,6 +5,16 @@ export default class extends Controller {
   static values = { options: Object }
 
   connect() {
+    new TomSelect(this.element, {
+      plugins: {
+        remove_button: {
+          title: 'Remove this item',
+        }
+      },
+      persist: false,
+      createOnBlur: true,
+      create: true
+    })
 
     this.masterOptions = Object.entries(this.optionsValue || {}).map(([value, text]) => ({
       value,
@@ -62,12 +72,10 @@ export default class extends Controller {
     this.tomSelect.addOption(this.masterOptions);
     this.tomSelect.refreshOptions(false);
 }
- // ADD THIS DISCONNECT METHOD
+
   disconnect() {
-    console.log("TomSelect Stimulus controller disconnected.");
     if (this.tomSelect) {
-      this.tomSelect.destroy(); // Crucial: destroy the TomSelect instance
-      this.tomSelect = null; // Clear the reference
+      this.tomSelect.destroy()
     }
   }
 
