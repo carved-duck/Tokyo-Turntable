@@ -3,6 +3,11 @@ Geocoder.configure(
   lookup: :mapbox, # Defaults to :nominatim, which is less reliable but free
   api_key: ENV['MAPBOX_API_KEY'],
   units: :km, # Defaults to miles (:mi)
+
+  # 🇯🇵 JAPAN-WIDE GEOCODING FOR ACCURACY
+  bounds: [129.0, 31.0, 146.0, 46.0], # Japan bounding box [west, south, east, north]
+  country: 'JP', # Restrict to Japan
+  region: 'JP' # Additional Japan constraint
   # Geocoding options
   # timeout: 3,                 # geocoding service timeout (secs)
   # lookup: :nominatim,         # name of geocoding service (symbol)
