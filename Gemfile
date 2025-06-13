@@ -71,8 +71,10 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem "selenium-webdriver"
 end
+
+# Scraping dependencies (needed in production for web scraping)
+gem "selenium-webdriver"
 
 
 # Manually added gems
