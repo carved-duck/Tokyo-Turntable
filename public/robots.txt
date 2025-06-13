@@ -1,1 +1,29 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+
+# Tokyo Turntable - Live Music Events in Tokyo
+# We love sharing Tokyo's music scene! Feel free to crawl our public content.
+# For API access or partnerships: contact us via our website
+
+User-agent: *
+# Allow all public content
+Allow: /
+Allow: /gigs
+Allow: /venues
+Allow: /bands
+Allow: /events
+
+# Protect admin and private areas
+Disallow: /admin/
+Disallow: /users/
+Disallow: /rails/
+Disallow: /assets/
+Disallow: /api/internal/
+
+# Be nice to our servers
+Crawl-delay: 1
+
+# Sitemap for search engines
+Sitemap: https://tokyo-turntable.herokuapp.com/sitemap.xml
+
+# We support researchers and music discovery!
+# Contact us for bulk data access or partnerships.
