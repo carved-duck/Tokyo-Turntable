@@ -783,11 +783,151 @@ class UnifiedVenueScraper
   def initialize(options = {})
     @logger = Rails.logger
     @verbose = options[:verbose] || false
-    @limit = options[:limit]
-    @browser = nil
-    @enable_js = true # Default to JavaScript enabled for compatibility
-    @max_parallel_venues = options[:max_parallel] || 2  # Reduced from 3 to 2 for stability
+    @max_parallel_venues = options[:max_parallel_venues] || 3
+    @enable_js = options[:enable_js] || true
+    @responsible_mode = options[:responsible_mode] || false
+    @rate_limiting = options[:rate_limiting] || false
+    @respect_robots = options[:respect_robots] || false
+    @user_agent = options[:user_agent]
+
+    # Load caches
     @website_complexity_cache = load_complexity_cache
+    @venue_blacklist = load_venue_blacklist
+
+    # 🛡️ PRODUCTION SAFEGUARDS
+    @memory_monitor = MemoryMonitor.new
+    @circuit_breaker = CircuitBreaker.new
+    @adaptive_rate_limiter = AdaptiveRateLimiter.new
+    @db_connection_manager = DatabaseConnectionManager.new
+
+    puts "🚀 UnifiedVenueScraper initialized with production safeguards" if @verbose
+    puts "   📊 Max parallel venues: #{@max_parallel_venues}" if @verbose
+    puts "   🛡️ Responsible mode: #{@responsible_mode}" if @verbose
+    puts "   💾 Memory monitoring: enabled" if @verbose
+    puts "   🔄 Circuit breaker: enabled" if @verbose
+  end
+
+  # 🛡️ Production Safeguards Classes
+  class MemoryMonitor
+    def initialize
+      @start_memory = memory_usage
+      @peak_memory = @start_memory
+    end
+
+    def check_memory_usage
+      current = memory_usage
+      @peak_memory = [current, @peak_memory].max
+
+      if current > 1000 # 1GB threshold
+        Rails.logger.warn "⚠️ High memory usage: #{current}MB"
+        GC.start # Force garbage collection
+      end
+
+      current
+    end
+
+    def memory_report
+      current = memory_usage
+      {
+        start: @start_memory,
+        current: current,
+        peak: @peak_memory,
+        increase: current - @start_memory
+      }
+    end
+
+    private
+
+    def memory_usage
+      `ps -o rss= -p #{Process.pid}`.to_i / 1024 # MB
+    rescue
+      0
+    end
+  end
+
+  class CircuitBreaker
+    def initialize
+      @failure_counts = {}
+      @last_failure_time = {}
+      @failure_threshold = 3
+      @timeout = 300 # 5 minutes
+    end
+
+    def call(venue_name)
+      if circuit_open?(venue_name)
+        Rails.logger.info "🔴 Circuit breaker OPEN for #{venue_name}"
+        return { success: false, reason: "Circuit breaker open" }
+      end
+
+      begin
+        result = yield
+        record_success(venue_name) if result[:success]
+        result
+      rescue => e
+        record_failure(venue_name)
+        raise e
+      end
+    end
+
+    private
+
+    def circuit_open?(venue_name)
+      failures = @failure_counts[venue_name] || 0
+      last_failure = @last_failure_time[venue_name]
+
+      failures >= @failure_threshold &&
+        last_failure &&
+        (Time.current - last_failure) < @timeout
+    end
+
+    def record_failure(venue_name)
+      @failure_counts[venue_name] = (@failure_counts[venue_name] || 0) + 1
+      @last_failure_time[venue_name] = Time.current
+    end
+
+    def record_success(venue_name)
+      @failure_counts[venue_name] = 0
+      @last_failure_time.delete(venue_name)
+    end
+  end
+
+  class AdaptiveRateLimiter
+    def initialize
+      @response_times = {}
+      @base_delay = 1.0
+      @max_delay = 10.0
+    end
+
+    def delay_for_venue(venue_name)
+      avg_response_time = @response_times[venue_name] || 1.0
+
+      # Adaptive delay based on response time
+      delay = [@base_delay + (avg_response_time * 0.5), @max_delay].min
+
+      Rails.logger.debug "⏱️ Adaptive delay for #{venue_name}: #{delay}s"
+      sleep(delay)
+    end
+
+    def record_response_time(venue_name, time)
+      @response_times[venue_name] = (@response_times[venue_name] || 0) * 0.7 + time * 0.3
+    end
+  end
+
+  class DatabaseConnectionManager
+    def initialize
+      @connection_semaphore = Concurrent::Semaphore.new(3) # Limit concurrent DB operations
+    end
+
+    def with_connection
+      @connection_semaphore.acquire
+      begin
+        ActiveRecord::Base.connection_pool.with_connection do
+          yield
+        end
+      ensure
+        @connection_semaphore.release
+      end
+    end
   end
 
   def test_proven_venues(options = {})
@@ -1110,50 +1250,65 @@ class UnifiedVenueScraper
       return { success: false, gigs: [], reason: "Blacklisted venue", venue: venue_config[:name] }
     end
 
-    # Get cached complexity or detect
-    complexity = get_cached_complexity(venue_config[:url])
-    gigs = []
+    # 🛡️ Use circuit breaker pattern
+    @circuit_breaker.call(venue_config[:name]) do
+      # 📊 Monitor memory usage
+      @memory_monitor.check_memory_usage
 
-    begin
-      # Try HTTP-first for simple sites
-      if complexity == :simple_html
-        puts "  📄 [#{venue_config[:name]}] Using HTTP-first approach..." if @verbose
-        gigs = scrape_venue_http_first(venue_config)
+      # ⏱️ Apply adaptive rate limiting
+      @adaptive_rate_limiter.delay_for_venue(venue_config[:name])
 
-        if gigs.nil? || gigs.empty?
+      start_time = Time.current
+
+      # Get cached complexity or detect
+      complexity = get_cached_complexity(venue_config[:url])
+      gigs = []
+
+      begin
+        # Try HTTP-first for simple sites
+        if complexity == :simple_html
+          puts "  📄 [#{venue_config[:name]}] Using HTTP-first approach..." if @verbose
+          gigs = scrape_venue_http_first(venue_config)
+
+          if gigs.nil? || gigs.empty?
+            puts "  🌐 [#{venue_config[:name]}] Using optimized browser..." if @verbose
+            gigs = scrape_venue_optimized(venue_config)
+          end
+        else
           puts "  🌐 [#{venue_config[:name]}] Using optimized browser..." if @verbose
           gigs = scrape_venue_optimized(venue_config)
         end
-      else
-        puts "  🌐 [#{venue_config[:name]}] Using optimized browser..." if @verbose
-        gigs = scrape_venue_optimized(venue_config)
+
+        # Record response time for adaptive rate limiting
+        response_time = Time.current - start_time
+        @adaptive_rate_limiter.record_response_time(venue_config[:name], response_time)
+
+        # Process results and blacklist if needed
+        if gigs.nil? || gigs.empty?
+          add_to_blacklist(venue_config[:name], "No gigs found")
+          return { success: false, gigs: [], reason: "No gigs found", venue: venue_config[:name] }
+        end
+
+        # Filter valid gigs
+        valid_gigs = filter_valid_gigs(gigs)
+
+        if valid_gigs.empty?
+          add_to_blacklist(venue_config[:name], "No valid current gigs")
+          return { success: false, gigs: [], reason: "No valid current gigs", venue: venue_config[:name] }
+        end
+
+        return { success: true, gigs: valid_gigs, venue: venue_config[:name] }
+
+      rescue Selenium::WebDriver::Error::TimeoutError => e
+        error_msg = e.message
+        add_to_blacklist(venue_config[:name], "timeout: #{error_msg}")
+        return { success: false, gigs: [], reason: "timeout: #{error_msg}", venue: venue_config[:name] }
+
+      rescue => e
+        error_msg = e.message
+        add_to_blacklist(venue_config[:name], "ERROR: #{error_msg}")
+        return { success: false, gigs: [], reason: "ERROR: #{error_msg}", venue: venue_config[:name] }
       end
-
-      # Process results and blacklist if needed
-      if gigs.nil? || gigs.empty?
-        add_to_blacklist(venue_config[:name], "No gigs found")
-        return { success: false, gigs: [], reason: "No gigs found", venue: venue_config[:name] }
-      end
-
-      # Filter valid gigs
-      valid_gigs = filter_valid_gigs(gigs)
-
-      if valid_gigs.empty?
-        add_to_blacklist(venue_config[:name], "No valid current gigs")
-        return { success: false, gigs: [], reason: "No valid current gigs", venue: venue_config[:name] }
-      end
-
-      return { success: true, gigs: valid_gigs, venue: venue_config[:name] }
-
-    rescue Selenium::WebDriver::Error::TimeoutError => e
-      error_msg = e.message
-      add_to_blacklist(venue_config[:name], "timeout: #{error_msg}")
-      return { success: false, gigs: [], reason: "timeout: #{error_msg}", venue: venue_config[:name] }
-
-    rescue => e
-      error_msg = e.message
-      add_to_blacklist(venue_config[:name], "ERROR: #{error_msg}")
-      return { success: false, gigs: [], reason: "ERROR: #{error_msg}", venue: venue_config[:name] }
     end
   end
 
@@ -1461,7 +1616,7 @@ class UnifiedVenueScraper
     return [] unless gigs
 
     today = Date.current
-    cutoff_date = today + 180 # Max 6 months in future (changed from 365 days)
+    cutoff_date = today + 365 # Max 1 year in future (back to original)
 
     puts "    🔍 Filtering #{gigs.count} gigs..." if @verbose
     puts "    📅 Date range: #{today.strftime('%Y-%m-%d')} to #{cutoff_date.strftime('%Y-%m-%d')}" if @verbose
@@ -1510,30 +1665,40 @@ class UnifiedVenueScraper
         next false
       end
 
-      # Enhanced content validation - much more lenient
+      # ULTRA-LENIENT content validation - prioritize inclusion over exclusion
       title = gig[:title].strip
       artists = gig[:artists]&.strip || ""
 
-      # Accept if ANY of these conditions are met:
+      # Accept if ANY of these conditions are met (much more permissive):
       content_valid = (
-        # Has meaningful artists info
-        (artists.present? && artists.length > 3) ||
-        # Has descriptive title (not generic)
-        (title.length > 3 && !title.match?(/^(live|show|event|concert|gig|performance|music)$/i)) ||
-        # Contains date patterns (common in Japanese venues)
+        # Has any artists info
+        artists.present? ||
+        # Has any meaningful title (very low bar)
+        title.length >= 3 ||
+        # Contains ANY date patterns
         title.match?(/\d{4}[-\/年]\d{1,2}[-\/月]\d{1,2}/) ||
-        # Contains day indicators
+        title.match?(/\d{1,2}[-\/月]\d{1,2}/) ||
+        # Contains ANY day indicators
         title.match?(/\([月火水木金土日]\)|\(mon|tue|wed|thu|fri|sat|sun\)/i) ||
-        # Contains time indicators
-        title.match?(/\d{1,2}:\d{2}|開場|開演|start|open/) ||
-        # Contains Japanese event words
-        title.match?(/ライブ|コンサート|イベント|公演|ショー|フェス|祭/) ||
-        # Has volume/episode numbers (common in recurring events)
-        title.match?(/vol\.|volume|第\d+回|\d+回目/i) ||
+        title.match?(/月|火|水|木|金|土|日|mon|tue|wed|thu|fri|sat|sun/i) ||
+        # Contains ANY time indicators
+        title.match?(/\d{1,2}:\d{2}|開場|開演|start|open|時|pm|am/) ||
+        # Contains ANY Japanese event words
+        title.match?(/ライブ|コンサート|イベント|公演|ショー|フェス|祭|音楽|バンド/) ||
+        # Contains ANY English event words
+        title.match?(/live|concert|event|show|music|band|performance|gig/i) ||
+        # Has volume/episode numbers
+        title.match?(/vol\.|volume|第\d+回|\d+回目|#\d+/i) ||
         # Contains band/artist name patterns
-        title.match?(/feat\.|vs\.|with|×|&|\+/) ||
-        # Generic but meaningful venue content
-        (title.length >= 5 && !title.match?(/^(menu|access|contact|about|home|info)$/i))
+        title.match?(/feat\.|vs\.|with|×|&|\+|\//) ||
+        # Contains venue/location indicators
+        title.match?(/hall|club|studio|stage|room|floor/i) ||
+        # Contains price indicators (common in gig listings)
+        title.match?(/円|yen|¥|\$|price|料金|入場|チケット|ticket/i) ||
+        # Contains any numbers (often gig-related)
+        title.match?(/\d/) ||
+        # Just has reasonable length and isn't obviously navigation
+        (title.length >= 4 && !title.match?(/^(menu|access|contact|about|home|info|news|blog|shop|store)$/i))
       )
 
       unless content_valid
@@ -3056,7 +3221,216 @@ class UnifiedVenueScraper
     end
   end
 
+  # 🎯 SMART VENUE TARGETING - Based on 100-venue analysis results
+  def smart_targeted_test(limit = 50)
+    puts "🎯 SMART VENUE TARGETING TEST (#{limit} venues)"
+    puts "📊 Using patterns from successful venues: ACB Hall, Crocodile, SAMURAI"
+    puts "=" * 70
+
+    # Get baseline from proven venues first
+    baseline_result = test_proven_venues
+    puts "\n📊 BASELINE: #{baseline_result[:successful_venues]} proven venues, #{baseline_result[:total_gigs]} gigs"
+
+    # Get smartly filtered candidate venues
+    smart_candidates = get_candidate_venues(limit)
+    puts "\n🎯 Testing #{smart_candidates.count} SMART-FILTERED venues..."
+    puts "🔍 Selection criteria: Live houses, active websites, similar to successful venues"
+
+    all_gigs = baseline_result[:gigs].dup
+    successful_venues = baseline_result[:successful_venues]
+    failed_venues = baseline_result[:failed_venues].dup
+    venues_to_delete = []
+    smart_success_count = 0
+
+    smart_candidates.each_with_index do |venue, index|
+      puts "\n" + "-"*60
+      puts "TESTING SMART CANDIDATE #{index + 1}/#{smart_candidates.count}: #{venue.name}"
+      puts "URL: #{venue.website}"
+      puts "Similarity Score: #{venue.try(:similarity_score) || 'N/A'}"
+      puts "-"*60
+
+      begin
+        if website_accessible?(venue.website)
+          venue_config = {
+            name: venue.name,
+            url: venue.website,
+            selectors: get_enhanced_selectors_for_venue(venue)
+          }
+
+          # Use intelligent complexity detection
+          gigs = scrape_venue_optimized(venue_config)
+
+          if gigs && gigs.any?
+            valid_gigs = filter_valid_gigs(gigs)
+
+            if valid_gigs.any?
+              puts "✅ SUCCESS: Found #{valid_gigs.count} valid gigs for #{venue.name}"
+
+              # 💾 Save to database
+              db_result = save_gigs_to_database(valid_gigs, venue.name)
+              puts "    💾 Database: #{db_result[:saved]} saved, #{db_result[:skipped]} skipped" if @verbose
+
+              all_gigs.concat(valid_gigs)
+              successful_venues += 1
+              smart_success_count += 1
+
+              # Show examples
+              puts "📅 Sample gigs:"
+              valid_gigs.first(2).each do |gig|
+                puts "    ✓ #{gig[:date]} - #{gig[:title]}"
+              end
+
+            else
+              puts "⚠️  NO VALID GIGS: #{venue.name} - found #{gigs.count} gigs but none were valid/current"
+              failed_venues << { venue: venue.name, url: venue.website, reason: "No valid current gigs" }
+            end
+          else
+            puts "⚠️  NO GIGS: #{venue.name}"
+            failed_venues << { venue: venue.name, url: venue.website, reason: "No gigs found" }
+          end
+        else
+          puts "❌ DEAD WEBSITE: #{venue.name} - marking for deletion"
+          venues_to_delete << venue
+          failed_venues << { venue: venue.name, url: venue.website, reason: "Dead website - will be deleted" }
+        end
+
+      rescue => e
+        puts "❌ ERROR: #{venue.name} - #{e.message}"
+        failed_venues << { venue: venue.name, url: venue.website, reason: e.message }
+      end
+
+      sleep(2) # Rate limiting
+    end
+
+    # Clean up dead venues safely
+    if venues_to_delete.any?
+      puts "\n🗑️  CLEANING UP #{venues_to_delete.count} DEAD VENUES:"
+      venues_to_delete.each do |venue|
+        puts "  Processing: #{venue.name}"
+        begin
+          venue.destroy!
+        rescue ActiveRecord::InvalidForeignKey => e
+          puts "    ⚠️  Cannot delete #{venue.name} - has existing gigs. Updating website to NULL instead."
+          venue.update!(website: nil)
+        rescue => e
+          puts "    ❌ Error processing #{venue.name}: #{e.message}"
+        end
+      end
+    end
+
+    # Save results
+    save_results(all_gigs, "smart_targeted_test.json")
+
+    # Calculate smart targeting success rate
+    smart_success_rate = smart_candidates.any? ? (smart_success_count.to_f / smart_candidates.count * 100).round(1) : 0
+    baseline_success_rate = 3.2  # From our 100-venue analysis
+    improvement = smart_success_rate - baseline_success_rate
+
+    puts "\n" + "="*70
+    puts "SMART TARGETING TEST COMPLETE!"
+    puts "="*70
+    puts "✅ Total successful venues: #{successful_venues}"
+    puts "📊 Total gigs found: #{all_gigs.count}"
+    puts "🆕 New venues discovered: #{smart_success_count}"
+    puts "🎯 Smart targeting success rate: #{smart_success_rate}% (vs #{baseline_success_rate}% baseline)"
+    puts "📈 Improvement: #{improvement > 0 ? '+' : ''}#{improvement.round(1)} percentage points"
+    puts "🗑️  Deleted dead venues: #{venues_to_delete.count}"
+
+    if improvement > 0
+      puts "\n🎉 SMART TARGETING SUCCESSFUL! Better than random venue selection."
+    else
+      puts "\n⚠️  Smart targeting didn't improve success rate - need better filtering criteria."
+    end
+
+    {
+      total_successful_venues: successful_venues,
+      total_gigs: all_gigs.count,
+      smart_discoveries: smart_success_count,
+      smart_success_rate: smart_success_rate,
+      improvement: improvement,
+      failed_venues: failed_venues,
+      deleted_venues: venues_to_delete.count
+    }
+  end
+
+  # 🎯 Enhanced scraping method for better venue targeting
+  def scrape_venue_enhanced(venue_config)
+    puts "\n🎯 Scraping #{venue_config[:name]}..."
+    gigs = []
+
+    begin
+      browser = setup_browser
+
+      # First find the schedule page
+      schedule_url = find_schedule_page(browser, venue_config)
+      if schedule_url
+        # Now try to extract gigs from the schedule page
+        browser.get(schedule_url)
+        sleep(3)
+
+        # Try multiple extraction strategies
+        gigs = extract_gigs_with_multiple_strategies(
+          Nokogiri::HTML(browser.page_source),
+          venue_config,
+          schedule_url
+        )
+      end
+
+    rescue => e
+      puts "  ❌ Error scraping #{venue_config[:name]}: #{e.message}"
+    ensure
+      browser&.quit
+    end
+
+    gigs
+  end
+
+  # 📊 Production monitoring and health check
+  def production_health_check
+    puts "\n🏥 PRODUCTION HEALTH CHECK"
+    puts "="*50
+
+    # Memory status
+    memory_report = @memory_monitor.memory_report
+    puts "💾 Memory Status:"
+    puts "   Start: #{memory_report[:start]}MB"
+    puts "   Current: #{memory_report[:current]}MB"
+    puts "   Peak: #{memory_report[:peak]}MB"
+    puts "   Increase: #{memory_report[:increase]}MB"
+
+    # Database connection status
+    begin
+      ActiveRecord::Base.connection.execute("SELECT 1")
+      db_status = "✅ Connected"
+    rescue => e
+      db_status = "❌ Error: #{e.message}"
+    end
+    puts "🗄️ Database: #{db_status}"
+
+    # Connection pool status
+    pool = ActiveRecord::Base.connection_pool
+    puts "🏊 Connection Pool:"
+    puts "   Size: #{pool.size}"
+    puts "   Checked out: #{pool.stat[:busy]}"
+    puts "   Available: #{pool.size - pool.stat[:busy]}"
+
+    # Circuit breaker status
+    puts "🔄 Circuit Breaker: Active with #{@circuit_breaker.instance_variable_get(:@failure_counts).size} tracked venues"
+
+    # Cache status
+    puts "💾 Caches:"
+    puts "   Complexity cache: #{@website_complexity_cache.size} entries"
+    puts "   Venue blacklist: #{@venue_blacklist.values.flatten.size} venues"
+
+    puts "="*50
+    puts "🎯 System ready for production scraping"
+  end
+
   private
+
+  def setup_browser
+    create_enhanced_browser
+  end
 
   def scrape_venue(venue_config)
     gigs = []
@@ -3158,54 +3532,56 @@ class UnifiedVenueScraper
     save_venue_blacklist(blacklist)
   end
 
-  # 💾 Database integration - save gigs to database
+  # 💾 Database integration - save gigs to database with connection management
   def save_gigs_to_database(gigs, venue_name)
     return unless gigs&.any?
 
-    venue = find_or_create_venue(venue_name)
-    saved_count = 0
-    skipped_count = 0
+    @db_connection_manager.with_connection do
+      venue = find_or_create_venue(venue_name)
+      saved_count = 0
+      skipped_count = 0
 
-    gigs.each do |gig_data|
-      begin
-        # Check if gig already exists
-        existing_gig = Gig.find_by(
-          venue: venue,
-          date: parse_date_for_db(gig_data[:date])
-        )
+      gigs.each do |gig_data|
+        begin
+          # Check if gig already exists
+          existing_gig = Gig.find_by(
+            venue: venue,
+            date: parse_date_for_db(gig_data[:date])
+          )
 
-        if existing_gig
-          skipped_count += 1
-          next
+          if existing_gig
+            skipped_count += 1
+            next
+          end
+
+          # Create new gig
+          gig = Gig.new(
+            venue: venue,
+            date: parse_date_for_db(gig_data[:date]),
+            open_time: parse_time_for_db(gig_data[:time]) || "19:00", # Default time
+            start_time: parse_time_for_db(gig_data[:time], add_30_minutes: true) || "19:30",
+            price: parse_price_for_db(gig_data),
+            user: find_default_user
+          )
+
+          if gig.save
+            # Create bands and bookings for this gig
+            create_bands_for_gig(gig, gig_data)
+
+            saved_count += 1
+            puts "    💾 Saved gig: #{gig.date} - #{gig_data[:title]}" if @verbose
+          else
+            puts "    ⚠️ Failed to save gig: #{gig.errors.full_messages.join(', ')}" if @verbose
+          end
+
+        rescue => e
+          puts "    ❌ Error saving gig: #{e.message}" if @verbose
         end
-
-        # Create new gig
-        gig = Gig.new(
-          venue: venue,
-          date: parse_date_for_db(gig_data[:date]),
-          open_time: parse_time_for_db(gig_data[:time]) || "19:00", # Default time
-          start_time: parse_time_for_db(gig_data[:time], add_30_minutes: true) || "19:30",
-          price: parse_price_for_db(gig_data),
-          user: find_default_user
-        )
-
-        if gig.save
-          # Create bands and bookings for this gig
-          create_bands_for_gig(gig, gig_data)
-
-          saved_count += 1
-          puts "    💾 Saved gig: #{gig.date} - #{gig_data[:title]}" if @verbose
-        else
-          puts "    ⚠️ Failed to save gig: #{gig.errors.full_messages.join(', ')}" if @verbose
-        end
-
-      rescue => e
-        puts "    ❌ Error saving gig: #{e.message}" if @verbose
       end
-    end
 
-    puts "    📊 Database: #{saved_count} saved, #{skipped_count} skipped" if @verbose
-    { saved: saved_count, skipped: skipped_count }
+      puts "    📊 Database: #{saved_count} saved, #{skipped_count} skipped" if @verbose
+      { saved: saved_count, skipped: skipped_count }
+    end
   end
 
   def create_bands_for_gig(gig, gig_data)
@@ -3384,254 +3760,5 @@ class UnifiedVenueScraper
     "3000" # Default price
   end
 
-  # 🎯 SMART VENUE TARGETING - Based on 100-venue analysis results
-  def smart_targeted_test(limit = 50)
-    puts "🎯 SMART VENUE TARGETING TEST (#{limit} venues)"
-    puts "📊 Using patterns from successful venues: ACB Hall, Crocodile, SAMURAI"
-    puts "=" * 70
 
-    # Get baseline from proven venues first
-    baseline_result = test_proven_venues
-    puts "\n📊 BASELINE: #{baseline_result[:successful_venues]} proven venues, #{baseline_result[:total_gigs]} gigs"
-
-    # Get smartly filtered candidate venues
-    smart_candidates = get_smart_candidate_venues(limit)
-    puts "\n🎯 Testing #{smart_candidates.count} SMART-FILTERED venues..."
-    puts "🔍 Selection criteria: Live houses, active websites, similar to successful venues"
-
-    all_gigs = baseline_result[:gigs].dup
-    successful_venues = baseline_result[:successful_venues]
-    failed_venues = baseline_result[:failed_venues].dup
-    venues_to_delete = []
-    smart_success_count = 0
-
-    smart_candidates.each_with_index do |venue, index|
-      puts "\n" + "-"*60
-      puts "TESTING SMART CANDIDATE #{index + 1}/#{smart_candidates.count}: #{venue.name}"
-      puts "URL: #{venue.website}"
-      puts "Similarity Score: #{venue.try(:similarity_score) || 'N/A'}"
-      puts "-"*60
-
-      begin
-        if website_accessible?(venue.website)
-          venue_config = {
-            name: venue.name,
-            url: venue.website,
-            selectors: get_enhanced_selectors_for_venue(venue)
-          }
-
-          # Use intelligent complexity detection
-          gigs = scrape_venue_optimized(venue_config)
-
-          if gigs && gigs.any?
-            valid_gigs = filter_valid_gigs(gigs)
-
-            if valid_gigs.any?
-              puts "✅ SUCCESS: Found #{valid_gigs.count} valid gigs for #{venue.name}"
-
-              # 💾 Save to database
-              db_result = save_gigs_to_database(valid_gigs, venue.name)
-              puts "    💾 Database: #{db_result[:saved]} saved, #{db_result[:skipped]} skipped" if @verbose
-
-              all_gigs.concat(valid_gigs)
-              successful_venues += 1
-              smart_success_count += 1
-
-              # Show examples
-              puts "📅 Sample gigs:"
-              valid_gigs.first(2).each do |gig|
-                puts "    ✓ #{gig[:date]} - #{gig[:title]}"
-              end
-
-            else
-              puts "⚠️  NO VALID GIGS: #{venue.name} - found #{gigs.count} gigs but none were valid/current"
-              failed_venues << { venue: venue.name, url: venue.website, reason: "No valid current gigs" }
-            end
-          else
-            puts "⚠️  NO GIGS: #{venue.name}"
-            failed_venues << { venue: venue.name, url: venue.website, reason: "No gigs found" }
-          end
-        else
-          puts "❌ DEAD WEBSITE: #{venue.name} - marking for deletion"
-          venues_to_delete << venue
-          failed_venues << { venue: venue.name, url: venue.website, reason: "Dead website - will be deleted" }
-        end
-
-      rescue => e
-        puts "❌ ERROR: #{venue.name} - #{e.message}"
-        failed_venues << { venue: venue.name, url: venue.website, reason: e.message }
-      end
-
-      sleep(2) # Rate limiting
-    end
-
-    # Clean up dead venues safely
-    if venues_to_delete.any?
-      puts "\n🗑️  CLEANING UP #{venues_to_delete.count} DEAD VENUES:"
-      venues_to_delete.each do |venue|
-        puts "  Processing: #{venue.name}"
-        begin
-          venue.destroy!
-        rescue ActiveRecord::InvalidForeignKey => e
-          puts "    ⚠️  Cannot delete #{venue.name} - has existing gigs. Updating website to NULL instead."
-          venue.update!(website: nil)
-        rescue => e
-          puts "    ❌ Error processing #{venue.name}: #{e.message}"
-        end
-      end
-    end
-
-    # Save results
-    save_results(all_gigs, "smart_targeted_test.json")
-
-    # Calculate smart targeting success rate
-    smart_success_rate = smart_candidates.any? ? (smart_success_count.to_f / smart_candidates.count * 100).round(1) : 0
-    baseline_success_rate = 3.2  # From our 100-venue analysis
-    improvement = smart_success_rate - baseline_success_rate
-
-    puts "\n" + "="*70
-    puts "SMART TARGETING TEST COMPLETE!"
-    puts "="*70
-    puts "✅ Total successful venues: #{successful_venues}"
-    puts "📊 Total gigs found: #{all_gigs.count}"
-    puts "🆕 New venues discovered: #{smart_success_count}"
-    puts "🎯 Smart targeting success rate: #{smart_success_rate}% (vs #{baseline_success_rate}% baseline)"
-    puts "📈 Improvement: #{improvement > 0 ? '+' : ''}#{improvement.round(1)} percentage points"
-    puts "🗑️  Deleted dead venues: #{venues_to_delete.count}"
-
-    if improvement > 0
-      puts "\n🎉 SMART TARGETING SUCCESSFUL! Better than random venue selection."
-    else
-      puts "\n⚠️  Smart targeting didn't improve success rate - need better filtering criteria."
-    end
-
-    {
-      total_successful_venues: successful_venues,
-      total_gigs: all_gigs.count,
-      smart_discoveries: smart_success_count,
-      smart_success_rate: smart_success_rate,
-      improvement: improvement,
-      failed_venues: failed_venues,
-      deleted_venues: venues_to_delete.count
-    }
-  end
-
-  # 🧠 Smart venue filtering based on success patterns
-  def get_smart_candidate_venues(limit)
-    puts "🧠 Analyzing venue patterns for smart targeting..."
-
-    # Base query for venues with websites
-    base_venues = Venue.where.not(website: [nil, ''])
-                      .where.not(id: get_proven_venue_ids)
-
-    # Success pattern analysis from our discoveries
-    success_patterns = {
-      # Website characteristics of successful venues
-      live_house_keywords: ['live', 'hall', 'club', 'house', 'samurai', 'crocodile'],
-      avoid_keywords: ['arena', 'dome', 'stadium', 'theater', 'museum', 'university'],
-      good_domains: ['.jp', '.com', '.co.jp', '.ne.jp'],
-      # URL patterns that worked
-      good_url_patterns: ['live', 'hall', 'club', 'music']
-    }
-
-    # Score venues based on success patterns
-    scored_venues = []
-
-    base_venues.find_each do |venue|
-      score = calculate_venue_similarity_score(venue, success_patterns)
-
-      # Only include venues with decent similarity scores
-      if score >= 3.0
-        venue.define_singleton_method(:similarity_score) { score }
-        scored_venues << venue
-      end
-    end
-
-    # Sort by similarity score (highest first) and limit
-    top_venues = scored_venues.sort_by(&:similarity_score).reverse.first(limit)
-
-    puts "🎯 Venue filtering results:"
-    puts "  Total venues with websites: #{base_venues.count}"
-    puts "  Venues matching success patterns: #{scored_venues.count}"
-    puts "  Top candidates selected: #{top_venues.count}"
-    puts "  Average similarity score: #{(top_venues.map(&:similarity_score).sum / [top_venues.count, 1].max).round(2)}"
-
-    top_venues
-  end
-
-  # 📊 Calculate how similar a venue is to our successful patterns
-  def calculate_venue_similarity_score(venue, patterns)
-    score = 0.0
-
-    name = venue.name.to_s.downcase
-    website = venue.website.to_s.downcase
-
-    # Live house keywords (positive signals)
-    patterns[:live_house_keywords].each do |keyword|
-      score += 2.0 if name.include?(keyword)
-      score += 1.5 if website.include?(keyword)
-    end
-
-    # Avoid keywords (negative signals)
-    patterns[:avoid_keywords].each do |keyword|
-      score -= 3.0 if name.include?(keyword)
-      score -= 2.0 if website.include?(keyword)
-    end
-
-    # Good domain patterns
-    patterns[:good_domains].each do |domain|
-      score += 1.0 if website.include?(domain)
-    end
-
-    # URL structure similarity to successful venues
-    patterns[:good_url_patterns].each do |pattern|
-      score += 1.0 if website.include?(pattern)
-    end
-
-    # Bonus for simple, clean URLs (like our successful venues)
-    score += 1.0 if website.length < 50 && !website.include?('/')
-    score += 0.5 if website.count('/') <= 3
-
-    # Bonus for Japanese venues (Tokyo focus)
-    score += 1.0 if name =~ /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/
-
-    # Penalty for complex URLs that might be hard to scrape
-    score -= 1.0 if website.include?('timeout.com') || website.include?('facebook.com')
-    score -= 2.0 if website.include?('instagram.com') || website.include?('twitter.com')
-
-    [score, 0].max  # Ensure non-negative score
-  end
-
-  # 🎯 Enhanced selectors based on venue type
-  def get_enhanced_selectors_for_venue(venue)
-    base_selectors = get_general_selectors.dup
-
-    # Enhance selectors based on venue name patterns
-    venue_name = venue.name.to_s.downcase
-
-    if venue_name.include?('samurai')
-      # SAMURAI-specific enhancements
-      base_selectors[:gigs] = "#{base_selectors[:gigs]}, .event-item, .live-info"
-      base_selectors[:date] = "#{base_selectors[:date]}, .event-date, .live-date"
-      base_selectors[:title] = "#{base_selectors[:title]}, .event-title, .live-title"
-    elsif venue_name.include?('hall') || venue_name.include?('ホール')
-      # Hall-specific enhancements
-      base_selectors[:gigs] = "#{base_selectors[:gigs]}, .hall-event, .schedule-item"
-      base_selectors[:date] = "#{base_selectors[:date]}, .schedule-date, .event-day"
-      base_selectors[:title] = "#{base_selectors[:title]}, .schedule-title, .event-name"
-    elsif venue_name.include?('club') || venue_name.include?('クラブ')
-      # Club-specific enhancements
-      base_selectors[:gigs] = "#{base_selectors[:gigs]}, .club-event, .party-info"
-      base_selectors[:date] = "#{base_selectors[:date]}, .party-date, .club-date"
-      base_selectors[:title] = "#{base_selectors[:title]}, .party-title, .club-event-name"
-    end
-
-    base_selectors
-  end
-
-  # 🏠 Get IDs of proven venues to exclude from candidate selection
-  def get_proven_venue_ids
-    proven_names = PROVEN_VENUES.map { |v| v[:name] }
-    Venue.where(name: proven_names).pluck(:id)
-  end
 end

@@ -39,3 +39,6 @@
 # Ignore Mac and Linux file system files
 *.swp
 .DS_Store
+
+# Frontend directory (React app with node_modules, build files, etc.)
+/frontend/
