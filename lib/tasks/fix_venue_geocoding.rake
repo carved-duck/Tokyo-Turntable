@@ -215,6 +215,96 @@ namespace :venues do
     puts "  In Tokyo area: #{tokyo_area_venues.count} (#{(tokyo_area_venues.count.to_f / Venue.count * 100).round(1)}%)"
     puts "  Outside Tokyo: #{japan_venues.count - tokyo_area_venues.count} venues"
   end
+
+  desc "Analyze band names and Spotify matching issues"
+  task analyze_bands: :environment do
+    puts "🎵 ANALYZING BAND NAMES FOR SPOTIFY MATCHING"
+    puts "=" * 50
+
+    total_bands = Band.count
+    puts "📊 Total bands: #{total_bands}"
+
+    # Sample band names
+    sample_bands = Band.limit(20).pluck(:name)
+    puts "\n🎤 Sample band names:"
+    sample_bands.each { |name| puts "  • #{name}" }
+
+    # Analyze problematic patterns
+    problematic_bands = Band.where("name LIKE '%Live Performance%' OR name LIKE '%live%' OR name LIKE '%show%' OR name LIKE '%event%'")
+    puts "\n⚠️ Potentially problematic band names: #{problematic_bands.count}"
+    problematic_bands.limit(10).each { |band| puts "  • #{band.name}" }
+
+    # Check for Japanese characters
+    japanese_bands = Band.where("name ~ '[ひらがなカタカナ漢字]'")
+    puts "\n🇯🇵 Bands with Japanese characters: #{japanese_bands.count}"
+
+    # Check for very short/generic names
+    short_names = Band.where("LENGTH(name) < 3")
+    puts "\n📏 Very short band names: #{short_names.count}"
+    short_names.limit(10).each { |band| puts "  • '#{band.name}'" }
+  end
+
+  desc "Test improved Spotify matching with confidence scoring"
+  task test_spotify_matching: :environment do
+    puts "🎵 TESTING IMPROVED SPOTIFY MATCHING"
+    puts "=" * 50
+
+    spotify_service = SpotifyService.new
+
+    # Test with a sample of bands
+    test_bands = Band.limit(20).pluck(:name)
+
+    puts "\n🧪 Testing Spotify matching for sample bands:"
+
+    valid_matches = 0
+    invalid_filtered = 0
+    low_confidence = 0
+
+    test_bands.each do |band_name|
+      puts "\n🎤 Testing: '#{band_name}'"
+
+      # Test with confidence scoring
+      result = spotify_service.search_artist_with_confidence(band_name)
+
+      if result[:id]
+        valid_matches += 1
+        puts "  ✅ Match: #{result[:matched_name]} (confidence: #{result[:confidence]}%, popularity: #{result[:popularity]})"
+      elsif result[:reason] == "invalid name"
+        invalid_filtered += 1
+        puts "  🚫 Filtered: #{result[:reason]}"
+      else
+        low_confidence += 1
+        puts "  ⚠️ No match: #{result[:reason]}"
+      end
+    end
+
+    puts "\n📊 RESULTS SUMMARY:"
+    puts "  ✅ Valid matches: #{valid_matches}"
+    puts "  🚫 Invalid names filtered: #{invalid_filtered}"
+    puts "  ⚠️ Low confidence/no match: #{low_confidence}"
+    puts "  📈 Success rate: #{(valid_matches.to_f / test_bands.count * 100).round(1)}%"
+
+    # Test some specific problematic cases
+    puts "\n🔍 Testing specific problematic cases:"
+    problematic_cases = [
+      "Live Performance",
+      "Thunder Horse (USA)",
+      "2025.7.13 SUN. 秋元リョーヘイ 1st onemanlive",
+      "Daniel Fishkin + Kyoko Tsutsui + Yumiko Yoshimoto",
+      "Radiohead",  # Should work well
+      "The Beatles" # Should work well
+    ]
+
+    problematic_cases.each do |band_name|
+      puts "\n🧪 '#{band_name}':"
+      result = spotify_service.search_artist_with_confidence(band_name)
+      if result[:id]
+        puts "  ✅ #{result[:matched_name]} (#{result[:confidence]}%)"
+      else
+        puts "  ❌ #{result[:reason]}"
+      end
+    end
+  end
 end
 
 # Helper method for neighborhood coordinates
