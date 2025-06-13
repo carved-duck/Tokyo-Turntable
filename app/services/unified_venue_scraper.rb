@@ -1616,10 +1616,11 @@ class UnifiedVenueScraper
     return [] unless gigs
 
     today = Date.current
-    cutoff_date = today + 365 # Max 1 year in future (back to original)
+    past_cutoff = today - 30 # Allow events up to 30 days in the past (venues often keep recent events)
+    future_cutoff = today + 365 # Max 1 year in future
 
     puts "    🔍 Filtering #{gigs.count} gigs..." if @verbose
-    puts "    📅 Date range: #{today.strftime('%Y-%m-%d')} to #{cutoff_date.strftime('%Y-%m-%d')}" if @verbose
+    puts "    📅 Date range: #{past_cutoff.strftime('%Y-%m-%d')} to #{future_cutoff.strftime('%Y-%m-%d')}" if @verbose
 
     no_title_count = 0
     no_date_count = 0
@@ -1637,14 +1638,14 @@ class UnifiedVenueScraper
         next false
       end
 
-      # Check for valid future date
+      # Check for valid date range (allow recent past events)
       if gig[:date].present?
         begin
           gig_date = gig[:date].is_a?(Date) ? gig[:date] : Date.parse(gig[:date])
-          if gig_date < today
+          if gig_date < past_cutoff
             past_date_count += 1
             next false
-          elsif gig_date > cutoff_date
+          elsif gig_date > future_cutoff
             future_date_count += 1
             next false
           end
@@ -1665,41 +1666,23 @@ class UnifiedVenueScraper
         next false
       end
 
-      # ULTRA-LENIENT content validation - prioritize inclusion over exclusion
+      # MAXIMUM PERMISSIVE content validation - accept almost everything
       title = gig[:title].strip
       artists = gig[:artists]&.strip || ""
 
-      # Accept if ANY of these conditions are met (much more permissive):
-      content_valid = (
-        # Has any artists info
-        artists.present? ||
-        # Has any meaningful title (very low bar)
-        title.length >= 3 ||
-        # Contains ANY date patterns
-        title.match?(/\d{4}[-\/年]\d{1,2}[-\/月]\d{1,2}/) ||
-        title.match?(/\d{1,2}[-\/月]\d{1,2}/) ||
-        # Contains ANY day indicators
-        title.match?(/\([月火水木金土日]\)|\(mon|tue|wed|thu|fri|sat|sun\)/i) ||
-        title.match?(/月|火|水|木|金|土|日|mon|tue|wed|thu|fri|sat|sun/i) ||
-        # Contains ANY time indicators
-        title.match?(/\d{1,2}:\d{2}|開場|開演|start|open|時|pm|am/) ||
-        # Contains ANY Japanese event words
-        title.match?(/ライブ|コンサート|イベント|公演|ショー|フェス|祭|音楽|バンド/) ||
-        # Contains ANY English event words
-        title.match?(/live|concert|event|show|music|band|performance|gig/i) ||
-        # Has volume/episode numbers
-        title.match?(/vol\.|volume|第\d+回|\d+回目|#\d+/i) ||
-        # Contains band/artist name patterns
-        title.match?(/feat\.|vs\.|with|×|&|\+|\//) ||
-        # Contains venue/location indicators
-        title.match?(/hall|club|studio|stage|room|floor/i) ||
-        # Contains price indicators (common in gig listings)
-        title.match?(/円|yen|¥|\$|price|料金|入場|チケット|ticket/i) ||
-        # Contains any numbers (often gig-related)
-        title.match?(/\d/) ||
-        # Just has reasonable length and isn't obviously navigation
-        (title.length >= 4 && !title.match?(/^(menu|access|contact|about|home|info|news|blog|shop|store)$/i))
-      )
+      # Only reject obvious junk/navigation elements
+      junk_patterns = [
+        /^(click|map|terrain|satellite|labels|styled|keyboard|shortcuts|terms|report|error|navigate|arrow|keys|zoom|home|jump|page|up|down|left|right|menu|access|contact|about|info|news|blog|shop|store)$/i,
+        /^(to navigate|press the arrow|map data|google|metric|imperial|units|today's event|schedule)$/i,
+        /^[<>\/\\\[\]{}().,;:!?@#$%^&*+=|`~\s]*$/, # Only symbols/whitespace
+        /^.{1,2}$/, # Too short (1-2 chars)
+        /^(move left|move right|move up|move down|zoom in|zoom out|home|end|page up|page down)$/i
+      ]
+
+      is_junk = junk_patterns.any? { |pattern| title.match?(pattern) }
+
+      # Accept if it's not junk AND has any content at all
+      content_valid = !is_junk && (title.present? || artists.present?)
 
       unless content_valid
         no_content_count += 1
