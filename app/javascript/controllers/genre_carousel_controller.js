@@ -2,26 +2,25 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="genre-carousel"
 export default class extends Controller {
-  static targets = ["carousel"]
+  static targets = ["genre"]
 
   connect() {
-    console.log("Genre carousel connected")
+    // Genre carousel connected - console.log removed for production
   }
 
-  select(event) {
-    const button = event.currentTarget
-    const genreName = button.dataset.genreCarouselGenreName
-    console.log("Selected genre:", genreName)
+  selectGenre(event) {
+    const genreName = event.currentTarget.dataset.genre
+    // Selected genre logic - console.log removed for production
 
-    // Optional: Add selected styling or send request
-    this.clearSelected()
-    button.classList.add("bg-blue-500", "text-white")
-  }
-
-  clearSelected() {
-    this.carouselTarget.querySelectorAll("button").forEach((btn) => {
-      btn.classList.remove("bg-blue-500", "text-white")
-      btn.classList.add("bg-gray-200")
+    // Remove active class from all genres
+    this.genreTargets.forEach(genre => {
+      genre.classList.remove("active")
     })
+
+    // Add active class to clicked genre
+    event.currentTarget.classList.add("active")
+
+    // Dispatch custom event with selected genre
+    this.dispatch("genreSelected", { detail: { genre: genreName } })
   }
 }

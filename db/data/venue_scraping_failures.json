@@ -1,82 +1,97 @@
 [
   {
+    "venue": "Antiknock",
+    "url": "https://antiknock.net",
+    "reason": "uninitialized constant VenueWebsiteScraper"
+  },
+  {
+    "venue": "20000volt",
+    "url": "https://den-atsu.com",
+    "reason": "uninitialized constant VenueWebsiteScraper"
+  },
+  {
+    "venue": "Milkyway",
+    "url": "https://www.shibuyamilkyway.com",
+    "reason": "uninitialized constant VenueWebsiteScraper"
+  },
+  {
     "venue": "Yokohama Arena",
-    "url": "http://www.yokohama-arena.co.jp",
-    "reason": "No gigs found"
+    "url": "https://www.yokohama-arena.co.jp",
+    "reason": "uninitialized constant VenueWebsiteScraper"
   },
   {
-    "venue": "Spiral Hall",
-    "url": "http://www.spiral.co.jp/s_rental/hall/",
-    "reason": "No gigs found"
+    "venue": "Koiwa Live Theater Orpheus",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1332-koiwa-live-theater-orpheus",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Tokyo Club",
-    "url": "http://www.tokyo-club.com/meguro/about/",
-    "reason": "No gigs found"
+    "venue": "Live Haus",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1324-live-haus",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Crocodile",
-    "url": "http://www.crocodile-live.jp",
-    "reason": "No gigs found"
+    "venue": "Club Liner",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/34-club-liner",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Club 251",
-    "url": "http://www.club251.com",
-    "reason": "No gigs found"
+    "venue": "Studio Sur",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/931-studio-sur",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "ZINC",
-    "url": "http://music.geocities.jp/zinc_asakusa/index.html",
-    "reason": "No gigs found"
+    "venue": "Sumida Triphony Hall",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1267-sumida-triphony-hall",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Pumpkin",
-    "url": "http://www.geocities.jp/livehouse_pumpkin/",
-    "reason": "No gigs found"
+    "venue": "Acb Hall",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1-acb-hall",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Laforet Museum Harajuku",
-    "url": "http://www.laforet.ne.jp/news_events/",
-    "reason": "No gigs found"
+    "venue": "Studio Ongaku Kan Akiba",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/923-studio-ongaku-kan-akiba",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Saitama Arts Theater",
-    "url": "https://www.saf.or.jp/en/venues/arthall/",
-    "reason": "No gigs found"
+    "venue": "Ufo Club",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/133-ufo-club",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Artica 7",
-    "url": "http://www.artica7.live/",
-    "reason": "No gigs found"
+    "venue": "Studio Zot",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/742-studio-zot",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "LIVE HAUS",
-    "url": "http://livehaus.jp",
-    "reason": "No gigs found"
+    "venue": "Studio Iwato",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/621-studio-iwato",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Crazy Cats",
-    "url": "http://www.crazycats.org/livehouse/",
-    "reason": "No gigs found"
+    "venue": "Namidabashi Hall",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1548-namidabashi-hall",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Cafe & Diner Studio",
-    "url": "https://clubberia.com/en/preserve/CAFE/studio1.html",
-    "reason": "No gigs found"
+    "venue": "Club Citta",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/30-club-citta",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Zippal Hall",
-    "url": "http://www.miyaji.co.jp/zippalhall",
-    "reason": "No gigs found"
+    "venue": "Https Musicsalon Natural Jp",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1476-https-musicsalon-natural-jp",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Rocky Top",
-    "url": "http://www.liverocky.com/index2.html",
-    "reason": "No gigs found"
+    "venue": "Kunitachi Public Hall B1f",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1355-kunitachi-public-hall-b1f",
+    "reason": "Website not accessible - will be deleted"
   },
   {
-    "venue": "Rinky Dink Studio (Hachioji 1st)",
-    "url": "http://www.rinky.info/studio/hachiouji1/",
-    "reason": "No gigs found"
+    "venue": "Shimokitazawa Townhall",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/287-shimokitazawa-townhall",
+    "reason": "Website not accessible - will be deleted"
   }
 ]
