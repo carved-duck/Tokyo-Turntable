@@ -84,6 +84,6 @@ production:
   username: tokyo_turntable
   password: <%= ENV["TOKYO_TURNTABLE_DATABASE_PASSWORD"] %>
 
-  queue:
-    <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
+queue:
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
