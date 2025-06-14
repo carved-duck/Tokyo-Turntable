@@ -3618,20 +3618,22 @@ class UnifiedVenueScraper
   def extract_band_names(gig_data)
     band_names = []
 
-    # Extract from artists field
+    # Extract from artists field first (most reliable)
     if gig_data[:artists].present?
       artists_text = clean_text(gig_data[:artists])
-      band_names.concat(split_band_names(artists_text))
+      extracted_artists = extract_artists_from_text(artists_text)
+      band_names.concat(extracted_artists)
     end
 
-        # Extract from title if no artists found
+    # Extract from title if no artists found, but be much more careful
     if band_names.empty? && gig_data[:title].present?
       title_text = clean_text(gig_data[:title])
-      # Only use title if it looks like band names (not just event descriptions)
-      unless title_text.match?(/live|show|event|concert|festival|party|presents|featuring|vs\.|&/i)
-        band_names.concat(split_band_names(title_text))
-      end
+      extracted_from_title = extract_artists_from_title(title_text)
+      band_names.concat(extracted_from_title)
     end
+
+    # Filter out obvious non-band names
+    band_names = filter_valid_band_names(band_names)
 
     # Default band name if nothing meaningful found
     if band_names.empty?
@@ -3641,18 +3643,169 @@ class UnifiedVenueScraper
     band_names.uniq.first(3) # Limit to 3 bands max
   end
 
-  def split_band_names(text)
+  def extract_artists_from_text(text)
     return [] unless text.present?
 
+    # Clean up the text first
+    cleaned_text = preprocess_artist_text(text)
+    return [] if cleaned_text.blank?
+
     # Split on common separators
-    separators = [' / ', ' × ', ' & ', ' and ', '、', '・', ' + ', ' with ']
-    band_names = [text]
+    separators = [' / ', ' × ', ' & ', ' and ', '、', '・', ' + ', ' with ', ' feat. ', ' featuring ']
+    band_names = [cleaned_text]
 
     separators.each do |separator|
       band_names = band_names.flat_map { |name| name.split(separator) }
     end
 
-    band_names.map(&:strip).reject(&:blank?)
+    # Clean and validate each name
+    band_names.map(&:strip)
+              .reject(&:blank?)
+              .map { |name| clean_artist_name(name) }
+              .reject(&:blank?)
+  end
+
+  def extract_artists_from_title(title_text)
+    return [] unless title_text.present?
+
+    # Much more aggressive filtering for titles since they often contain event info
+    return [] if is_event_description?(title_text)
+
+    # Try to extract artist names from structured title formats
+    extracted = extract_from_structured_title(title_text)
+    return extracted if extracted.any?
+
+    # If no structured format found, be very conservative
+    return [] if title_text.length > 100 # Too long, likely event description
+    return [] if title_text.match?(/\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2}/) # Contains dates
+    return [] if title_text.match?(/open|start|door|ticket|price|¥|\$|admission/i) # Event details
+
+    # Only proceed if it looks like a simple artist name
+    if looks_like_artist_name?(title_text)
+      [clean_artist_name(title_text)].reject(&:blank?)
+    else
+      []
+    end
+  end
+
+  def preprocess_artist_text(text)
+    # Remove common prefixes that indicate event info, not artist names
+    text = text.gsub(/^(出演|出演者|アーティスト|artist|performers?|featuring|guest|special|live|show)[:：\s]+/i, '')
+
+    # Remove DJ prefixes when they're clearly event descriptions
+    text = text.gsub(/^●?DJ[:：]\s*/i, '') if text.match?(/●?DJ[:：]\s*[A-Z\s]+\(/i)
+
+    # Remove venue/event info in parentheses at the end
+    text = text.gsub(/\s*\([^)]*(?:from|@|at|venue|club|bar|hall)\s*[^)]*\)\s*$/i, '')
+
+    # Remove time/date info
+    text = text.gsub(/\s*\d{1,2}:\d{2}\s*/, ' ')
+    text = text.gsub(/\s*\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2}\s*/, ' ')
+
+    text.strip
+  end
+
+  def clean_artist_name(name)
+    return '' unless name.present?
+
+    # Remove common non-artist prefixes/suffixes
+    name = name.gsub(/^(DJ|dj)\s+/i, '') unless name.match?(/^DJ\s+[A-Z][a-z]/i) # Keep "DJ Something" but remove "DJ ●"
+    name = name.gsub(/\s+(live|show|event|performance|set)$/i, '')
+    name = name.gsub(/^(the\s+)?live\s+/i, '')
+    name = name.gsub(/\s*\([^)]*(?:live|show|event|performance|set|tour|release)\s*[^)]*\)\s*/i, '')
+
+    # Remove venue/location info in parentheses
+    name = name.gsub(/\s*\([^)]*(?:from|@|at|venue|club|bar|hall|tokyo|japan|uk|us|london|berlin)\s*[^)]*\)\s*/i, '')
+
+    # Remove obvious event markers
+    name = name.gsub(/\s*[●○■□▲△▼▽◆◇★☆]\s*/, ' ')
+    name = name.gsub(/\s*[-–—]\s*(live|show|event|performance|tour|release).*$/i, '')
+
+    # Clean up whitespace
+    name = name.gsub(/\s+/, ' ').strip
+
+    name
+  end
+
+  def is_event_description?(text)
+    # Check for obvious event description patterns
+    event_patterns = [
+      /\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2}/, # Dates
+      /\d{1,2}[\/\-\.]\d{1,2}\s*\([月火水木金土日]\)/, # Japanese date format
+      /anniversary|birthday|release|tour|festival|party|night|session/i,
+      /open\s*\d{1,2}:\d{2}|start\s*\d{1,2}:\d{2}|door\s*\d{1,2}:\d{2}/i,
+      /ticket|price|admission|advance|door|¥\d+|\$\d+/i,
+      /presents?|invites?|vs\.?|battle|competition/i,
+      /live\s+(show|event|performance|concert)|show\s+(live|event)/i,
+      /\d+(st|nd|rd|th)\s+(anniversary|birthday)/i
+    ]
+
+    event_patterns.any? { |pattern| text.match?(pattern) }
+  end
+
+    def extract_from_structured_title(title)
+    artists = []
+
+    # Pattern: "Artist Name Live" or "Artist Name Show"
+    match = title.match(/^([^●○■□▲△▼▽◆◇★☆]+?)\s+(live|show|concert)$/i)
+    if match
+      artist = match[1].strip
+      artists << clean_artist_name(artist) if looks_like_artist_name?(artist)
+    end
+
+    # Pattern: "Live: Artist Name" or "Show: Artist Name"
+    match = title.match(/^(live|show|concert)[:：]\s*(.+)$/i)
+    if match
+      artist = match[2].strip
+      artists << clean_artist_name(artist) if looks_like_artist_name?(artist)
+    end
+
+    # Pattern: "Artist Name ● Other Info" (take only the artist part)
+    match = title.match(/^([^●○■□▲△▼▽◆◇★☆]+?)\s*[●○■□▲△▼▽◆◇★☆]/i)
+    if match
+      artist = match[1].strip
+      artists << clean_artist_name(artist) if looks_like_artist_name?(artist)
+    end
+
+    artists.reject(&:blank?)
+  end
+
+  def looks_like_artist_name?(text)
+    return false unless text.present?
+    return false if text.length < 2 || text.length > 50
+
+    # Should not contain obvious event markers
+    return false if text.match?(/\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2}/)
+    return false if text.match?(/open|start|door|ticket|price|¥|\$|admission/i)
+    return false if text.match?(/anniversary|birthday|release|tour|festival|party|night|session/i)
+    return false if text.match?(/live\s+(show|event|performance)|show\s+(live|event)/i)
+
+    # Should not be mostly numbers or symbols
+    return false if text.gsub(/[a-zA-Zひらがなカタカナ漢字]/, '').length > text.length * 0.5
+
+    # Should contain some letters
+    return false unless text.match?(/[a-zA-Zひらがなカタカナ漢字]/)
+
+    true
+  end
+
+  def filter_valid_band_names(band_names)
+    band_names.select do |name|
+      next false if name.blank?
+      next false if name.length < 2 || name.length > 100
+
+      # Filter out obvious non-band patterns
+      next false if name.match?(/^(live|show|event|performance|concert|festival|party|session|night|open|start|door)$/i)
+      next false if name.match?(/^\d+$/) # Just numbers
+      next false if name.match?(/^[●○■□▲△▼▽◆◇★☆\s]+$/) # Just symbols
+      next false if name.match?(/\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2}/) # Contains dates
+      next false if name.match?(/ticket|price|admission|¥\d+|\$\d+/i) # Pricing info
+
+      # Must contain some actual letters/characters
+      next false unless name.match?(/[a-zA-Zひらがなカタカナ漢字]/)
+
+      true
+    end
   end
 
   def find_or_create_band(band_name)

@@ -114,3 +114,4 @@ gem 'pdf-reader'
 gem 'mini_magick'
 
 gem "rspec", "~> 3.13"
+gem "ruby-openai", "~> 7.0"
