@@ -221,7 +221,7 @@ namespace :import do
          name: clean_name,
          hometown: 'Tokyo, Japan', # Default
          email: 'contact@band.com', # Default
-         genre: 'Rock' # Default genre
+         genre: 'Unknown' # Default genre - let scraper classify properly
        )
      end
 

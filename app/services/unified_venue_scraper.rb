@@ -3664,28 +3664,96 @@ class UnifiedVenueScraper
     band = Band.find_by(name: clean_name)
     return band if band
 
+    # Determine genre using Spotify API first, fallback to name-based detection
+    genre = determine_genre_with_spotify(clean_name)
+
     # Create new band with defaults
     Band.create!(
       name: clean_name,
-      genre: determine_genre_from_name(clean_name),
+      genre: genre,
       hometown: "Tokyo",
       email: "info@#{clean_name.downcase.gsub(/[^a-z0-9]/, '')}.com"
     )
   end
 
+    def determine_genre_with_spotify(band_name)
+    # First try Spotify API for accurate genre detection
+    begin
+      spotify_service = SpotifyService.new
+      genre_info = spotify_service.get_artist_genre_info(band_name)
+
+      if genre_info && genre_info[:confidence] > 75 && genre_info[:primary_genre] != "Unknown"
+        puts "    🎵 Spotify genre: #{genre_info[:primary_genre]} (#{genre_info[:confidence]}% confidence)" if @verbose
+        return genre_info[:primary_genre]
+      end
+    rescue => e
+      puts "    ⚠️ Spotify API error: #{e.message}" if @verbose
+      Rails.logger.warn "Spotify genre detection failed for #{band_name}: #{e.message}"
+    end
+
+    # Fallback to name-based detection
+    puts "    🔤 Using name-based genre detection" if @verbose
+    determine_genre_from_name(band_name)
+  end
+
   def determine_genre_from_name(band_name)
-    # Simple genre detection based on band name patterns
-    name_lower = band_name.downcase
+    # Enhanced genre detection based on band name patterns and context
+    name_lower = band_name.downcase.strip
 
-    return "Electronic" if name_lower.match?(/dj|electronic|techno|house|ambient/)
-    return "Jazz" if name_lower.match?(/jazz|swing|blues/)
-    return "Hip-Hop" if name_lower.match?(/hip.?hop|rap|mc/)
-    return "Classical" if name_lower.match?(/orchestra|symphony|classical/)
-    return "Folk" if name_lower.match?(/folk|acoustic/)
-    return "Indie" if name_lower.match?(/indie|underground/)
+    # Return Unknown for obviously non-musical content
+    return "Unknown" if name_lower.match?(/live|show|event|performance|concert|festival|party|presents|featuring|vs\.|&|open mic|jam session|workshop|talk|lecture|exhibition/)
 
-    # Default genre
-    "Rock"
+    # Electronic/DJ genres
+    return "Electronic" if name_lower.match?(/\bdj\b|electronic|techno|house|ambient|edm|dubstep|trance|drum.?n.?bass|dnb|breakbeat|garage|minimal|acid|rave/)
+
+    # Jazz and related
+    return "Jazz" if name_lower.match?(/jazz|swing|blues|bebop|fusion|bossa.?nova|latin.?jazz|smooth.?jazz|big.?band|quartet|quintet|trio.*jazz/)
+
+    # Hip-Hop and Rap
+    return "Hip-Hop" if name_lower.match?(/hip.?hop|rap|mc\b|rapper|freestyle|trap|drill|grime/)
+
+    # Classical and orchestral
+    return "Classical" if name_lower.match?(/orchestra|symphony|classical|chamber|philharmonic|quartet.*classical|concerto|opera|baroque/)
+
+    # Folk and acoustic
+    return "Folk" if name_lower.match?(/folk|acoustic|singer.?songwriter|americana|country|bluegrass|celtic/)
+
+    # Indie and alternative
+    return "Indie" if name_lower.match?(/indie|underground|alternative|alt.?rock|shoegaze|dream.?pop|lo.?fi/)
+
+    # Punk and hardcore
+    return "Punk" if name_lower.match?(/punk|hardcore|emo|screamo|post.?punk|ska.?punk/)
+
+    # Metal genres
+    return "Metal" if name_lower.match?(/metal|death|black.*metal|doom|sludge|grind|core$|metalcore|deathcore/)
+
+    # Pop and mainstream
+    return "Pop" if name_lower.match?(/pop|idol|j.?pop|k.?pop|mainstream|commercial/)
+
+    # Reggae and related
+    return "Reggae" if name_lower.match?(/reggae|ska|dub|rastafari|jamaica/)
+
+    # World music
+    return "World" if name_lower.match?(/world|ethnic|traditional|cultural|african|latin|asian|middle.?eastern/)
+
+    # Experimental and avant-garde
+    return "Experimental" if name_lower.match?(/experimental|avant.?garde|noise|drone|ambient|soundscape|improvisation/)
+
+    # R&B and Soul
+    return "R&B" if name_lower.match?(/r&b|soul|funk|motown|neo.?soul|contemporary.?r&b/)
+
+    # If band name is very short or generic, likely Unknown
+    return "Unknown" if name_lower.length < 3 || name_lower.match?(/^(band|group|artist|music|sound|live|show)s?$/)
+
+    # Japanese-specific patterns
+    return "J-Rock" if name_lower.match?(/j.?rock|japanese.*rock|visual.?kei/)
+    return "J-Pop" if name_lower.match?(/j.?pop|japanese.*pop/)
+
+    # Only classify as Rock if there are actual rock-related keywords
+    return "Rock" if name_lower.match?(/rock|guitar|band.*rock|classic.*rock|hard.*rock|soft.*rock|prog|progressive/)
+
+    # Default to Unknown instead of Rock for unclassifiable bands
+    "Unknown"
   end
 
   def find_or_create_venue(venue_name)
@@ -3773,5 +3841,52 @@ class UnifiedVenueScraper
     "3000" # Default price
   end
 
+  # 🎯 VENUE SCORING SYSTEM - Prioritize high-performing venues
+  def get_prioritized_venues(limit = nil)
+    # Score venues based on:
+    # 1. Number of gigs (higher = better)
+    # 2. Recent activity (more recent = better)
+    # 3. Website quality (real domain = better)
+    # 4. Avoid social media only venues
+
+    venues = Venue.where.not(website: [nil, ''])
+                  .where.not("website ILIKE '%facebook%'")
+                  .where.not("website ILIKE '%instagram%'")
+                  .where.not("website ILIKE '%twitter%'")
+                  .where.not("website ILIKE '%tiktok%'")
+                  .left_joins(:gigs)
+                  .group('venues.id')
+                  .select('venues.*, COUNT(gigs.id) as gig_count, MAX(gigs.date) as latest_gig')
+                  .order('gig_count DESC, latest_gig DESC NULLS LAST')
+
+    venues = venues.limit(limit) if limit
+    venues
+  end
+
+  # 🎯 SMART VENUE SELECTION - Focus on proven performers
+  def get_high_value_venues(limit = 200)
+    # Get venues with proven track record
+    high_performers = Venue.joins(:gigs)
+                           .where.not(website: [nil, ''])
+                           .where.not("website ILIKE '%facebook%'")
+                           .where.not("website ILIKE '%instagram%'")
+                           .group('venues.id')
+                           .having('COUNT(gigs.id) >= 3') # At least 3 gigs
+                           .order('COUNT(gigs.id) DESC')
+                           .limit(limit)
+
+    puts "🎯 Selected #{high_performers.count} high-value venues (3+ gigs each)" if @verbose
+    high_performers
+  end
+
+  # 🔄 RETRY LOGIC - Give temporarily failed venues another chance
+  def should_retry_venue?(venue_name)
+    return false unless @venue_failures && @venue_failures[venue_name]
+
+    failures = @venue_failures[venue_name]
+
+    # Retry venues with only 1-2 failures (might be temporary issues)
+    (failures[:timeout] <= 2 && failures[:error] <= 2)
+  end
 
 end

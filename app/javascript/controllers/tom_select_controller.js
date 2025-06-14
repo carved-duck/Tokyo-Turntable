@@ -5,17 +5,6 @@ export default class extends Controller {
   static values = { options: Object }
 
   connect() {
-    new TomSelect(this.element, {
-      plugins: {
-        remove_button: {
-          title: 'Remove this item',
-        }
-      },
-      persist: false,
-      createOnBlur: true,
-      create: true
-    })
-
     this.masterOptions = Object.entries(this.optionsValue || {}).map(([value, text]) => ({
       value,
       text
@@ -30,24 +19,24 @@ export default class extends Controller {
         plugins: ['remove_button'],
         openOnFocus: false,
         closeAfterSelect: true,
-        // render: {
-        //   no_results: function(data, escape) {
-        //     return 'No results found';
-        //   }
-        // },
+        persist: false,
+        render: {
+          no_results: function(data, escape) {
+            return '<div class="no-results">No results found</div>';
+          }
+        },
         onItemAdd: () => {
           setTimeout(() => {
-          this.tomSelect.setTextboxValue("");
-          this.tomSelect.clearOptions();
-          this.tomSelect.close();
-      }, 0);
-    },
+            this.tomSelect.setTextboxValue("");
+            this.tomSelect.clearOptions();
+            this.tomSelect.close();
+          }, 0);
+        },
 
-        // onChange: (value) => {
-        //   if (this.tomSelect.items.length === 0 && !this.tomSelect.getValue()) {
-        //     this.tomSelect.clearOptions();
-        //   }
-        // },
+        onItemRemove: (value) => {
+          // Optional: Add any custom logic when item is removed
+          console.log('Item removed:', value);
+        },
 
         onType: (str) => {
           const search = str.trim().toLowerCase();
@@ -67,11 +56,12 @@ export default class extends Controller {
           this.tomSelect.refreshOptions(false);
           this.tomSelect.open();
         }
-    });
+      }
+    );
 
     this.tomSelect.addOption(this.masterOptions);
     this.tomSelect.refreshOptions(false);
-}
+  }
 
   disconnect() {
     if (this.tomSelect) {
