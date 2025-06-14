@@ -142,6 +142,7 @@ GEM
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
+    event_stream_parser (1.0.0)
     execjs (2.10.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
@@ -339,6 +340,10 @@ GEM
       rspec-support (~> 3.13.0)
     rspec-support (3.13.4)
     rtesseract (3.1.4)
+    ruby-openai (7.4.0)
+      event_stream_parser (>= 0.3.0, < 2.0.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-rc4 (0.1.5)
     ruby-vips (2.2.4)
       ffi (~> 1.12)
@@ -449,6 +454,7 @@ DEPENDENCIES
   retryable
   rspec (~> 3.13)
   rtesseract
+  ruby-openai (~> 7.0)
   sassc-rails
   selenium-webdriver
   simple_form!
