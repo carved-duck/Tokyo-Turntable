@@ -1245,7 +1245,7 @@ class UnifiedVenueScraper
   def scrape_venue_ultra_fast(venue_config)
     puts "🏎️ [#{venue_config[:name]}] Starting ultra-fast scraping..." if @verbose
 
-    # Check blacklist first
+    # Check blacklist first - but be less aggressive
     if is_venue_blacklisted?(venue_config[:name], venue_config[:url])
       return { success: false, gigs: [], reason: "Blacklisted venue", venue: venue_config[:name] }
     end
@@ -1283,9 +1283,10 @@ class UnifiedVenueScraper
         response_time = Time.current - start_time
         @adaptive_rate_limiter.record_response_time(venue_config[:name], response_time)
 
-        # Process results and blacklist if needed
+        # IMPROVED: Less aggressive blacklisting
         if gigs.nil? || gigs.empty?
-          add_to_blacklist(venue_config[:name], "No gigs found")
+          # Don't blacklist immediately - many venues might just not have current gigs
+          puts "  ℹ️ No gigs found for #{venue_config[:name]}" if @verbose
           return { success: false, gigs: [], reason: "No gigs found", venue: venue_config[:name] }
         end
 
@@ -1293,7 +1294,8 @@ class UnifiedVenueScraper
         valid_gigs = filter_valid_gigs(gigs)
 
         if valid_gigs.empty?
-          add_to_blacklist(venue_config[:name], "No valid current gigs")
+          # Don't blacklist for no valid current gigs - this is normal
+          puts "  ℹ️ No valid current gigs for #{venue_config[:name]}" if @verbose
           return { success: false, gigs: [], reason: "No valid current gigs", venue: venue_config[:name] }
         end
 
@@ -1301,12 +1303,20 @@ class UnifiedVenueScraper
 
       rescue Selenium::WebDriver::Error::TimeoutError => e
         error_msg = e.message
-        add_to_blacklist(venue_config[:name], "timeout: #{error_msg}")
+        # Only blacklist after multiple timeout failures
+        record_venue_failure(venue_config[:name], "timeout")
+        if should_blacklist_venue?(venue_config[:name])
+          add_to_blacklist(venue_config[:name], "repeated timeouts")
+        end
         return { success: false, gigs: [], reason: "timeout: #{error_msg}", venue: venue_config[:name] }
 
       rescue => e
         error_msg = e.message
-        add_to_blacklist(venue_config[:name], "ERROR: #{error_msg}")
+        # Only blacklist after multiple general failures
+        record_venue_failure(venue_config[:name], "error")
+        if should_blacklist_venue?(venue_config[:name])
+          add_to_blacklist(venue_config[:name], "repeated errors: #{error_msg}")
+        end
         return { success: false, gigs: [], reason: "ERROR: #{error_msg}", venue: venue_config[:name] }
       end
     end
@@ -3513,6 +3523,26 @@ class UnifiedVenueScraper
     end
 
     save_venue_blacklist(blacklist)
+  end
+
+  # 🎯 IMPROVED: Smart failure tracking and blacklisting
+  def record_venue_failure(venue_name, failure_type)
+    @venue_failures ||= {}
+    @venue_failures[venue_name] ||= { timeout: 0, error: 0, no_gigs: 0 }
+    @venue_failures[venue_name][failure_type.to_sym] += 1
+  end
+
+  def should_blacklist_venue?(venue_name)
+    return false unless @venue_failures && @venue_failures[venue_name]
+
+    failures = @venue_failures[venue_name]
+
+    # Blacklist after 3 timeouts or 5 general errors
+    failures[:timeout] >= 3 || failures[:error] >= 5
+  end
+
+  def reset_venue_failures
+    @venue_failures = {}
   end
 
   # 💾 Database integration - save gigs to database with connection management
