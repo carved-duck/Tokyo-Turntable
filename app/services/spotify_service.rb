@@ -128,6 +128,76 @@ class SpotifyService
     end
   end
 
+  # NEW: Get genre information for a band/artist
+  # Returns a hash with genre info or nil if not found
+  def get_artist_genre_info(artist_name)
+    return nil if artist_name.blank? || !valid_band_name?(artist_name)
+
+    clean_name = sanitize_artist_name(artist_name)
+    return nil if clean_name.blank? || clean_name.length < 2
+
+    ["JP", "GB", "US"].each do |market|
+      artist_data = _search_artist_with_validation(clean_name, market)
+      if artist_data
+        # Get full artist details including genres
+        full_artist_data = get_artist_details(artist_data[:id])
+        if full_artist_data
+          return {
+            artist_id: artist_data[:id],
+            artist_name: full_artist_data[:name],
+            genres: full_artist_data[:genres],
+            primary_genre: determine_primary_genre(full_artist_data[:genres]),
+            popularity: full_artist_data[:popularity],
+            confidence: calculate_match_confidence(clean_name, full_artist_data[:name], full_artist_data[:popularity]),
+            market: market
+          }
+        end
+      end
+    end
+
+    nil
+  end
+
+  # NEW: Get detailed artist information including genres
+  def get_artist_details(artist_id)
+    return nil if artist_id.blank?
+
+    resp = fetch_with_token("/artists/#{artist_id}")
+
+    if resp.success? && resp['id']
+      {
+        id: resp['id'],
+        name: resp['name'],
+        genres: resp['genres'] || [],
+        popularity: resp['popularity'] || 0,
+        followers: resp['followers'] ? resp['followers']['total'] : 0,
+        external_urls: resp['external_urls']
+      }
+    else
+      nil
+    end
+  end
+
+  # NEW: Batch genre lookup for multiple artists (more efficient)
+  def get_multiple_artists_genres(artist_names)
+    return {} if artist_names.blank?
+
+    results = {}
+
+    # Process in batches to avoid rate limiting
+    artist_names.each_slice(10) do |batch|
+      batch.each do |artist_name|
+        genre_info = get_artist_genre_info(artist_name)
+        results[artist_name] = genre_info if genre_info
+
+        # Small delay to be respectful to Spotify API
+        sleep(0.1)
+      end
+    end
+
+    results
+  end
+
   private
 
   # ----------------------------------------------------
@@ -349,5 +419,62 @@ class SpotifyService
       )
     end
     resp
+  end
+
+  # NEW: Convert Spotify's detailed genres to our simplified genre system
+  def determine_primary_genre(spotify_genres)
+    return "Unknown" if spotify_genres.blank?
+
+    # Convert to lowercase for easier matching
+    genres_lower = spotify_genres.map(&:downcase)
+
+    # Electronic/Dance genres
+    return "Electronic" if genres_lower.any? { |g| g.match?(/electronic|techno|house|ambient|edm|dubstep|trance|drum.?n.?bass|dnb|breakbeat|garage|minimal|acid|rave|dance|electro/) }
+
+    # Hip-Hop and Rap
+    return "Hip-Hop" if genres_lower.any? { |g| g.match?(/hip.?hop|rap|trap|drill|grime|urban/) }
+
+    # Jazz and related
+    return "Jazz" if genres_lower.any? { |g| g.match?(/jazz|swing|blues|bebop|fusion|bossa.?nova|latin.?jazz|smooth.?jazz|big.?band/) }
+
+    # Rock genres (be more specific now)
+    return "Rock" if genres_lower.any? { |g| g.match?(/^rock$|classic.?rock|hard.?rock|soft.?rock|prog|progressive.?rock|garage.?rock|psychedelic.?rock/) }
+
+    # Alternative/Indie
+    return "Indie" if genres_lower.any? { |g| g.match?(/indie|alternative|alt.?rock|shoegaze|dream.?pop|lo.?fi|underground/) }
+
+    # Pop genres
+    return "Pop" if genres_lower.any? { |g| g.match?(/^pop$|j.?pop|k.?pop|dance.?pop|electro.?pop|synth.?pop|indie.?pop/) }
+
+    # Punk and hardcore
+    return "Punk" if genres_lower.any? { |g| g.match?(/punk|hardcore|emo|screamo|post.?punk|ska.?punk/) }
+
+    # Metal genres
+    return "Metal" if genres_lower.any? { |g| g.match?(/metal|death|black.*metal|doom|sludge|grind|core$|metalcore|deathcore|heavy.?metal/) }
+
+    # Classical
+    return "Classical" if genres_lower.any? { |g| g.match?(/classical|orchestra|symphony|chamber|philharmonic|concerto|opera|baroque/) }
+
+    # Folk and acoustic
+    return "Folk" if genres_lower.any? { |g| g.match?(/folk|acoustic|singer.?songwriter|americana|country|bluegrass|celtic/) }
+
+    # R&B and Soul
+    return "R&B" if genres_lower.any? { |g| g.match?(/r&b|soul|funk|motown|neo.?soul|contemporary.?r&b/) }
+
+    # Reggae
+    return "Reggae" if genres_lower.any? { |g| g.match?(/reggae|ska|dub|rastafari|jamaica/) }
+
+    # World music
+    return "World" if genres_lower.any? { |g| g.match?(/world|ethnic|traditional|cultural|african|latin|asian|middle.?eastern|international/) }
+
+    # Experimental
+    return "Experimental" if genres_lower.any? { |g| g.match?(/experimental|avant.?garde|noise|drone|ambient|soundscape|improvisation/) }
+
+    # Japanese-specific genres
+    return "J-Rock" if genres_lower.any? { |g| g.match?(/j.?rock|japanese.*rock|visual.?kei/) }
+    return "J-Pop" if genres_lower.any? { |g| g.match?(/j.?pop|japanese.*pop/) }
+
+    # If we have genres but none match our categories, use the first one
+    spotify_genres.first&.titleize || "Unknown"
   end
 end

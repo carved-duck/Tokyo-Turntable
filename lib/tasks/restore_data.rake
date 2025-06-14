@@ -59,7 +59,7 @@ namespace :db do
                 # Create band if title exists
                 if gig_data['title'].present?
                   band = Band.find_or_create_by(name: gig_data['title']) do |b|
-                    b.genre = 'Rock'
+                    b.genre = 'Unknown'
                     b.hometown = 'Tokyo'
                     b.email = "info@#{gig_data['title'].downcase.gsub(/[^a-z0-9]/, '')}.com"
                   end

@@ -74,7 +74,7 @@ namespace :scrape do
 
                 bands = band_names.map do |band_name|
                   Band.find_or_create_by(name: band_name.strip) do |band|
-                    band.genre = 'Unknown'
+                    band.genre = 'Unknown'  # Will be properly classified by scraper
                     band.hometown = 'Tokyo, Japan'  # Default hometown
                     band.email = 'contact@band.com'  # Default email
                   end
