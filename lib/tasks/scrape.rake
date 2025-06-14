@@ -102,7 +102,8 @@ namespace :scrape do
       verbose: true,
       max_parallel_venues: 25, # High but manageable parallelism
       responsible_mode: false,  # No delays
-      rate_limiting: false      # Maximum speed
+      rate_limiting: false,     # Maximum speed
+      force_parallelism: true   # Force the parallelism setting
     )
 
     start_time = Time.current
@@ -125,10 +126,10 @@ namespace :scrape do
       }
     end
 
-    # Process venues in optimized batches
+    # Process venues in reasonable batches
     successful_venues = 0
     total_gigs = 0
-    batch_size = 25
+    batch_size = 20
 
     venue_configs.each_slice(batch_size).with_index do |batch, batch_index|
       batch_start = Time.current
@@ -137,20 +138,44 @@ namespace :scrape do
       batch_successful = 0
       batch_gigs = 0
 
+            # REASONABLE PARALLEL PROCESSING - Don't crash the system
+      thread_pool = Concurrent::FixedThreadPool.new(10)
+      futures = []
+
       batch.each do |venue_config|
-        result = scraper.scrape_venue_ultra_fast(venue_config)
+        future = Concurrent::Future.execute(executor: thread_pool) do
+          result = scraper.scrape_venue_ultra_fast(venue_config)
 
-        if result[:success]
-          batch_successful += 1
-          batch_gigs += result[:gigs].length
+          if result[:success]
+            # Save to database
+            db_result = scraper.send(:save_gigs_to_database, result[:gigs], venue_config[:name])
+            puts "  ✅ #{venue_config[:name]}: #{result[:gigs].length} gigs (#{db_result[:saved]} saved)" if scraper.instance_variable_get(:@verbose)
+            { success: true, gigs: result[:gigs].length }
+          else
+            puts "  ❌ #{venue_config[:name]}: #{result[:reason]}" if scraper.instance_variable_get(:@verbose)
+            { success: false, gigs: 0 }
+          end
+        end
+        futures << future
+      end
 
-          # Save to database
-          db_result = scraper.send(:save_gigs_to_database, result[:gigs], venue_config[:name])
-          puts "  ✅ #{venue_config[:name]}: #{result[:gigs].length} gigs (#{db_result[:saved]} saved)" if scraper.instance_variable_get(:@verbose)
-        else
-          puts "  ❌ #{venue_config[:name]}: #{result[:reason]}" if scraper.instance_variable_get(:@verbose)
+      # Wait for all venues in batch to complete
+      futures.each do |future|
+        begin
+          result = future.value(15)  # 15 second timeout per venue (network optimized)
+          if result[:success]
+            batch_successful += 1
+            batch_gigs += result[:gigs]
+          end
+        rescue Concurrent::TimeoutError
+          puts "  ⚠️ Venue timed out" if scraper.instance_variable_get(:@verbose)
+        rescue => e
+          puts "  ⚠️ Venue error: #{e.message}" if scraper.instance_variable_get(:@verbose)
         end
       end
+
+      thread_pool.shutdown
+      thread_pool.wait_for_termination(30) || thread_pool.kill
 
       successful_venues += batch_successful
       total_gigs += batch_gigs
