@@ -204,6 +204,10 @@ class UnifiedVenueScraper
   def is_social_media_only_venue?(url)
     return true if url.nil? || url.strip.empty?
 
+    # Check for invalid URL patterns first
+    return true if url.downcase.include?('not listed') || url.downcase.include?('not available')
+    return true unless url.match?(/^https?:\/\//)
+
     social_media_domains = [
       'instagram.com', 'facebook.com', 'twitter.com', 'x.com',
       'tiktok.com', 'youtube.com', 'linktr.ee', 'linktree.com',
@@ -1399,12 +1403,17 @@ class UnifiedVenueScraper
     options.add_argument('--window-size=1920,1080')
     options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
 
-    # Fix for Selenium Manager issues - explicitly set Chrome binary path
-    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-
-    # Create webdriver with explicit service configuration
-    service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
-    browser = Selenium::WebDriver.for :chrome, service: service, options: options
+    # Environment-specific Chrome configuration
+    if heroku_environment?
+      # Heroku-specific configuration
+      configure_chrome_for_heroku(options)
+      browser = Selenium::WebDriver.for :chrome, options: options
+    else
+      # Local development configuration
+      configure_chrome_for_local(options)
+      service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
+      browser = Selenium::WebDriver.for :chrome, service: service, options: options
+    end
 
     # Optimized timeouts for speed
     browser.manage.timeouts.implicit_wait = 2
@@ -1414,7 +1423,7 @@ class UnifiedVenueScraper
   rescue => e
     puts "❌ Chrome browser creation failed: #{e.message}"
     puts "    Falling back to system-managed driver..."
-    # Fallback without explicit paths
+    # Fallback without explicit paths for any environment
     browser = Selenium::WebDriver.for :chrome, options: options
     browser.manage.timeouts.implicit_wait = 2
     browser.manage.timeouts.page_load = 8
@@ -1443,12 +1452,17 @@ class UnifiedVenueScraper
     }
     options.add_preference(:prefs, prefs)
 
-    # Fix for Selenium Manager issues - explicitly set Chrome binary path
-    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-
-    # Create webdriver with explicit service configuration
-    service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
-    browser = Selenium::WebDriver.for :chrome, service: service, options: options
+    # Environment-specific Chrome configuration
+    if heroku_environment?
+      # Heroku-specific configuration
+      configure_chrome_for_heroku(options)
+      browser = Selenium::WebDriver.for :chrome, options: options
+    else
+      # Local development configuration
+      configure_chrome_for_local(options)
+      service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
+      browser = Selenium::WebDriver.for :chrome, service: service, options: options
+    end
 
     # Enhanced timeouts for complex sites
     browser.manage.timeouts.implicit_wait = 5
@@ -1458,7 +1472,7 @@ class UnifiedVenueScraper
   rescue => e
     puts "❌ Enhanced Chrome browser creation failed: #{e.message}"
     puts "    Falling back to system-managed driver..."
-    # Fallback without explicit paths
+    # Fallback without explicit paths for any environment
     browser = Selenium::WebDriver.for :chrome, options: options
     browser.manage.timeouts.implicit_wait = 5
     browser.manage.timeouts.page_load = 15
@@ -2152,12 +2166,17 @@ class UnifiedVenueScraper
     options.add_argument('--disable-background-timer-throttling')
     options.add_argument('--disable-backgrounding-occluded-windows')
 
-    # Fix for Selenium Manager issues - explicitly set Chrome binary path
-    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-
-    # Create webdriver with explicit service configuration
-    service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
-    browser = Selenium::WebDriver.for :chrome, service: service, options: options
+    # Environment-specific Chrome configuration
+    if heroku_environment?
+      # Heroku-specific configuration
+      configure_chrome_for_heroku(options)
+      browser = Selenium::WebDriver.for :chrome, options: options
+    else
+      # Local development configuration
+      configure_chrome_for_local(options)
+      service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
+      browser = Selenium::WebDriver.for :chrome, service: service, options: options
+    end
 
     # 🚀 ADAPTIVE TIMEOUTS based on JS complexity with shorter defaults
     if @enable_js
@@ -2172,7 +2191,7 @@ class UnifiedVenueScraper
   rescue => e
     puts "❌ General Chrome browser creation failed: #{e.message}"
     puts "    Falling back to system-managed driver..."
-    # Fallback without explicit paths
+    # Fallback without explicit paths for any environment
     browser = Selenium::WebDriver.for :chrome, options: options
     if @enable_js
       browser.manage.timeouts.implicit_wait = 3
@@ -4084,6 +4103,41 @@ class UnifiedVenueScraper
 
     # Retry venues with only 1-2 failures (might be temporary issues)
     (failures[:timeout] <= 2 && failures[:error] <= 2)
+  end
+
+  private
+
+  # Environment detection for Chrome configuration
+  def heroku_environment?
+    # Check for Heroku-specific environment variables
+    ENV['DYNO'].present? || ENV['HEROKU_APP_NAME'].present? ||
+    Rails.env.production? && ENV['DATABASE_URL']&.include?('postgres')
+  end
+
+  def configure_chrome_for_heroku(options)
+    puts "🏗️ Configuring Chrome for Heroku environment..." if @verbose
+
+    # Heroku-specific Chrome options
+    options.add_argument('--disable-backgrounding-occluded-windows')
+    options.add_argument('--disable-renderer-backgrounding')
+    options.add_argument('--disable-background-timer-throttling')
+    options.add_argument('--disable-features=TranslateUI')
+    options.add_argument('--disable-ipc-flooding-protection')
+    options.add_argument('--single-process') # Important for Heroku memory limits
+    options.add_argument('--max_old_space_size=4096')
+    options.add_argument('--disable-dev-shm-usage')
+
+    # Use system Chrome (installed via buildpack)
+    # Don't set binary path - let Selenium find it automatically
+    puts "    ✅ Using system-managed Chrome binary for Heroku" if @verbose
+  end
+
+  def configure_chrome_for_local(options)
+    puts "🏠 Configuring Chrome for local development..." if @verbose
+
+    # Local development - use explicit paths
+    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    puts "    ✅ Using local Chrome binary for development" if @verbose
   end
 
 end

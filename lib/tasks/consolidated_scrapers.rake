@@ -18,11 +18,14 @@ namespace :scrape do
 
     start_time = Time.current
 
-    # Get all scrapeable venues
+    # Get all scrapeable venues with proper URL validation
     venues = Venue.where.not(website: [nil, ''])
                   .where.not("website ILIKE '%facebook%'")
                   .where.not("website ILIKE '%instagram%'")
                   .where.not("website ILIKE '%twitter%'")
+                  .where.not("website ILIKE '%Not Listed%'")
+                  .where.not("website ILIKE '%Not Available%'")
+                  .where("website LIKE 'http%'")  # Only valid HTTP/HTTPS URLs
 
     puts "📊 Processing #{venues.count} venues with ultra-fast approach..."
 
@@ -148,11 +151,14 @@ namespace :scrape do
 
     start_time = Time.current
 
-    # Get all scrapeable venues
+    # Get all scrapeable venues with proper URL validation
     venues = Venue.where.not(website: [nil, ''])
                   .where.not("website ILIKE '%facebook%'")
                   .where.not("website ILIKE '%instagram%'")
                   .where.not("website ILIKE '%twitter%'")
+                  .where.not("website ILIKE '%Not Listed%'")
+                  .where.not("website ILIKE '%Not Available%'")
+                  .where("website LIKE 'http%'")  # Only valid HTTP/HTTPS URLs
 
     puts "📊 Processing #{venues.count} venues with respectful approach..."
 
