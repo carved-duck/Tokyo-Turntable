@@ -1399,12 +1399,25 @@ class UnifiedVenueScraper
     options.add_argument('--window-size=1920,1080')
     options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
 
-    browser = Selenium::WebDriver.for :chrome, options: options
+    # Fix for Selenium Manager issues - explicitly set Chrome binary path
+    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+
+    # Create webdriver with explicit service configuration
+    service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
+    browser = Selenium::WebDriver.for :chrome, service: service, options: options
 
     # Optimized timeouts for speed
     browser.manage.timeouts.implicit_wait = 2
     browser.manage.timeouts.page_load = 8
 
+    browser
+  rescue => e
+    puts "❌ Chrome browser creation failed: #{e.message}"
+    puts "    Falling back to system-managed driver..."
+    # Fallback without explicit paths
+    browser = Selenium::WebDriver.for :chrome, options: options
+    browser.manage.timeouts.implicit_wait = 2
+    browser.manage.timeouts.page_load = 8
     browser
   end
 
@@ -1430,23 +1443,36 @@ class UnifiedVenueScraper
     }
     options.add_preference(:prefs, prefs)
 
-    browser = Selenium::WebDriver.for :chrome, options: options
+    # Fix for Selenium Manager issues - explicitly set Chrome binary path
+    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+
+    # Create webdriver with explicit service configuration
+    service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
+    browser = Selenium::WebDriver.for :chrome, service: service, options: options
 
     # Enhanced timeouts for complex sites
     browser.manage.timeouts.implicit_wait = 5
     browser.manage.timeouts.page_load = 15
 
     browser
+  rescue => e
+    puts "❌ Enhanced Chrome browser creation failed: #{e.message}"
+    puts "    Falling back to system-managed driver..."
+    # Fallback without explicit paths
+    browser = Selenium::WebDriver.for :chrome, options: options
+    browser.manage.timeouts.implicit_wait = 5
+    browser.manage.timeouts.page_load = 15
+    browser
   end
 
   # 🔍 Enhanced gig extraction with better selectors
   def extract_gigs_from_page_enhanced(doc, venue_config)
     gigs = []
-    selectors = venue_config[:selectors]
+    selectors = venue_config[:selectors] || get_general_selectors
 
     # Try multiple selector strategies
     selector_sets = [
-      selectors[:gigs], # Original selectors
+      selectors&.[](:gigs), # Original selectors
       # Enhanced selectors for common patterns
       '.event-item, .schedule-row, .live-info, .show-listing, .performance, .concert-info',
       # Date-based selectors
@@ -2126,7 +2152,12 @@ class UnifiedVenueScraper
     options.add_argument('--disable-background-timer-throttling')
     options.add_argument('--disable-backgrounding-occluded-windows')
 
-    browser = Selenium::WebDriver.for :chrome, options: options
+    # Fix for Selenium Manager issues - explicitly set Chrome binary path
+    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+
+    # Create webdriver with explicit service configuration
+    service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
+    browser = Selenium::WebDriver.for :chrome, service: service, options: options
 
     # 🚀 ADAPTIVE TIMEOUTS based on JS complexity with shorter defaults
     if @enable_js
@@ -2137,6 +2168,19 @@ class UnifiedVenueScraper
       browser.manage.timeouts.page_load = 6      # Reduced from 8
     end
 
+    browser
+  rescue => e
+    puts "❌ General Chrome browser creation failed: #{e.message}"
+    puts "    Falling back to system-managed driver..."
+    # Fallback without explicit paths
+    browser = Selenium::WebDriver.for :chrome, options: options
+    if @enable_js
+      browser.manage.timeouts.implicit_wait = 3
+      browser.manage.timeouts.page_load = 12
+    else
+      browser.manage.timeouts.implicit_wait = 1
+      browser.manage.timeouts.page_load = 6
+    end
     browser
   end
 
