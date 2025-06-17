@@ -57,6 +57,19 @@ class BaseScraper
     options.add_argument('--window-size=1920,1080')
     options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
 
+    # Fix for Selenium Manager issues - explicitly set Chrome binary path
+    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+
+    # Create webdriver with explicit service configuration
+    service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
+    browser = Selenium::WebDriver.for :chrome, service: service, options: options
+    browser.manage.timeouts.implicit_wait = 10
+    browser.manage.timeouts.page_load = 30
+    browser
+  rescue => e
+    puts "❌ Base Chrome browser creation failed: #{e.message}"
+    puts "    Falling back to system-managed driver..."
+    # Fallback without explicit paths
     browser = Selenium::WebDriver.for :chrome, options: options
     browser.manage.timeouts.implicit_wait = 10
     browser.manage.timeouts.page_load = 30
