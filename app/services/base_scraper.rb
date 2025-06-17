@@ -57,19 +57,25 @@ class BaseScraper
     options.add_argument('--window-size=1920,1080')
     options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
 
-    # Fix for Selenium Manager issues - explicitly set Chrome binary path
-    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    # Environment-specific Chrome configuration
+    if heroku_environment?
+      # Heroku-specific configuration
+      configure_chrome_for_heroku(options)
+      browser = Selenium::WebDriver.for :chrome, options: options
+    else
+      # Local development configuration
+      configure_chrome_for_local(options)
+      service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
+      browser = Selenium::WebDriver.for :chrome, service: service, options: options
+    end
 
-    # Create webdriver with explicit service configuration
-    service = Selenium::WebDriver::Chrome::Service.new(path: '/opt/homebrew/bin/chromedriver')
-    browser = Selenium::WebDriver.for :chrome, service: service, options: options
     browser.manage.timeouts.implicit_wait = 10
     browser.manage.timeouts.page_load = 30
     browser
   rescue => e
     puts "❌ Base Chrome browser creation failed: #{e.message}"
     puts "    Falling back to system-managed driver..."
-    # Fallback without explicit paths
+    # Fallback without explicit paths for any environment
     browser = Selenium::WebDriver.for :chrome, options: options
     browser.manage.timeouts.implicit_wait = 10
     browser.manage.timeouts.page_load = 30
@@ -181,6 +187,34 @@ class BaseScraper
     end
 
     merged
+  end
+
+  private
+
+  # Environment detection for Chrome configuration
+  def heroku_environment?
+    # Check for Heroku-specific environment variables
+    ENV['DYNO'].present? || ENV['HEROKU_APP_NAME'].present? ||
+    Rails.env.production? && ENV['DATABASE_URL']&.include?('postgres')
+  end
+
+  def configure_chrome_for_heroku(options)
+    # Heroku-specific Chrome options
+    options.add_argument('--disable-backgrounding-occluded-windows')
+    options.add_argument('--disable-renderer-backgrounding')
+    options.add_argument('--disable-background-timer-throttling')
+    options.add_argument('--disable-features=TranslateUI')
+    options.add_argument('--disable-ipc-flooding-protection')
+    options.add_argument('--single-process') # Important for Heroku memory limits
+    options.add_argument('--max_old_space_size=4096')
+
+    # Use system Chrome (installed via buildpack)
+    # Don't set binary path - let Selenium find it automatically
+  end
+
+  def configure_chrome_for_local(options)
+    # Local development - use explicit paths
+    options.binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
   end
 end
 
