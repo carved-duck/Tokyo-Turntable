@@ -264,9 +264,9 @@ h4, h5, h6 {
     align-self: flex-start;
     font-style: italic;
     width: 100%;
-    // margin-bottom:0 !important;
+    margin-bottom: 1.5rem !important;
+
     .venue-link {
-      // font-weight: bold;
       margin-left: 4px;
     }
 
@@ -278,11 +278,6 @@ h4, h5, h6 {
       color: #333;
     }
   }
-
-  .gig-show-page-content-wrapper .login-prompt {
-    margin-bottom: 0 !important;
-  }
-
 
 // ===== back to gig button =====
 .gig-back-btn {

@@ -71,8 +71,10 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem "selenium-webdriver"
 end
+
+# Scraping dependencies (needed in production for web scraping)
+gem "selenium-webdriver"
 
 
 # Manually added gems
@@ -87,8 +89,29 @@ gem "cloudinary"
 # custom gems
 gem "geocoder"
 gem "faker"
-gem "ferrum"
+# gem "ferrum" # Replaced with Selenium WebDriver
 gem 'acts_as_favoritor'
 gem "pg_search"
 gem "httparty"
 gem 'inline_svg'
+
+# Scraping and data processing
+gem 'nokogiri'
+gem 'retryable'
+gem 'parallel'
+gem 'concurrent-ruby'
+
+# Background job processing
+gem 'solid_queue'
+
+# OCR functionality
+gem 'rtesseract'
+gem 'image_processing', '~> 1.2'
+gem 'open3'
+
+# PDF support for OCR
+gem 'pdf-reader'
+gem 'mini_magick'
+
+gem "rspec", "~> 3.13"
+gem "ruby-openai", "~> 7.0"

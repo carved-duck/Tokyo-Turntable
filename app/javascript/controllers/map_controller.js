@@ -11,43 +11,25 @@ export default class extends Controller {
   map = null;
 
   connect() {
-    console.log("Mapbox Stimulus controller connected!"); // Added for debugging
-
-    // Defensive check: If a map instance already exists on this element, destroy it first.
-    if (this.map) { // Check the class property where we store the map instance
-      console.log("Destroying existing Mapbox map instance.");
-      this.map.remove(); // Mapbox GL JS uses .remove() to destroy the map
-      this.map = null; // Clear the reference
-    }
-
     mapboxgl.accessToken = this.apiKeyValue
-    this.map = new mapboxgl.Map({
-      container: this.element, // this.element is the div with data-controller="map"
-      style: "mapbox://styles/mapbox/streets-v12",
-    });
 
-    // filter out any null coords, but need to check later...
-    const valid = this.markersValue.filter(m => m.lng != null && m.lat != null)
-    // add each gig-marker
-    valid.forEach(m => this._addMarker(m))
-
-    if (valid.length > 0) {
-      this._fitMapToMarkers(valid) // Pass valid markers to the method
-    } else {
-      // no markers then we show Tokyo
-      this.map.setCenter([139.6917, 35.6895])
-      this.map.setZoom(10)
+    // Destroy existing map instance if it exists
+    if (this.map) {
+      this.map.remove()
     }
 
-    console.log("Mapbox map initialized:", this.map); // Added for debugging
+    this.map = new mapboxgl.Map({
+      container: this.element,
+      style: "mapbox://styles/mapbox/streets-v10"
+    })
+
+    this.#addMarkersToMap()
+    this.#fitMapToMarkers()
   }
 
-  // ADD THIS DISCONNECT METHOD
   disconnect() {
-    console.log("Mapbox Stimulus controller disconnected."); // Added for debugging
     if (this.map) {
-      this.map.remove(); // Crucial: destroy the map instance when the controller disconnects
-      this.map = null; // Clear the reference
+      this.map.remove()
     }
   }
 
@@ -77,5 +59,24 @@ export default class extends Controller {
     const bounds = new mapboxgl.LngLatBounds()
     markers.forEach(m => bounds.extend([m.lng, m.lat]))
     this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 })
+  }
+
+  #addMarkersToMap() {
+    // filter out any null coords, but need to check later...
+    const valid = this.markersValue.filter(m => m.lng != null && m.lat != null)
+    // add each gig-marker
+    valid.forEach(m => this._addMarker(m))
+
+    if (valid.length > 0) {
+      this._fitMapToMarkers(valid) // Pass valid markers to the method
+    } else {
+      // no markers then we show Tokyo
+      this.map.setCenter([139.6917, 35.6895])
+      this.map.setZoom(10)
+    }
+  }
+
+  #fitMapToMarkers() {
+    this.#addMarkersToMap()
   }
 }

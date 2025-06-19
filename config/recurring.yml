@@ -1,0 +1,54 @@
+# production:
+#   periodic_cleanup:
+#     class: CleanSoftDeletedRecordsJob
+#     queue: background
+#     args: [ 1000, { batch_size: 500 } ]
+#     schedule: every hour
+#   periodic_command:
+#     command: "SoftDeletedRecord.due.delete_all"
+#     priority: 2
+#     schedule: at 5am every day
+
+# Tokyo Turntable Responsible Scraping Schedule
+# Updated to weekly scraping for respectful, sustainable operation
+
+production:
+  # 🗓️ Weekly venue scraping - Sundays at 2 AM (low traffic time)
+  weekly_venue_scraping:
+    class: VenueScrapingJob
+    queue: default
+    schedule: at 2am every sunday
+    args: [{
+      mode: "responsible_weekly",
+      max_venues: 200,
+      max_duration_hours: 3,
+      rate_limiting: true,
+      respect_robots_txt: true
+    }]
+
+  # 🔄 Backup weekly scraping - Sundays at 2 PM (if morning run fails)
+  backup_weekly_scraping:
+    class: VenueScrapingJob
+    queue: default
+    schedule: at 2pm every sunday
+    args: [{
+      mode: "backup_weekly",
+      max_venues: 100,
+      max_duration_hours: 2,
+      only_if_previous_failed: true,
+      rate_limiting: true
+    }]
+
+development:
+  # 🧪 Development testing - reduced frequency and limited scope
+  dev_venue_scraping:
+    class: VenueScrapingJob
+    queue: default
+    schedule: at 10am every sunday  # Weekly in dev too
+    args: [{
+      mode: "development_test",
+      max_venues: 10,
+      max_duration_hours: 1,
+      rate_limiting: true,
+      verbose: true
+    }]

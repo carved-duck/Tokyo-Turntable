@@ -8,11 +8,9 @@ export default class extends Controller {
   flatpickrInstance = null;
 
   connect() {
-    console.log("flatpickr Stimulus controller connected!");
-
-    if (this.element._flatpickr) {
-      console.log("Destroying existing flatpickr instance.");
-      this.element._flatpickr.destroy();
+    // Destroy existing flatpickr instance if it exists
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy()
     }
 
     this.flatpickrInstance = flatpickr(this.element, {
@@ -21,15 +19,12 @@ export default class extends Controller {
       dateFormat: "Y-m-d",
       // Add other Flatpickr options as needed
     });
-
-    console.log("Flatpickr initialized:", this.flatpickrInstance);
   }
 
   disconnect() {
-    console.log("flatpickr Stimulus controller disconnected.");
+    // Flatpickr cleanup - console.log removed for production
     if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-      this.flatpickrInstance = null;
+      this.flatpickrInstance.destroy()
     }
   }
 }

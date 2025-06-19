@@ -1,15 +1,12 @@
-# 📚 Tokyo Turntable
 
-A web based app used to help people find shows and venues in Tokyo
-<br>
+# 🎧 Tokyo Turntable
 
-![IMG_7754](https://github.com/user-attachments/assets/94530789-2281-419f-99d2-00dd5ee572ab)
+A Ruby on Rails application which helps users find live shows around Tokyo which suit their music preferences.
 
-Landing page 
-![IMG_7755](https://github.com/user-attachments/assets/5ccbc90f-31b8-48a0-9820-fe3f813c860d)
+![image](https://github.com/user-attachments/assets/f712527e-270e-4c19-8d46-a01eb3107c7e)
 
 <br>
-App home: tokyoturntable.com
+App home: https://WHATEVER.herokuapp.com
    
 
 ## Getting Started
@@ -51,7 +48,6 @@ rails s
 - [Figma](https://www.figma.com) — Prototyping
 
 ## Acknowledgements
-I'd like to thank the owner of https://www.tokyogigguide.com for having built such an incredible website that hosts almost every venue in Tokyo. His website was vital in helping us to build our webpage.
 
 ## Team Members
 - William Sebastian https://github.com/MaddRussian
@@ -63,3 +59,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 This project is licensed under the MIT License
+# Force buildpack install

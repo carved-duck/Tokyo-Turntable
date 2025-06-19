@@ -11,7 +11,13 @@
           <p class="neighborhood text-start"><span><%= @venue.neighborhood %></span>, Tokyo </p>
         </div>
         <strong>
-          <em><span class="gig-genre"><%= @gig.bands.first.genre %></span></em>
+          <span class="gig-genre">
+            <% if @gig.bands.any? %>
+              <%= @gig.bands.first.genre %>
+            <% else %>
+              Live Show
+            <% end %>
+          </span>
         </strong>
       </div>
       <div class="d-flex align-items-top ps-2">
@@ -64,7 +70,7 @@
       <% end %>
     </div>
     <%# Gig Info Section %>
-    <div class="event-details-bottom mt-0 text-start">
+    <div class="event-details-bottom mt-3 text-start">
       <p class="gig-venue"><i class="fa-solid fa-martini-glass icon"></i><%= @venue.name %></p>
       <div class="text-start">
         <%# render venue Details Toggle Section%>

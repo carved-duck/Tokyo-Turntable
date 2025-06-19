@@ -46,6 +46,39 @@
   padding: 3px 8px !important; /* Adjust padding for selected tags */
   margin: 0 5px 0 0 !important; /* Adjust margin between tags */
   border: none !important;
+  position: relative !important; /* Ensure proper positioning for remove button */
+}
+
+// Style the remove button (X) for selected tags
+.ts-wrapper.multi .ts-control .item .remove {
+  background: none !important;
+  border: none !important;
+  color: #666 !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  line-height: 1 !important;
+  margin-left: 5px !important;
+  padding: 0 !important;
+  position: relative !important;
+  text-decoration: none !important;
+  z-index: 10 !important;
+  display: inline-block !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+// Hover effect for remove button
+.ts-wrapper.multi .ts-control .item .remove:hover {
+  color: #d32f2f !important; /* Red color on hover */
+  background: none !important;
+}
+
+// Ensure the remove button is clickable
+.ts-wrapper.multi .ts-control .item .remove:focus,
+.ts-wrapper.multi .ts-control .item .remove:active {
+  outline: none !important;
+  color: #d32f2f !important;
 }
 
 // Ensure the *input text* itself (where you type to search genres, or the "Shinjuku" field) is dark.

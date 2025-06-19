@@ -1,0 +1,97 @@
+[
+  {
+    "venue": "Antiknock",
+    "url": "https://antiknock.net",
+    "reason": "uninitialized constant VenueWebsiteScraper"
+  },
+  {
+    "venue": "20000volt",
+    "url": "https://den-atsu.com",
+    "reason": "uninitialized constant VenueWebsiteScraper"
+  },
+  {
+    "venue": "Milkyway",
+    "url": "https://www.shibuyamilkyway.com",
+    "reason": "uninitialized constant VenueWebsiteScraper"
+  },
+  {
+    "venue": "Yokohama Arena",
+    "url": "https://www.yokohama-arena.co.jp",
+    "reason": "uninitialized constant VenueWebsiteScraper"
+  },
+  {
+    "venue": "Koiwa Live Theater Orpheus",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1332-koiwa-live-theater-orpheus",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Live Haus",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1324-live-haus",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Club Liner",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/34-club-liner",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Studio Sur",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/931-studio-sur",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Sumida Triphony Hall",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1267-sumida-triphony-hall",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Acb Hall",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1-acb-hall",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Studio Ongaku Kan Akiba",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/923-studio-ongaku-kan-akiba",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Ufo Club",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/133-ufo-club",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Studio Zot",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/742-studio-zot",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Studio Iwato",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/621-studio-iwato",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Namidabashi Hall",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1548-namidabashi-hall",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Club Citta",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/30-club-citta",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Https Musicsalon Natural Jp",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1476-https-musicsalon-natural-jp",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Kunitachi Public Hall B1f",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/1355-kunitachi-public-hall-b1f",
+    "reason": "Website not accessible - will be deleted"
+  },
+  {
+    "venue": "Shimokitazawa Townhall",
+    "url": "https://www.tokyogigguide.com/en/gigs/venue/287-shimokitazawa-townhall",
+    "reason": "Website not accessible - will be deleted"
+  }
+]

@@ -1,14 +1,17 @@
 {
   "data": [
     {
-      "name": "Scott Chadwick with David Berkman",
-      "date": "Jun 04",
-      "open_time": "18:00",
-      "start_time": "18:30",
-      "live_house": "Adirondack Cafe ",
-      "area": "Jimbocho",
-      "category": "Jazz",
-      "door_price": "3500"
+      "name": "Vivid Voltage",
+      "date": "Aug 29",
+      "open_time": "19:00",
+      "start_time": "19:30",
+      "live_house": "hako gallery",
+      "area": "Yoyogi-Uehara",
+      "category": "Acoustic, Alternative, Electronic, Experimental, Improvised",
+      "door_price": "¥3,500",
+      "source_url": "https://www.tokyogigguide.com/en/gigs/event/35876-vivid-voltage",
+      "last_updated": "2025-06-13T07:11:23Z",
+      "adv_price": "¥3,000"
     },
     {
       "name": "Seiras Y project 藤野由佳 鬼怒無月 Duo",

@@ -1,0 +1,51 @@
+{
+  "name": "Tokyo Turntable",
+  "description": "Live music venue scraper and gig finder for Tokyo",
+  "website": "https://github.com/yourusername/Tokyo-Turntable",
+  "repository": "https://github.com/yourusername/Tokyo-Turntable",
+  "keywords": ["ruby", "rails", "selenium", "web-scraping", "music", "tokyo"],
+  "success_url": "/",
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-google-chrome"
+    },
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-chromedriver"
+    },
+    {
+      "url": "heroku/ruby"
+    }
+  ],
+  "env": {
+    "RAILS_ENV": {
+      "value": "production"
+    },
+    "RAILS_SERVE_STATIC_FILES": {
+      "value": "true"
+    },
+    "CHROME_BIN": {
+      "value": "/app/.chrome-for-testing/chrome-linux64/chrome"
+    },
+    "CHROMEDRIVER_PATH": {
+      "value": "/app/.chrome-for-testing/chromedriver-linux64/chromedriver"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:mini"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "bundle exec rails db:seed"
+  }
+}
