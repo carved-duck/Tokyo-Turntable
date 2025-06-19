@@ -1,3 +1,4 @@
+
 # 🎧 Tokyo Turntable
 
 A Ruby on Rails application which helps users find live shows around Tokyo which suit their music preferences.
@@ -47,10 +48,11 @@ rails s
 - [Figma](https://www.figma.com) — Prototyping
 
 ## Acknowledgements
-Thanks to Tokyo Gig Guide, we were able to scrape the data from close to 1000 live music venues around Tokyo and get information about upcoming shows.
 
 ## Team Members
-- Ryan Ward, Julian Schoenfeld, Hikari Hashiguchi
+- William Sebastian https://github.com/MaddRussian
+- Ryan Ward https://github.com/Ward-R
+- Hikari Hashiguchi https://github.com/hikari-h
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
